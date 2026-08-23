@@ -12,7 +12,7 @@
 # Use the Space's "Factory rebuild" (Settings -> Factory rebuild) to force
 # a clean build that picks up the latest commit.
 
-FROM golang:1.24-bookworm AS build
+FROM golang:1.25-bookworm AS build
 
 WORKDIR /src
 # Shallow-clone the public monorepo at build time so this Space always

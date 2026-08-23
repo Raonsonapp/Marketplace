@@ -1,0 +1,39 @@
+name: Deploy to Hugging Face Spaces
+
+# Auto-redeploys the live TajikShop API whenever backend code changes reach
+# main. This does NOT push files to the Space's own git repo — the Space's
+# Dockerfile (infrastructure/huggingface/Dockerfile) already clones this
+# repo fresh at build time. Instead this just tells Hugging Face to run a
+# *factory* rebuild (no Docker layer cache), which forces that git-clone
+# step to fetch the latest commit instead of reusing a stale one. See
+# docs/HUGGINGFACE_DEPLOYMENT.md.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "services/api/**"
+      - "infrastructure/huggingface/**"
+      - ".github/workflows/deploy-huggingface.yml"
+  workflow_dispatch: {}
+
+env:
+  # owner/space-name as shown in the Space's URL
+  # (huggingface.co/spaces/<owner>/<space-name>).
+  HF_SPACE: Mahmadmurodov/YouShop
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a factory rebuild on the Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo "::error::HF_TOKEN repository secret is not set. Create one at https://huggingface.co/settings/tokens (needs write access to the Space) and add it under Settings -> Secrets and variables -> Actions in this GitHub repo."
+            exit 1
+          fi
+          curl -sS -f -X POST \
+            -H "Authorization: Bearer $HF_TOKEN" \
+            "https://huggingface.co/api/spaces/${HF_SPACE}/restart?factory=true" \
+            -w "\nHTTP %{http_code}\n"

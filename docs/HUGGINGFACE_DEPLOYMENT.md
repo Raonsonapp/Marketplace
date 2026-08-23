@@ -110,12 +110,34 @@ flutter run --dart-define=API_BASE_URL=https://<you>-<space-name>.hf.space/api/v
 For a release build, bake this into the CI workflow or a build flavor
 rather than typing it by hand each time (see `docs/DEPLOYMENT.md`).
 
-## 6. Redeploying after new commits
+## 6. Redeploying after new commits — automatic
 
-HF caches Docker layers, so a plain restart can reuse the stale
-`git clone` layer from the first build. Use **Settings → Factory rebuild**
-to force a clean rebuild that picks up the latest commit on
-`Raonsonapp/Marketplace`.
+HF caches Docker layers, so a plain restart would reuse the stale
+`git clone` layer from a previous build instead of picking up new commits.
+`.github/workflows/deploy-huggingface.yml` handles this automatically:
+on every push to `main` that touches `services/api/**` or
+`infrastructure/huggingface/**`, it calls Hugging Face's REST API to
+trigger a **factory** rebuild (no cache) — https://huggingface.co/docs/hub/en/spaces-config-reference
+— which forces a fresh `git clone` of the latest commit. Nothing needs to
+be pushed to the Space's own git repo for this to work; it only needs to
+exist once (§4 above).
+
+Setup (one-time):
+1. Create a Hugging Face access token with **write** access to the Space:
+   [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+   → "New token" → role **Write** (a fine-grained token needs the
+   "Manage Spaces" permission specifically — a read-only token gets a 403).
+2. In this GitHub repo: Settings → Secrets and variables → Actions → **New
+   repository secret** → name `HF_TOKEN`, value the token from step 1.
+3. If your Space lives somewhere other than `Mahmadmurodov/YouShop`, edit
+   the `HF_SPACE` value at the top of
+   `.github/workflows/deploy-huggingface.yml` to match
+   (`<owner>/<space-name>` from the Space's URL).
+
+From then on, every backend change that reaches `main` redeploys the live
+server within a few minutes — no manual "Factory rebuild" click needed.
+You can also trigger it by hand from GitHub: Actions → "Deploy to Hugging
+Face Spaces" → Run workflow.
 
 ## Known limits of this setup
 
