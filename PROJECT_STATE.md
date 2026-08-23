@@ -77,6 +77,40 @@ Phase 9 (real signing key + Play submission).
       `docker-compose.yml` now match reality (`R2_*` naming, chosen to
       match the env-var convention already used by this account's other
       Hugging-Face-hosted services).
+- [x] First real deploy attempt on `Mahmadmurodov/YouShop`, and what it
+      took to get green — all found via actual HF build/runtime logs, not
+      guessed:
+      - R2 secret names on the real Space didn't match what was guessed —
+        fixed to read `CF_ACCOUNT_ID`/`CF_R2_ACCESS_KEY_ID`/
+        `CF_R2_SECRET_ACCESS_KEY`/`CF_R2_BUCKET`/`CF_R2_PUBLIC_URL` (R2
+        endpoint derived from `CF_ACCOUNT_ID`).
+      - `services/api/go.mod` requires `go >= 1.25.0`; the Space's
+        Dockerfile used `golang:1.24-bookworm` and HF's build environment
+        runs `GOTOOLCHAIN=local` (no auto-download) — hard build failure.
+        Fixed to `golang:1.25-bookworm`; `backend-ci.yml`'s go-version
+        bumped to match (it only "worked" before via `GOTOOLCHAIN=auto`
+        silently downloading the right version).
+      - Triggering a factory-rebuild via the HF REST API alone did NOT
+        pick up that fix — it just rebuilds whatever Dockerfile is
+        currently sitting in the *Space's own* git repo, which still had
+        the stale hand-pasted content. `deploy-huggingface.yml` now
+        actually `git push`es `infrastructure/huggingface/{Dockerfile,
+        README.md}` to the Space's repo on every deploy (with the
+        commit SHA baked into a new `ARG SOURCE_COMMIT` line, which is
+        what busts Docker's cached git-clone layer) — the Space's
+        Dockerfile is now always in sync with this repo, automatically.
+      - `REDIS_URL` was a hard-required config value; the user hit
+        Upstash's one-free-database limit and asked for the server to run
+        without Redis at all. Made it optional:
+        `internal/db.ConnectRedis` starts an in-process, in-memory
+        Redis-compatible server (`miniredis`, already a dependency) when
+        `REDIS_URL` is unset, so rate limiting/OTP cooldowns/checkout
+        idempotency keep working unchanged with zero external setup —
+        trade-off documented in `docs/HUGGINGFACE_DEPLOYMENT.md`: that
+        data doesn't survive a restart and isn't shared across replicas,
+        fine for one container, not a substitute for real Redis at scale.
+        Verified with a real test (`internal/db/redis_test.go`) that pings
+        and round-trips a value through the in-memory server.
 
 ## Completed
 

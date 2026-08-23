@@ -14,9 +14,10 @@ If you already have a Hugging Face Space with `DATABASE_URL`,
 set as secrets, TajikShop's config reads those exact names — nothing to
 rename. You only need to:
 
-1. Add two secrets it doesn't have yet: **`REDIS_URL`** (see §2 below —
-   Upstash's free tier) and **`JWT_SECRET`** (any long random string,
-   e.g. `openssl rand -base64 48`).
+1. Add one secret it doesn't have yet: **`JWT_SECRET`** (any long random
+   string, e.g. `openssl rand -base64 48`). `REDIS_URL` is optional (§2) —
+   skip it if you don't have a spare free-tier Redis database; the backend
+   falls back to an in-process in-memory one automatically.
 2. Replace that Space's root `Dockerfile` and `README.md` with
    `infrastructure/huggingface/Dockerfile` and
    `infrastructure/huggingface/README.md` from this repo (they build
@@ -46,13 +47,31 @@ elsewhere and has a free tier:
    applies every migration automatically on first boot
    (`internal/db/migrate.go`) — you do not need to run anything by hand.
 
-## 2. Managed Redis (required)
+## 2. Managed Redis (optional)
 
 Redis backs OTP rate limiting and checkout idempotency
-(`docs/SECURITY.md`). [Upstash](https://upstash.com) has a free tier and
-issues a TLS connection string (`rediss://...`) that works as-is —
-`internal/db/redis.go` uses `redis.ParseURL`, which supports both
-`redis://` and `rediss://`.
+(`docs/SECURITY.md`). **If you already have a free-tier Redis database
+(e.g. one Upstash database used by another project), reuse it** — set its
+connection string as `REDIS_URL` here too. TajikShop namespaces every key
+it touches (`otp:`, `ratelimit:`, `idempotency:`, ...), so sharing one
+Redis instance across unrelated apps is safe.
+
+If you don't have one and don't want to create one, **leave `REDIS_URL`
+unset** — `internal/db/redis.go`'s `ConnectRedis` then starts an
+in-process, in-memory Redis-compatible server (`miniredis`) automatically,
+and everything works with zero external setup. The trade-off: that data
+(rate-limit counters, OTP cooldowns, the idempotency cache) lives only in
+that one container's memory — it's wiped on every restart/redeploy and
+isn't shared if you ever run more than one instance. Fine for
+development, a small single-instance deployment, or getting started
+before scale justifies a real Redis; add a real `REDIS_URL` later with no
+code changes needed when it does.
+
+If you do want a real one: [Upstash](https://upstash.com) has a free tier
+and issues a TLS connection string (`rediss://...`) that works as-is —
+`redis.ParseURL` supports both `redis://` and `rediss://`. (Upstash's free
+tier caps you at one database — if you've already used it elsewhere,
+reuse that one rather than trying to create a second.)
 
 ## 3. Cloudflare R2 (optional — only for image uploads)
 
@@ -92,7 +111,8 @@ endpoint just returns `UPLOADS_NOT_CONFIGURED` until it's set up.
 3. Space → Settings → **Variables and secrets** → add as secrets (never as
    plain "Variables", which are visible in the UI):
    - `DATABASE_URL` (step 1)
-   - `REDIS_URL` (step 2)
+   - `REDIS_URL` (step 2, optional — omit to use the automatic in-memory
+     fallback)
    - `JWT_SECRET` — a long random string (`openssl rand -base64 48`)
    - `TELEGRAM_GATEWAY_TOKEN` (recommended — see `docs/SMS_PROVIDERS.md`)
      and/or `FIREBASE_WEB_API_KEY` (see `docs/FIREBASE_SETUP.md`)

@@ -25,7 +25,15 @@ type Config struct {
 	Port string
 
 	DatabaseURL string
-	RedisURL    string
+	// RedisURL is optional: when unset, cmd/server starts an in-process,
+	// in-memory Redis-compatible server (miniredis) instead of connecting
+	// to a real one, so OTP rate limiting/idempotency keep working with
+	// zero external setup. That in-memory data does not survive a
+	// restart and isn't shared across replicas — fine for a single-
+	// instance deployment (e.g. one Hugging Face Space container), not a
+	// substitute for a real Redis once traffic/scale justify one. See
+	// docs/HUGGINGFACE_DEPLOYMENT.md.
+	RedisURL string
 
 	JWTSecret     string
 	AccessTTL     time.Duration
@@ -94,7 +102,7 @@ func Load() (*Config, error) {
 		Env:         getOr("ENV", "development"),
 		Port:        getOr("PORT", "8080"),
 		DatabaseURL: req("DATABASE_URL"),
-		RedisURL:    req("REDIS_URL"),
+		RedisURL:    os.Getenv("REDIS_URL"),
 		JWTSecret:   req("JWT_SECRET"),
 	}
 

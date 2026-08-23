@@ -53,11 +53,11 @@ func run() error {
 	}
 	defer pool.Close()
 
-	rdb, err := db.NewRedisClient(ctx, cfg.RedisURL)
+	rdb, closeRedis, err := db.ConnectRedis(ctx, cfg.RedisURL)
 	if err != nil {
 		return err
 	}
-	defer rdb.Close()
+	defer closeRedis()
 
 	// ---- repositories ----
 	userRepo := repository.NewUserRepository()
