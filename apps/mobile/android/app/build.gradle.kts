@@ -1,7 +1,25 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+// Real release signing (see docs/DEPLOYMENT.md "Android / Google Play"):
+// android/key.properties is never committed (see android/.gitignore) and is
+// either created locally by a developer with their own upload keystore, or
+// written out by CI from ANDROID_KEYSTORE_* secrets before the build runs
+// (.github/workflows/android-release.yml). Its absence is not silently
+// swallowed — the release build type below logs a loud warning and falls
+// back to the debug keystore only so `flutter run --release` still works
+// with zero setup; that fallback build is NOT suitable for Google Play.
+val keystorePropertiesFile = rootProject.file("key.properties")
+val hasKeystoreProperties = keystorePropertiesFile.exists()
+val keystoreProperties = Properties()
+if (hasKeystoreProperties) {
+    FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
 }
 
 android {
@@ -28,11 +46,36 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (hasKeystoreProperties) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (hasKeystoreProperties) {
+                signingConfigs.getByName("release")
+            } else {
+                logger.warn(
+                    "WARNING: android/key.properties not found - the 'release' build " +
+                        "type is signed with the DEBUG keystore and must NOT be uploaded " +
+                        "to Google Play. See docs/DEPLOYMENT.md for how to set up a real " +
+                        "upload keystore."
+                )
+                signingConfigs.getByName("debug")
+            }
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }

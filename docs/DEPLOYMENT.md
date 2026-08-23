@@ -59,12 +59,38 @@ LAN IP for a physical device, configured via `--dart-define=API_BASE_URL=...`
 ## Android / Google Play (Phase 9)
 
 - Package name: `tj.tajikshop.app`.
-- Release build: `flutter build appbundle --release` with R8/ProGuard
-  minification enabled (`android/app/build.gradle`), signed with a release
-  keystore supplied via CI secrets (`ANDROID_KEYSTORE_BASE64`,
-  `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`).
-- Requested permissions kept to the minimum actually used at each phase:
-  `INTERNET` always; `CAMERA` only once the barcode scanner ships;
-  `POST_NOTIFICATIONS` once FCM ships. No location/contacts/SMS/microphone
-  permissions — delivery address is entered manually, not derived from
-  device GPS, in the initial release.
+- Release build: `.github/workflows/android-release.yml` builds
+  `flutter build appbundle --release` and `flutter build apk --release`
+  (never a debug build) on every push to `main` touching the mobile app, on
+  `v*` tags, and on demand (`workflow_dispatch`). R8/ProGuard minification
+  and resource shrinking are enabled in `android/app/build.gradle.kts`
+  (`isMinifyEnabled`/`isShrinkResources`, rules in
+  `android/app/proguard-rules.pro`).
+- **Real signing, not the debug keystore**: `android/app/build.gradle.kts`
+  reads `android/key.properties` (never committed — see `android/.gitignore`)
+  for the release `signingConfig`. Two ways to provide it:
+  - **Locally**: generate an upload keystore
+    (`keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`),
+    then create `apps/mobile/android/key.properties`:
+    ```
+    storeFile=/absolute/path/to/upload-keystore.jks
+    storePassword=...
+    keyAlias=upload
+    keyPassword=...
+    ```
+  - **CI**: set the repository secrets `ANDROID_KEYSTORE_BASE64` (the
+    keystore file, base64-encoded), `ANDROID_KEYSTORE_PASSWORD`,
+    `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` — the workflow decodes the
+    keystore and writes `key.properties` itself before building.
+  - If neither is present, the release build type **falls back to the debug
+    keystore and logs a loud warning** (both in Gradle's own output and as a
+    GitHub Actions `::warning::`) so an unsigned-for-Play build is never
+    mistaken for a real one — it still builds successfully for local
+    smoke-testing.
+- Requested permissions are added only as each feature ships and are
+  documented with their exact trigger in `docs/GOOGLE_PLAY_DATA_SAFETY.md`:
+  `INTERNET` always; `CAMERA` only when the barcode scanner opens;
+  `ACCESS_FINE_LOCATION`/`ACCESS_COARSE_LOCATION` only when the user opens
+  "nearby stores" or taps "use my location" (manual address entry always
+  remains available without granting it); `POST_NOTIFICATIONS` once FCM
+  push is used. No contacts/SMS/microphone/background-location permissions.

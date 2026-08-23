@@ -1,9 +1,18 @@
 name: Android Release Build
 
+# Builds the Android RELEASE artifacts (AAB + APK) — never debug. Runs on
+# every push to main that touches the mobile app (so a release build is
+# always available to sanity-check), on version tags (the actual Play Store
+# submission artifact), and on demand via workflow_dispatch.
 on:
   push:
+    branches: [main]
+    paths:
+      - "apps/mobile/**"
+      - ".github/workflows/android-release.yml"
     tags:
       - "v*"
+  workflow_dispatch: {}
 
 jobs:
   build:
@@ -31,21 +40,37 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
         continue-on-error: true
 
-      - name: Decode keystore
-        if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
+      # Real upload-key signing (see docs/DEPLOYMENT.md). Without these
+      # secrets set, android/app/build.gradle.kts falls back to debug
+      # signing and logs a loud warning — the build still succeeds (so this
+      # workflow is useful from day one) but that artifact must never be
+      # uploaded to Google Play. Set the four ANDROID_KEYSTORE_* repository
+      # secrets to get a real, Play-Store-ready signed release.
+      - name: Write release keystore and key.properties
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-        run: |
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/release.keystore
-
-      - name: Build AAB
-        env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/release.keystore
+          cat > android/key.properties <<EOF
+          storeFile=release.keystore
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyAlias=$ANDROID_KEY_ALIAS
+          keyPassword=$ANDROID_KEY_PASSWORD
+          EOF
+
+      - name: Warn if building without a real signing key
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 == '' }}
+        run: |
+          echo "::warning::ANDROID_KEYSTORE_BASE64 is not set — this build will be signed with the debug keystore and is NOT suitable for Google Play. See docs/DEPLOYMENT.md."
+
+      - name: Build AAB (release)
         run: flutter build appbundle --release
 
-      - name: Build APK
+      - name: Build APK (release)
         run: flutter build apk --release
 
       - uses: actions/upload-artifact@v4
@@ -54,3 +79,4 @@ jobs:
           path: |
             apps/mobile/build/app/outputs/bundle/release/*.aab
             apps/mobile/build/app/outputs/flutter-apk/*.apk
+          retention-days: 30
