@@ -1,12 +1,13 @@
 name: Deploy to Hugging Face Spaces
 
 # Auto-redeploys the live TajikShop API whenever backend code changes reach
-# main. This does NOT push files to the Space's own git repo — the Space's
-# Dockerfile (infrastructure/huggingface/Dockerfile) already clones this
-# repo fresh at build time. Instead this just tells Hugging Face to run a
-# *factory* rebuild (no Docker layer cache), which forces that git-clone
-# step to fetch the latest commit instead of reusing a stale one. See
-# docs/HUGGINGFACE_DEPLOYMENT.md.
+# main. The Space's Dockerfile (infrastructure/huggingface/Dockerfile)
+# clones this repo fresh at build time, so on every relevant push this job
+# pushes that Dockerfile + README.md straight to the Space's own git repo
+# with the current commit SHA baked into the Dockerfile's ARG SOURCE_COMMIT
+# — that line's text differs on every deploy, which is what forces Docker
+# to bust the cached git-clone layer and actually fetch the latest commit
+# instead of silently reusing a stale one. See docs/HUGGINGFACE_DEPLOYMENT.md.
 on:
   push:
     branches: [main]
@@ -22,10 +23,19 @@ env:
   HF_SPACE: Mahmadmurodov/YouShop
 
 jobs:
-  redeploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger a factory rebuild on the Hugging Face Space
+      - uses: actions/checkout@v4
+
+      - name: Prepare the Space's Dockerfile with this commit's SHA baked in
+        run: |
+          mkdir -p /tmp/space-deploy
+          sed "s/ARG SOURCE_COMMIT=dev/ARG SOURCE_COMMIT=${GITHUB_SHA}/" \
+            infrastructure/huggingface/Dockerfile > /tmp/space-deploy/Dockerfile
+          cp infrastructure/huggingface/README.md /tmp/space-deploy/README.md
+
+      - name: Push to the Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
@@ -33,7 +43,10 @@ jobs:
             echo "::error::HF_TOKEN repository secret is not set. Create one at https://huggingface.co/settings/tokens (needs write access to the Space) and add it under Settings -> Secrets and variables -> Actions in this GitHub repo."
             exit 1
           fi
-          curl -sS -f -X POST \
-            -H "Authorization: Bearer $HF_TOKEN" \
-            "https://huggingface.co/api/spaces/${HF_SPACE}/restart?factory=true" \
-            -w "\nHTTP %{http_code}\n"
+          cd /tmp/space-deploy
+          git init -q -b main
+          git config user.email "actions@github.com"
+          git config user.name "TajikShop CI"
+          git add Dockerfile README.md
+          git commit -q -m "Deploy tajikshop/api @ ${GITHUB_SHA}"
+          git push -f "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" HEAD:main

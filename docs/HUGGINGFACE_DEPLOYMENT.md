@@ -79,12 +79,16 @@ endpoint just returns `UPLOADS_NOT_CONFIGURED` until it's set up.
    **Docker** → visibility your choice.
 2. Push `infrastructure/huggingface/Dockerfile` and
    `infrastructure/huggingface/README.md` from this repo as the **root**
-   files of the new Space's own git repo (`git remote add space
-   https://huggingface.co/spaces/<you>/<space-name>`, copy those two files
-   in, commit, `git push space main`). The Dockerfile clones this public
-   repo (`Raonsonapp/Marketplace`) at build time and builds
-   `services/api` — see that file's header comment for why, and how to
-   force a fresh clone on redeploy (Settings → Factory rebuild).
+   files of the new Space's own git repo, once, to get it building at all
+   (`git remote add space https://huggingface.co/spaces/<you>/<space-name>`,
+   copy those two files in, commit, `git push space main`) — or just do the
+   one-time `HF_TOKEN` setup in §6 below first and let the CI job create
+   that initial push for you by running it once
+   (Actions → "Deploy to Hugging Face Spaces" → Run workflow). Either way,
+   **after that, don't hand-edit the Dockerfile on huggingface.co** — every
+   automated deploy overwrites it; edit `infrastructure/huggingface/Dockerfile`
+   in this repo instead (see §6, and that file's own header comment for why
+   editing it in place would just get reverted on the next push).
 3. Space → Settings → **Variables and secrets** → add as secrets (never as
    plain "Variables", which are visible in the UI):
    - `DATABASE_URL` (step 1)
@@ -112,21 +116,27 @@ rather than typing it by hand each time (see `docs/DEPLOYMENT.md`).
 
 ## 6. Redeploying after new commits — automatic
 
-HF caches Docker layers, so a plain restart would reuse the stale
-`git clone` layer from a previous build instead of picking up new commits.
-`.github/workflows/deploy-huggingface.yml` handles this automatically:
-on every push to `main` that touches `services/api/**` or
-`infrastructure/huggingface/**`, it calls Hugging Face's REST API to
-trigger a **factory** rebuild (no cache) — https://huggingface.co/docs/hub/en/spaces-config-reference
-— which forces a fresh `git clone` of the latest commit. Nothing needs to
-be pushed to the Space's own git repo for this to work; it only needs to
-exist once (§4 above).
+`.github/workflows/deploy-huggingface.yml` owns the Space's Dockerfile
+from here on: on every push to `main` that touches `services/api/**` or
+`infrastructure/huggingface/**`, it takes
+`infrastructure/huggingface/Dockerfile`, bakes the current commit's SHA
+into its `ARG SOURCE_COMMIT` line, and `git push -f`'s that file plus
+`README.md` straight to the Space's own git repo. That accomplishes two
+things at once: the Space always has the current Dockerfile (no more
+manually copy-pasting it on huggingface.co and forgetting to update it —
+that's exactly what caused a stale-Go-version build failure the first
+time this was set up by hand), and because the `ARG SOURCE_COMMIT` line's
+text is different on every deploy, Docker can't reuse its cached
+`git clone` layer from a previous build — it always fetches the latest
+commit. A plain HF restart (or a manual "Factory rebuild") is no longer
+needed for routine deploys.
 
 Setup (one-time):
 1. Create a Hugging Face access token with **write** access to the Space:
    [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
    → "New token" → role **Write** (a fine-grained token needs the
-   "Manage Spaces" permission specifically — a read-only token gets a 403).
+   "Manage Spaces" permission specifically — a read-only token gets a 403
+   when the workflow tries to push).
 2. In this GitHub repo: Settings → Secrets and variables → Actions → **New
    repository secret** → name `HF_TOKEN`, value the token from step 1.
 3. If your Space lives somewhere other than `Mahmadmurodov/YouShop`, edit
@@ -135,9 +145,10 @@ Setup (one-time):
    (`<owner>/<space-name>` from the Space's URL).
 
 From then on, every backend change that reaches `main` redeploys the live
-server within a few minutes — no manual "Factory rebuild" click needed.
-You can also trigger it by hand from GitHub: Actions → "Deploy to Hugging
-Face Spaces" → Run workflow.
+server within a few minutes. You can also trigger it by hand from GitHub:
+Actions → "Deploy to Hugging Face Spaces" → Run workflow — useful the very
+first time, to push the Dockerfile/README to a brand-new Space instead of
+copy-pasting them by hand.
 
 ## Known limits of this setup
 
