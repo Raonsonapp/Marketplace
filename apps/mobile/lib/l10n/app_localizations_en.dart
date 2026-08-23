@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'TajikShop';
+  String get appTitle => 'YouShop';
 
   @override
   String get navHome => 'Home';
@@ -108,7 +108,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get networkErrorUnknown => 'Unknown network error. Please try again.';
 
   @override
-  String get authWelcomeTitle => 'Welcome to TajikShop';
+  String get authWelcomeTitle => 'Welcome to YouShop';
 
   @override
   String get authWelcomeSubtitle => 'Enter your phone number to continue';

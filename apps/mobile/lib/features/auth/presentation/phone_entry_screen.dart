@@ -84,7 +84,7 @@ class _PhoneEntryScreenState extends ConsumerState<PhoneEntryScreen> {
               const SizedBox(height: AppSpacing.xl),
               Text(l10n.authPhoneLabel, style: Theme.of(context).textTheme.labelLarge),
               const SizedBox(height: AppSpacing.xs),
-              // Region selector: TajikShop serves Tajikistan and Russia
+              // Region selector: YouShop serves Tajikistan and Russia
               // (docs/SECURITY.md), so the country-code prefix is a choice,
               // not a fixed label.
               SegmentedButton<PhoneRegion>(

@@ -10,7 +10,7 @@ class AppLocalizationsTg extends AppLocalizations {
   AppLocalizationsTg([String locale = 'tg']) : super(locale);
 
   @override
-  String get appTitle => 'TajikShop';
+  String get appTitle => 'YouShop';
 
   @override
   String get navHome => 'Асосӣ';
@@ -110,7 +110,7 @@ class AppLocalizationsTg extends AppLocalizations {
       'Хатогии номаълуми шабака рӯй дод. Лутфан аз нав кӯшиш кунед.';
 
   @override
-  String get authWelcomeTitle => 'Хуш омадед ба TajikShop';
+  String get authWelcomeTitle => 'Хуш омадед ба YouShop';
 
   @override
   String get authWelcomeSubtitle =>

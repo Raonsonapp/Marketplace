@@ -2,7 +2,7 @@
 class AppConstants {
   AppConstants._();
 
-  static const String appName = 'TajikShop';
+  static const String appName = 'YouShop';
   static const String currencyCode = 'TJS';
 
   /// Default page size for cursor-paginated list endpoints.

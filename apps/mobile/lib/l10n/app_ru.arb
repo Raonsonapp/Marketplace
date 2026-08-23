@@ -1,7 +1,7 @@
 {
   "@@locale": "ru",
 
-  "appTitle": "TajikShop",
+  "appTitle": "YouShop",
 
   "navHome": "Главная",
   "navCatalog": "Каталог",
@@ -38,7 +38,7 @@
   "networkErrorCancelled": "Запрос отменён.",
   "networkErrorUnknown": "Неизвестная ошибка сети. Попробуйте ещё раз.",
 
-  "authWelcomeTitle": "Добро пожаловать в TajikShop",
+  "authWelcomeTitle": "Добро пожаловать в YouShop",
   "authWelcomeSubtitle": "Введите номер телефона, чтобы продолжить",
   "authPhoneLabel": "Номер телефона",
   "authPhoneHint": "90 123 45 67",

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Brand color palette for TajikShop.
+/// Brand color palette for YouShop.
 ///
 /// Deep Forest Green is the primary dark-theme background, Emerald Green is
 /// the primary accent, and a Neon Green tone is reserved for special

@@ -55,13 +55,13 @@ Future<void> main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      child: const TajikShopApp(),
+      child: const YouShopApp(),
     ),
   );
 }
 
-class TajikShopApp extends ConsumerWidget {
-  const TajikShopApp({super.key});
+class YouShopApp extends ConsumerWidget {
+  const YouShopApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

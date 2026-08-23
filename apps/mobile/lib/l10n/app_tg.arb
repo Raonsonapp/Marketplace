@@ -1,7 +1,7 @@
 {
   "@@locale": "tg",
 
-  "appTitle": "TajikShop",
+  "appTitle": "YouShop",
   "@appTitle": {"description": "The application name, shown on splash and in the OS task switcher."},
 
   "navHome": "Асосӣ",
@@ -39,7 +39,7 @@
   "networkErrorCancelled": "Дархост бекор карда шуд.",
   "networkErrorUnknown": "Хатогии номаълуми шабака рӯй дод. Лутфан аз нав кӯшиш кунед.",
 
-  "authWelcomeTitle": "Хуш омадед ба TajikShop",
+  "authWelcomeTitle": "Хуш омадед ба YouShop",
   "authWelcomeSubtitle": "Барои идома додан рақами телефони худро ворид кунед",
   "authPhoneLabel": "Рақами телефон",
   "authPhoneHint": "90 123 45 67",

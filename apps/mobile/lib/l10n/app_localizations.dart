@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// The application name, shown on splash and in the OS task switcher.
   ///
   /// In tg, this message translates to:
-  /// **'TajikShop'**
+  /// **'YouShop'**
   String get appTitle;
 
   /// No description provided for @navHome.
@@ -295,7 +295,7 @@ abstract class AppLocalizations {
   /// No description provided for @authWelcomeTitle.
   ///
   /// In tg, this message translates to:
-  /// **'Хуш омадед ба TajikShop'**
+  /// **'Хуш омадед ба YouShop'**
   String get authWelcomeTitle;
 
   /// No description provided for @authWelcomeSubtitle.

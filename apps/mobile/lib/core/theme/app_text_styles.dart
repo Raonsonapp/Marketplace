@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Typography scale for TajikShop. Uses the platform default font family
+/// Typography scale for YouShop. Uses the platform default font family
 /// (no network font fetch) to keep builds fully offline-safe, with a
 /// slightly tightened letter-spacing on headings for a modern, premium
 /// feel.

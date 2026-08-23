@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Tajikshop</string>
+	<string>YouShop</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>tajikshop</string>
+	<string>youshop</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -27,9 +27,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>TajikShop-ро барои сканеркунии рамзи маҳсулот ба камера дастрасӣ лозим аст.</string>
+	<string>YouShop-ро барои сканеркунии рамзи маҳсулот ба камера дастрасӣ лозим аст.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>TajikShop-ро барои нишон додани мағозаҳои наздик ба ҷойгиршавии шумо дастрасӣ лозим аст.</string>
+	<string>YouShop-ро барои нишон додани мағозаҳои наздик ба ҷойгиршавии шумо дастрасӣ лозим аст.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

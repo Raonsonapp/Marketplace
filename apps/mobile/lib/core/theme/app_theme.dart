@@ -4,7 +4,7 @@ import 'app_colors.dart';
 import 'app_spacing.dart';
 import 'app_text_styles.dart';
 
-/// Builds the Material 3 [ThemeData] for TajikShop's dark (primary/default)
+/// Builds the Material 3 [ThemeData] for YouShop's dark (primary/default)
 /// and light theme variants.
 class AppTheme {
   AppTheme._();

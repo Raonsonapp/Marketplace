@@ -10,7 +10,7 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get appTitle => 'TajikShop';
+  String get appTitle => 'YouShop';
 
   @override
   String get navHome => 'Главная';
@@ -109,7 +109,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Неизвестная ошибка сети. Попробуйте ещё раз.';
 
   @override
-  String get authWelcomeTitle => 'Добро пожаловать в TajikShop';
+  String get authWelcomeTitle => 'Добро пожаловать в YouShop';
 
   @override
   String get authWelcomeSubtitle => 'Введите номер телефона, чтобы продолжить';

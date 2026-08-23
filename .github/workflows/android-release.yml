@@ -73,15 +73,19 @@ jobs:
         run: |
           echo "::warning::ANDROID_KEYSTORE_BASE64 is not set — this build will be signed with the debug keystore and is NOT suitable for Google Play. See docs/DEPLOYMENT.md."
 
+      # The live backend URL is already the compiled-in default
+      # (lib/core/config/env.dart), but passing it explicitly here keeps the
+      # release build correct even if that default ever changes without a
+      # matching workflow update.
       - name: Build AAB (release)
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --dart-define=API_BASE_URL=https://mahmadmurodov-youshop.hf.space/api/v1
 
       - name: Build APK (release)
-        run: flutter build apk --release
+        run: flutter build apk --release --dart-define=API_BASE_URL=https://mahmadmurodov-youshop.hf.space/api/v1
 
       - uses: actions/upload-artifact@v4
         with:
-          name: tajikshop-android-release
+          name: youshop-android-release
           path: |
             apps/mobile/build/app/outputs/bundle/release/*.aab
             apps/mobile/build/app/outputs/flutter-apk/*.apk

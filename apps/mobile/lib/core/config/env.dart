@@ -1,20 +1,25 @@
-/// Environment configuration for the TajikShop app.
+/// Environment configuration for the YouShop app.
 ///
 /// The API base URL is supplied at build/run time via `--dart-define`, e.g.:
 ///
 /// ```
-/// flutter run --dart-define=API_BASE_URL=https://api.tajikshop.tj/api/v1
+/// flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1
 /// ```
 ///
-/// When not provided, it defaults to the Android emulator's host-loopback
-/// address pointing at a locally running backend (see docs/ARCHITECTURE.md).
+/// When not provided, it defaults to the live hosted backend (see
+/// docs/HUGGINGFACE_DEPLOYMENT.md) so a release APK/AAB built without any
+/// extra flags — e.g. straight out of the CI release workflow, installed on
+/// a physical device — works out of the box. Override with
+/// `--dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1` for local
+/// backend development against the Android emulator.
 class Env {
   Env._();
 
-  /// Default target for the Android emulator (`10.0.2.2` maps to the host
-  /// machine's `localhost`). Override with `--dart-define=API_BASE_URL=...`
-  /// for physical devices, iOS simulator, or a deployed backend.
-  static const String _defaultApiBaseUrl = 'http://10.0.2.2:8080/api/v1';
+  /// The live TajikShop/YouShop API on Hugging Face Spaces (§6,
+  /// docs/HUGGINGFACE_DEPLOYMENT.md). Override with
+  /// `--dart-define=API_BASE_URL=...` for local dev or a different backend.
+  static const String _defaultApiBaseUrl =
+      'https://mahmadmurodov-youshop.hf.space/api/v1';
 
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',

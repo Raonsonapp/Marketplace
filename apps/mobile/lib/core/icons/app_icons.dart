@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-/// Outline-style icon set for TajikShop, matching the brand's "modern,
+/// Outline-style icon set for YouShop, matching the brand's "modern,
 /// premium" look against the Deep Forest Green dark background — the same
 /// visual family as the Lucide/Feather icon sets popular in the React
 /// ecosystem, rather than filled Material icons.

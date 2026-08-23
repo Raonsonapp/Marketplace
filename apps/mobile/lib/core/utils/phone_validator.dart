@@ -1,5 +1,5 @@
 /// Validates and normalizes phone numbers for the OTP auth flow across the
-/// two regions TajikShop serves (docs/SECURITY.md): Tajikistan (+992, 9
+/// two regions YouShop serves (docs/SECURITY.md): Tajikistan (+992, 9
 /// national digits, e.g. `+992501234567`) and Russia (+7, 10 national
 /// digits, e.g. `+79161234567`).
 enum PhoneRegion {
