@@ -1,0 +1,406 @@
+openapi: 3.0.3
+info:
+  title: TajikShop API
+  version: "1.0.0"
+  description: >
+    REST contract for the TajikShop grocery marketplace. Mirrors
+    docs/API_SPEC.md; this file is the machine-readable source of truth for
+    DTO field names/types consumed by both the Flutter app and the Go
+    backend's request/response structs. Field naming is snake_case
+    throughout, matching docs/API_SPEC.md's JSON examples.
+servers:
+  - url: https://api.tajikshop.tj/api/v1
+  - url: http://localhost:8080/api/v1
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string, example: OUT_OF_STOCK }
+            message: { type: string }
+            details: { type: object, additionalProperties: true }
+
+    Money:
+      type: string
+      description: Decimal amount in TJS with 2 fraction digits, as a string.
+      example: "125.50"
+
+    User:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        phone: { type: string, example: "+992901234567" }
+        full_name: { type: string, nullable: true }
+        email: { type: string, nullable: true }
+        avatar_url: { type: string, nullable: true }
+        language: { type: string, enum: [tj, ru, en] }
+        role: { type: string, enum: [customer, store_manager, courier, support_agent, admin] }
+
+    AuthTokens:
+      type: object
+      properties:
+        access_token: { type: string }
+        refresh_token: { type: string }
+        user: { $ref: "#/components/schemas/User" }
+        is_new_user: { type: boolean }
+
+    Category:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        parent_id: { type: string, format: uuid, nullable: true }
+        name_tj: { type: string }
+        name_ru: { type: string, nullable: true }
+        slug: { type: string }
+        icon_url: { type: string, nullable: true }
+        children:
+          type: array
+          items: { $ref: "#/components/schemas/Category" }
+
+    ProductImage:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        url: { type: string }
+        sort_order: { type: integer }
+
+    Product:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        sku: { type: string }
+        barcode: { type: string, nullable: true }
+        name_tj: { type: string }
+        name_ru: { type: string, nullable: true }
+        description_tj: { type: string, nullable: true }
+        description_ru: { type: string, nullable: true }
+        brand_id: { type: string, format: uuid, nullable: true }
+        category_id: { type: string, format: uuid }
+        unit: { type: string, enum: [pcs, kg, g, l, ml] }
+        weight: { type: number, nullable: true }
+        volume: { type: number, nullable: true }
+        price: { $ref: "#/components/schemas/Money" }
+        old_price: { $ref: "#/components/schemas/Money" }
+        discount_percent: { type: integer, nullable: true }
+        stock_qty: { type: integer }
+        is_available: { type: boolean }
+        rating_avg: { type: number }
+        rating_count: { type: integer }
+        tags: { type: array, items: { type: string } }
+        images:
+          type: array
+          items: { $ref: "#/components/schemas/ProductImage" }
+
+    Store:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        logo_url: { type: string, nullable: true }
+        address: { type: string }
+        city: { type: string }
+        lat: { type: number, nullable: true }
+        lng: { type: number, nullable: true }
+        is_delivery_available: { type: boolean }
+        is_pickup_available: { type: boolean }
+
+    Address:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        city: { type: string }
+        street: { type: string }
+        house: { type: string, nullable: true }
+        apartment: { type: string, nullable: true }
+        entrance: { type: string, nullable: true }
+        floor: { type: string, nullable: true }
+        intercom: { type: string, nullable: true }
+        comment: { type: string, nullable: true }
+        lat: { type: number, nullable: true }
+        lng: { type: number, nullable: true }
+        is_default: { type: boolean }
+
+    CartItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        product: { $ref: "#/components/schemas/Product" }
+        quantity: { type: integer }
+        line_total: { $ref: "#/components/schemas/Money" }
+        saved_for_later: { type: boolean }
+
+    Cart:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        store_id: { type: string, format: uuid, nullable: true }
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/CartItem" }
+        subtotal: { $ref: "#/components/schemas/Money" }
+        discount_amount: { $ref: "#/components/schemas/Money" }
+        delivery_fee: { $ref: "#/components/schemas/Money" }
+        total: { $ref: "#/components/schemas/Money" }
+
+    OrderItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        product_id: { type: string, format: uuid }
+        name_snapshot: { type: string }
+        unit_price: { $ref: "#/components/schemas/Money" }
+        quantity: { type: integer }
+        total_price: { $ref: "#/components/schemas/Money" }
+
+    Order:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        order_number: { type: string }
+        status:
+          type: string
+          enum: [pending, confirmed, preparing, ready, courier_assigned, picked_up, delivering, delivered, cancelled]
+        delivery_method: { type: string, enum: [delivery, pickup] }
+        payment_method: { type: string }
+        payment_status: { type: string, enum: [pending, paid, failed, refunded] }
+        subtotal: { $ref: "#/components/schemas/Money" }
+        discount_amount: { $ref: "#/components/schemas/Money" }
+        delivery_fee: { $ref: "#/components/schemas/Money" }
+        bonus_used: { $ref: "#/components/schemas/Money" }
+        bonus_earned: { $ref: "#/components/schemas/Money" }
+        total: { $ref: "#/components/schemas/Money" }
+        scheduled_at: { type: string, format: date-time, nullable: true }
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/OrderItem" }
+        created_at: { type: string, format: date-time }
+
+paths:
+  /auth/send-otp:
+    post:
+      summary: Send OTP to a phone number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone]
+              properties: { phone: { type: string } }
+      responses:
+        "200":
+          description: OTP sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: { retry_after_seconds: { type: integer } }
+        "429": { $ref: "#/components/responses/Error" }
+
+  /auth/verify-otp:
+    post:
+      summary: Verify OTP and obtain tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [phone, code]
+              properties:
+                phone: { type: string }
+                code: { type: string }
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthTokens" }
+        "400": { $ref: "#/components/responses/Error" }
+
+  /auth/refresh:
+    post:
+      summary: Rotate refresh token for a new access token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refresh_token]
+              properties: { refresh_token: { type: string } }
+      responses:
+        "200":
+          description: New token pair
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token: { type: string }
+                  refresh_token: { type: string }
+
+  /home:
+    get:
+      summary: Dynamic home feed
+      responses:
+        "200": { description: Home sections }
+
+  /categories:
+    get:
+      summary: Category tree
+      responses:
+        "200":
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Category" }
+
+  /products:
+    get:
+      summary: List/filter/sort products
+      parameters:
+        - { name: category_id, in: query, schema: { type: string } }
+        - { name: brand_id, in: query, schema: { type: string } }
+        - { name: min_price, in: query, schema: { type: number } }
+        - { name: max_price, in: query, schema: { type: number } }
+        - { name: sort, in: query, schema: { type: string, enum: [popular, price_asc, price_desc, rating, discount, newest] } }
+        - { name: cursor, in: query, schema: { type: string } }
+        - { name: limit, in: query, schema: { type: integer, default: 20 } }
+      responses:
+        "200":
+          description: Paginated products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Product" }
+                  next_cursor: { type: string, nullable: true }
+
+  /products/{id}:
+    get:
+      summary: Product detail
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Product
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Product" }
+        "404": { $ref: "#/components/responses/Error" }
+
+  /cart:
+    get:
+      summary: Get current cart (server-recalculated)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Cart
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Cart" }
+
+  /cart/items:
+    post:
+      summary: Add item to cart
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, quantity]
+              properties:
+                product_id: { type: string }
+                quantity: { type: integer, minimum: 1 }
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Cart" }
+        "409": { $ref: "#/components/responses/Error" }
+
+  /orders:
+    post:
+      summary: Create an order (server recomputes all totals)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [delivery_method, payment_method]
+              properties:
+                address_id: { type: string, nullable: true }
+                delivery_method: { type: string, enum: [delivery, pickup] }
+                scheduled_at: { type: string, format: date-time, nullable: true }
+                payment_method: { type: string }
+                promo_code: { type: string, nullable: true }
+                bonus_amount: { type: number, nullable: true }
+      responses:
+        "201":
+          description: Order created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "409": { $ref: "#/components/responses/Error" }
+    get:
+      summary: List my orders
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [active, completed, cancelled] } }
+      responses:
+        "200":
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: "#/components/schemas/Order" }
+                  next_cursor: { type: string, nullable: true }
+
+  /loyalty:
+    get:
+      summary: TajBonus balance
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Loyalty account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance: { $ref: "#/components/schemas/Money" }
+                  lifetime_earned: { $ref: "#/components/schemas/Money" }
+                  tier: { type: string }
+
+responses:
+  Error:
+    description: Error envelope
+    content:
+      application/json:
+        schema: { $ref: "#/components/schemas/Error" }

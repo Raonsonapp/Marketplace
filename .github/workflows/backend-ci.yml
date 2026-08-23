@@ -1,0 +1,72 @@
+name: Backend CI
+
+on:
+  pull_request:
+    paths:
+      - "services/api/**"
+      - ".github/workflows/backend-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "services/api/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: tajikshop
+          POSTGRES_PASSWORD: tajikshop
+          POSTGRES_DB: tajikshop
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U tajikshop"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgres://tajikshop:tajikshop@localhost:5432/tajikshop?sslmode=disable
+      REDIS_URL: redis://localhost:6379/0
+      JWT_SECRET: ci-test-secret-not-for-production
+    defaults:
+      run:
+        working-directory: services/api
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache-dependency-path: services/api/go.sum
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Run migrations against empty database
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          for f in ../../infrastructure/database/migrations/*.up.sql; do
+            echo "Applying $f"
+            psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$f"
+          done
+
+      - name: Build
+        run: go build ./...
+
+      - name: Test
+        run: go test ./... -v
