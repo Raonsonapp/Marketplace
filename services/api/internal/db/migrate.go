@@ -30,7 +30,7 @@ func RunMigrations(databaseURL string) error {
 
 	m, err := migrate.NewWithSourceInstance("iofs", src, migrateURL)
 	if err != nil {
-		return fmt.Errorf("migrate: init: %w", err)
+		return fmt.Errorf("migrate: init: %w%s", err, dbHostHint(err))
 	}
 	defer func() {
 		_, _ = m.Close()
@@ -40,6 +40,20 @@ func RunMigrations(databaseURL string) error {
 		return fmt.Errorf("migrate: up: %w", err)
 	}
 	return nil
+}
+
+// dbHostHint appends actionable guidance for the specific, previously-hit
+// failure of a Supabase "Direct connection" hostname (db.<ref>.supabase.co)
+// not resolving from a container platform without IPv6 egress (e.g.
+// Hugging Face Spaces) — see docs/HUGGINGFACE_DEPLOYMENT.md. Returns "" for
+// any other error, so it never claims to diagnose something it hasn't
+// actually recognized.
+func dbHostHint(err error) string {
+	msg := err.Error()
+	if strings.Contains(msg, "no such host") && strings.Contains(msg, "supabase.co") {
+		return " (hint: use Supabase's \"Session pooler\" connection string, not \"Direct connection\" — Project Settings -> Database; see docs/HUGGINGFACE_DEPLOYMENT.md)"
+	}
+	return ""
 }
 
 // ensure the pgx v5 database driver package (which self-registers via
