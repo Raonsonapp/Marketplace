@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +11,9 @@ import '../../features/catalog/presentation/category_products_screen.dart';
 import '../../features/checkout/presentation/checkout_screen.dart';
 import '../../features/favorites/presentation/favorites_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/loyalty/presentation/loyalty_screen.dart';
+import '../../features/notifications/presentation/notification_preferences_screen.dart';
+import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/orders/presentation/order_detail_screen.dart';
 import '../../features/orders/presentation/orders_screen.dart';
@@ -19,9 +23,13 @@ import '../../features/profile/presentation/language_selection_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/settings_screen.dart';
+import '../../features/promotions/presentation/promotions_screen.dart';
+import '../../features/reviews/presentation/write_review_screen.dart';
 import '../../features/search/presentation/search_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 import '../../features/stores/presentation/stores_map_screen.dart';
+import '../../features/support/presentation/support_chat_screen.dart';
+import '../../features/support/presentation/support_conversations_screen.dart';
 import '../session/session_controller.dart';
 import '../storage/preferences_storage.dart';
 import 'app_shell.dart';
@@ -35,7 +43,12 @@ bool _requiresAuth(String location) {
       location.startsWith(RoutePaths.orders) ||
       location.startsWith(RoutePaths.profile) ||
       location.startsWith(RoutePaths.favorites) ||
-      location.startsWith(RoutePaths.checkout);
+      location.startsWith(RoutePaths.checkout) ||
+      location.startsWith(RoutePaths.loyalty) ||
+      location.startsWith(RoutePaths.promotions) ||
+      location.startsWith(RoutePaths.notifications) ||
+      location.startsWith(RoutePaths.support) ||
+      location.startsWith(RoutePaths.writeReview);
 }
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -185,6 +198,61 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: RoutePaths.profileSettings,
         builder: (context, state) => const SettingsScreen(),
       ),
+      GoRoute(
+        path: RoutePaths.loyalty,
+        builder: (context, state) => const LoyaltyScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.promotions,
+        builder: (context, state) => const PromotionsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.notificationPreferences,
+        builder: (context, state) => const NotificationPreferencesScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.notifications,
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.support,
+        builder: (context, state) => const SupportConversationsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.supportChat,
+        builder: (context, state) {
+          final conversationId = state.pathParameters['conversationId']!;
+          return SupportChatScreen(conversationId: conversationId);
+        },
+      ),
+      GoRoute(
+        path: RoutePaths.writeReview,
+        builder: (context, state) {
+          final extra = state.extra;
+          if (extra is WriteReviewRouteArgs) {
+            return WriteReviewScreen(args: extra);
+          }
+          // No valid args (e.g. a bare deep link) — there is no safe,
+          // real `order_item_id` to fall back to, so send the user back
+          // rather than show a form that could submit an invented one.
+          return const _MissingReviewArgsRedirect();
+        },
+      ),
     ],
   );
 });
+
+/// Guards against `RoutePaths.writeReview` ever being reached without the
+/// real [WriteReviewRouteArgs] a purchased order item supplies — this
+/// screen must never let a review be submitted against a guessed id.
+class _MissingReviewArgsRedirect extends StatelessWidget {
+  const _MissingReviewArgsRedirect();
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+    });
+    return const Scaffold(body: SizedBox.shrink());
+  }
+}

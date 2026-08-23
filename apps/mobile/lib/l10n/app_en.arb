@@ -237,5 +237,76 @@
   "storeDeliveryAvailable": "Delivery available",
   "storePickupAvailable": "Pickup available",
   "storeSells": "What this store carries",
-  "storeBrowseCatalog": "Browse catalog"
+  "storeBrowseCatalog": "Browse catalog",
+
+  "loyaltyTitle": "TajBonus",
+  "loyaltyBalance": "Balance",
+  "loyaltyLifetimeEarned": "Lifetime earned: {amount}",
+  "@loyaltyLifetimeEarned": {
+    "placeholders": {"amount": {"type": "String"}}
+  },
+  "loyaltyTransactionsTitle": "Transaction history",
+  "loyaltyEmptyTransactionsTitle": "No transactions yet",
+  "loyaltyEmptyTransactionsMessage": "Shop to earn TajBonus — your transactions will show up here",
+  "loyaltyTypeEarn": "Earned",
+  "loyaltyTypeSpend": "Spent",
+  "loyaltyTypeExpire": "Expired",
+  "loyaltyTypeAdjust": "Adjustment",
+  "loyaltyTypeCampaign": "Campaign bonus",
+  "loyaltyTierStandard": "Standard",
+  "loyaltyTierSilver": "Silver",
+  "loyaltyTierGold": "Gold",
+  "loyaltyTierPlatinum": "Platinum",
+
+  "promotionsTitle": "Offers",
+  "promotionsEmptyTitle": "No offers yet",
+  "promotionsEmptyMessage": "You have no active offers right now. Check back later.",
+  "promotionsValidUntil": "Valid until {date}",
+  "@promotionsValidUntil": {
+    "placeholders": {"date": {"type": "String"}}
+  },
+  "promotionsCopyCode": "Copy code: {code}",
+  "@promotionsCopyCode": {
+    "placeholders": {"code": {"type": "String"}}
+  },
+  "promotionsCodeCopied": "Code copied",
+
+  "reviewsTitle": "Reviews",
+  "reviewsEmptyTitle": "No reviews yet",
+  "reviewsEmptyMessage": "Be the first to review this product",
+  "reviewsAnonymousReviewer": "Customer",
+  "reviewsLeaveReview": "Leave a review",
+  "reviewsWriteTitle": "Write a review",
+  "reviewsForPurchase": "Review for: {productName}",
+  "@reviewsForPurchase": {
+    "placeholders": {"productName": {"type": "String"}}
+  },
+  "reviewsTextLabel": "Your review",
+  "reviewsTextHint": "Tell us about the product…",
+  "reviewsImageUrlLabel": "Attach a photo",
+  "reviewsImageUrlHint": "Photo link (URL)",
+  "reviewsSubmit": "Submit review",
+  "reviewsSubmitSuccess": "Thanks! Your review has been submitted",
+  "reviewsDuplicateError": "You've already reviewed this purchase",
+
+  "notificationsTitle": "Notifications",
+  "notificationsEmptyTitle": "No notifications",
+  "notificationsEmptyMessage": "Your notifications will show up here",
+  "notificationsPreferencesTitle": "Notification settings",
+  "notificationsPrefOrders": "Orders",
+  "notificationsPrefPromotions": "Discounts & promotions",
+  "notificationsPrefPersonalOffers": "Personal offers",
+  "notificationsPrefBonusUpdates": "TajBonus updates",
+  "notificationsPrefNewProducts": "New products",
+
+  "supportTitle": "Support",
+  "supportNewConversation": "New conversation",
+  "supportEmptyTitle": "No conversations yet",
+  "supportEmptyMessage": "If you have a question, get in touch with us",
+  "supportStatusOpen": "Open",
+  "supportStatusClosed": "Closed",
+  "supportChatTitle": "Support chat",
+  "supportChatEmptyTitle": "No messages",
+  "supportChatEmptyMessage": "Send your first message",
+  "supportChatInputHint": "Write a message…"
 }

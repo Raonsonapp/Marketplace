@@ -26,9 +26,18 @@ class RoutePaths {
   static const languageSelection = '/profile/language';
   static const addresses = '/profile/addresses';
 
+  static const loyalty = '/loyalty';
+  static const promotions = '/promotions';
+  static const notifications = '/notifications';
+  static const notificationPreferences = '/notifications/preferences';
+  static const support = '/support';
+  static const supportChat = '/support/:conversationId';
+  static const writeReview = '/reviews/write';
+
   static String categoryProductsPath(String categoryId) => '/catalog/category/$categoryId';
   static String productDetailPath(String productId) => '/product/$productId';
   static String orderDetailPath(String orderId) => '/orders/$orderId';
+  static String supportChatPath(String conversationId) => '/support/$conversationId';
 }
 
 /// Passed via `GoRouter`'s `extra` to the OTP screen — carries the Firebase

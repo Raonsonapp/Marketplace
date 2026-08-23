@@ -7,9 +7,11 @@ import '../../../core/router/route_paths.dart';
 import '../../../core/session/session_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/error_state_view.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../loyalty/application/loyalty_account_controller.dart';
 import '../application/profile_controller.dart';
 
 /// The Profile tab (`GET /profile` — docs/API_SPEC.md). Only reachable
@@ -90,6 +92,22 @@ class ProfileScreen extends ConsumerWidget {
                 label: l10n.profileAddresses,
                 onTap: () => context.push(RoutePaths.addresses),
               ),
+              const _LoyaltyMenuTile(),
+              _MenuTile(
+                icon: LucideIcons.badgePercent,
+                label: l10n.promotionsTitle,
+                onTap: () => context.push(RoutePaths.promotions),
+              ),
+              _MenuTile(
+                icon: LucideIcons.bell,
+                label: l10n.notificationsTitle,
+                onTap: () => context.push(RoutePaths.notifications),
+              ),
+              _MenuTile(
+                icon: LucideIcons.headphones,
+                label: l10n.supportTitle,
+                onTap: () => context.push(RoutePaths.support),
+              ),
               _MenuTile(
                 icon: LucideIcons.settings,
                 label: l10n.profileSettings,
@@ -103,6 +121,35 @@ class ProfileScreen extends ConsumerWidget {
           onRetry: () => ref.invalidate(profileControllerProvider),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
+      ),
+    );
+  }
+}
+
+/// The "TajBonus" profile row: shows the current balance as its subtitle
+/// (`GET /loyalty` — docs/API_SPEC.md, brief Section 15) rather than being
+/// a plain unlabeled menu entry.
+class _LoyaltyMenuTile extends ConsumerWidget {
+  const _LoyaltyMenuTile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final accountAsync = ref.watch(loyaltyAccountControllerProvider);
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: ListTile(
+        leading: const Icon(LucideIcons.coins),
+        title: Text(l10n.loyaltyTitle),
+        subtitle: accountAsync.maybeWhen(
+          data: (account) =>
+              Text(CurrencyFormatter.format(account.balance, languageCode: languageCode)),
+          orElse: () => null,
+        ),
+        trailing: const Icon(LucideIcons.chevronRight),
+        onTap: () => context.push(RoutePaths.loyalty),
       ),
     );
   }

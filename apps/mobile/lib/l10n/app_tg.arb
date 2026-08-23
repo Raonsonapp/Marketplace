@@ -262,5 +262,76 @@
   "storeDeliveryAvailable": "Расонидан дастрас аст",
   "storePickupAvailable": "Гирифтан аз мағоза дастрас аст",
   "storeSells": "Ин мағоза чӣ мефурӯшад",
-  "storeBrowseCatalog": "Дидани каталог"
+  "storeBrowseCatalog": "Дидани каталог",
+
+  "loyaltyTitle": "TajBonus",
+  "loyaltyBalance": "Тавозун",
+  "loyaltyLifetimeEarned": "Дар маҷмӯъ ба даст омад: {amount}",
+  "@loyaltyLifetimeEarned": {
+    "placeholders": {"amount": {"type": "String"}}
+  },
+  "loyaltyTransactionsTitle": "Таърихи амалиёт",
+  "loyaltyEmptyTransactionsTitle": "Ҳанӯз амалиёте нест",
+  "loyaltyEmptyTransactionsMessage": "Бо харидҳои худ TajBonus ҷамъ кунед — амалиётҳои шумо дар ин ҷо пайдо мешаванд",
+  "loyaltyTypeEarn": "Ҷамъшуда",
+  "loyaltyTypeSpend": "Истифодашуда",
+  "loyaltyTypeExpire": "Мӯҳлаташ гузашт",
+  "loyaltyTypeAdjust": "Ислоҳшуда",
+  "loyaltyTypeCampaign": "Бонуси акция",
+  "loyaltyTierStandard": "Стандартӣ",
+  "loyaltyTierSilver": "Нуқрагӣ",
+  "loyaltyTierGold": "Тиллоӣ",
+  "loyaltyTierPlatinum": "Платинагӣ",
+
+  "promotionsTitle": "Пешниҳодҳо",
+  "promotionsEmptyTitle": "Пешниҳоде нест",
+  "promotionsEmptyMessage": "Дар айни замон пешниҳоди фаъол надоред. Баъдтар аз нав санҷед.",
+  "promotionsValidUntil": "То {date} амал мекунад",
+  "@promotionsValidUntil": {
+    "placeholders": {"date": {"type": "String"}}
+  },
+  "promotionsCopyCode": "Нусхабардории рамз: {code}",
+  "@promotionsCopyCode": {
+    "placeholders": {"code": {"type": "String"}}
+  },
+  "promotionsCodeCopied": "Рамз нусхабардорӣ шуд",
+
+  "reviewsTitle": "Шарҳҳо",
+  "reviewsEmptyTitle": "Ҳанӯз шарҳе нест",
+  "reviewsEmptyMessage": "Аввалин шахсе бошед, ки дар бораи ин маҳсулот шарҳ менависад",
+  "reviewsAnonymousReviewer": "Харидор",
+  "reviewsLeaveReview": "Шарҳ навиштан",
+  "reviewsWriteTitle": "Шарҳ навиштан",
+  "reviewsForPurchase": "Шарҳ барои: {productName}",
+  "@reviewsForPurchase": {
+    "placeholders": {"productName": {"type": "String"}}
+  },
+  "reviewsTextLabel": "Шарҳи шумо",
+  "reviewsTextHint": "Дар бораи маҳсулот нависед…",
+  "reviewsImageUrlLabel": "Суратро замима кунед",
+  "reviewsImageUrlHint": "Пайванди сурат (URL)",
+  "reviewsSubmit": "Фиристодани шарҳ",
+  "reviewsSubmitSuccess": "Ташаккур! Шарҳи шумо фиристода шуд",
+  "reviewsDuplicateError": "Шумо аллакай барои ин харид шарҳ навиштаед",
+
+  "notificationsTitle": "Огоҳномаҳо",
+  "notificationsEmptyTitle": "Огоҳнома нест",
+  "notificationsEmptyMessage": "Огоҳномаҳои шумо дар ин ҷо пайдо мешаванд",
+  "notificationsPreferencesTitle": "Танзими огоҳномаҳо",
+  "notificationsPrefOrders": "Фармоишҳо",
+  "notificationsPrefPromotions": "Тахфифҳо ва акцияҳо",
+  "notificationsPrefPersonalOffers": "Пешниҳодҳои шахсӣ",
+  "notificationsPrefBonusUpdates": "Тағйироти TajBonus",
+  "notificationsPrefNewProducts": "Маҳсулоти нав",
+
+  "supportTitle": "Дастгирӣ",
+  "supportNewConversation": "Муроҷиати нав",
+  "supportEmptyTitle": "Ҳанӯз муроҷиате нест",
+  "supportEmptyMessage": "Агар савол дошта бошед, бо мо тамос гиред",
+  "supportStatusOpen": "Фаъол",
+  "supportStatusClosed": "Пӯшидашуда",
+  "supportChatTitle": "Чат бо дастгирӣ",
+  "supportChatEmptyTitle": "Паём нест",
+  "supportChatEmptyMessage": "Паёми аввалини худро фиристед",
+  "supportChatInputHint": "Паём нависед…"
 }

@@ -106,6 +106,7 @@ class HomeScreen extends ConsumerWidget {
                           title: l10n.homeSectionPersonalOffers,
                           products: feed.personalOffers!,
                           onProductTap: (p) => context.push(RoutePaths.productDetailPath(p.id)),
+                          onSeeAll: () => context.push(RoutePaths.promotions),
                         ),
                         const SizedBox(height: AppSpacing.lg),
                       ],

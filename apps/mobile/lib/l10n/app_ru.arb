@@ -237,5 +237,76 @@
   "storeDeliveryAvailable": "Доступна доставка",
   "storePickupAvailable": "Доступен самовывоз",
   "storeSells": "Что продаёт этот магазин",
-  "storeBrowseCatalog": "Смотреть каталог"
+  "storeBrowseCatalog": "Смотреть каталог",
+
+  "loyaltyTitle": "TajBonus",
+  "loyaltyBalance": "Баланс",
+  "loyaltyLifetimeEarned": "Всего накоплено: {amount}",
+  "@loyaltyLifetimeEarned": {
+    "placeholders": {"amount": {"type": "String"}}
+  },
+  "loyaltyTransactionsTitle": "История операций",
+  "loyaltyEmptyTransactionsTitle": "Пока нет операций",
+  "loyaltyEmptyTransactionsMessage": "Совершайте покупки и копите TajBonus — здесь появятся ваши операции",
+  "loyaltyTypeEarn": "Начислено",
+  "loyaltyTypeSpend": "Списано",
+  "loyaltyTypeExpire": "Срок истёк",
+  "loyaltyTypeAdjust": "Корректировка",
+  "loyaltyTypeCampaign": "Бонус акции",
+  "loyaltyTierStandard": "Стандарт",
+  "loyaltyTierSilver": "Серебряный",
+  "loyaltyTierGold": "Золотой",
+  "loyaltyTierPlatinum": "Платиновый",
+
+  "promotionsTitle": "Предложения",
+  "promotionsEmptyTitle": "Пока нет предложений",
+  "promotionsEmptyMessage": "Сейчас у вас нет активных предложений. Загляните позже.",
+  "promotionsValidUntil": "Действует до {date}",
+  "@promotionsValidUntil": {
+    "placeholders": {"date": {"type": "String"}}
+  },
+  "promotionsCopyCode": "Скопировать код: {code}",
+  "@promotionsCopyCode": {
+    "placeholders": {"code": {"type": "String"}}
+  },
+  "promotionsCodeCopied": "Код скопирован",
+
+  "reviewsTitle": "Отзывы",
+  "reviewsEmptyTitle": "Пока нет отзывов",
+  "reviewsEmptyMessage": "Будьте первым, кто оставит отзыв об этом товаре",
+  "reviewsAnonymousReviewer": "Покупатель",
+  "reviewsLeaveReview": "Оставить отзыв",
+  "reviewsWriteTitle": "Написать отзыв",
+  "reviewsForPurchase": "Отзыв о покупке: {productName}",
+  "@reviewsForPurchase": {
+    "placeholders": {"productName": {"type": "String"}}
+  },
+  "reviewsTextLabel": "Ваш отзыв",
+  "reviewsTextHint": "Расскажите о товаре…",
+  "reviewsImageUrlLabel": "Прикрепить фото",
+  "reviewsImageUrlHint": "Ссылка на фото (URL)",
+  "reviewsSubmit": "Отправить отзыв",
+  "reviewsSubmitSuccess": "Спасибо! Ваш отзыв отправлен",
+  "reviewsDuplicateError": "Вы уже оставили отзыв об этой покупке",
+
+  "notificationsTitle": "Уведомления",
+  "notificationsEmptyTitle": "Нет уведомлений",
+  "notificationsEmptyMessage": "Здесь появятся ваши уведомления",
+  "notificationsPreferencesTitle": "Настройки уведомлений",
+  "notificationsPrefOrders": "Заказы",
+  "notificationsPrefPromotions": "Скидки и акции",
+  "notificationsPrefPersonalOffers": "Персональные предложения",
+  "notificationsPrefBonusUpdates": "Изменения TajBonus",
+  "notificationsPrefNewProducts": "Новые товары",
+
+  "supportTitle": "Поддержка",
+  "supportNewConversation": "Новое обращение",
+  "supportEmptyTitle": "Пока нет обращений",
+  "supportEmptyMessage": "Если у вас есть вопрос, свяжитесь с нами",
+  "supportStatusOpen": "Активно",
+  "supportStatusClosed": "Закрыто",
+  "supportChatTitle": "Чат с поддержкой",
+  "supportChatEmptyTitle": "Нет сообщений",
+  "supportChatEmptyMessage": "Отправьте своё первое сообщение",
+  "supportChatInputHint": "Напишите сообщение…"
 }
