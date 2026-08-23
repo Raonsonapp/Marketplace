@@ -7,11 +7,36 @@ Update this file whenever a phase/feature status changes.
 
 **Phases 1–3 and 5 complete and verified**; Phase 5 (promotions, reviews,
 notifications, support chat) landed on both backend and mobile and is
-merged to `main`. Also fixed: the Android release build was silently
-signed with the debug keystore — now uses a real key.properties-based
-signing config with R8/ProGuard enabled. Next up: Phase 4 (run mobile +
-backend together live in a real Android environment), Phase 6 (admin
-panel), Phase 7 (fuller test suite), Phase 9 (real device/Play submission).
+merged to `main`. Android Release Build CI is now green end-to-end and has
+produced a real, installable APK/AAB (`.github/workflows/android-release.yml`,
+run #8, https://github.com/Raonsonapp/Marketplace/actions/runs/32635164211)
+— see "CI-verified" below for the two real bugs that had to be fixed to get
+there. Next up: Phase 4 (run mobile + backend together live in a real
+Android environment), Phase 6 (admin panel), Phase 7 (fuller test suite),
+Phase 9 (real signing key + Play submission).
+
+## CI-verified (this is the first time the Android build has actually run green)
+
+- [x] `android-release.yml` parse bug: GitHub Actions rejects the `secrets`
+      context referenced directly inside a step's `if:` ("Unrecognized
+      named-value: 'secrets'") — a hard parse-time failure, so literally
+      every run of this workflow failed with zero jobs from the moment it
+      was introduced until this was found and fixed. Fix: mirror the four
+      `ANDROID_KEYSTORE_*` secrets into job-level `env:` and check `env.*`
+      in step `if:` conditions instead (the documented, supported pattern).
+- [x] `flutter_secure_storage`'s AAR metadata requires compiling against
+      Android SDK 37+; `android/app/build.gradle.kts` was compiling against
+      `flutter.compileSdkVersion` (36 on the bundled Flutter stable),
+      failing `:app:checkReleaseAarMetadata`. Fixed by pinning
+      `compileSdk = 37` explicitly.
+- [x] Confirmed live in GitHub Actions (not just locally): `flutter build
+      appbundle --release` and `flutter build apk --release` both succeed;
+      the `tajikshop-android-release` artifact (AAB + APK, ~109 MB) is
+      attached to the run. This build is signed with the **debug**
+      keystore (no `ANDROID_KEYSTORE_BASE64` secret is set yet — the
+      workflow warns about this loudly, as designed) — installable for
+      testing right now, but not Play-Store-uploadable until a real
+      upload keystore is configured per `docs/DEPLOYMENT.md`.
 
 ## Completed
 
