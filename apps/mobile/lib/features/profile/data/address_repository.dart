@@ -11,8 +11,10 @@ class AddressRepository {
   final ApiClient _client;
 
   Future<List<Address>> getAddresses() async {
-    final raw = await _client.getRaw('/addresses');
-    final list = (raw as List<dynamic>?) ?? const [];
+    // GET /addresses wraps its array in {"data": [...]} (see
+    // AddressHandler.List) — use `get`, not `getRaw`, to match that shape.
+    final json = await _client.get('/addresses');
+    final list = (json['data'] as List<dynamic>?) ?? const [];
     return list.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList();
   }
 

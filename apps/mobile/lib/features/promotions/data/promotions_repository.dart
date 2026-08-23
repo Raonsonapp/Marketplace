@@ -5,8 +5,8 @@ import 'promotion_models.dart';
 
 /// Calls `GET /promotions` (docs/API_SPEC.md). A small, bounded, per-user
 /// list (like `/addresses` or `/categories`) rather than an ever-growing
-/// feed, so it is a bare array, not the cursor-paginated
-/// `{data, next_cursor}` envelope.
+/// feed, so it's just `{"data": [...]}` (see PromotionHandler.List), not
+/// the cursor-paginated `{data, next_cursor}` envelope.
 ///
 /// `POST /promo-codes/validate` (docs/API_SPEC.md) is not called from this
 /// repository: promo codes are entered and applied directly in the cart via
@@ -19,8 +19,8 @@ class PromotionsRepository {
   final ApiClient _client;
 
   Future<List<Promotion>> getPromotions() async {
-    final raw = await _client.getRaw('/promotions');
-    final list = (raw as List<dynamic>?) ?? const [];
+    final json = await _client.get('/promotions');
+    final list = (json['data'] as List<dynamic>?) ?? const [];
     return list.map((e) => Promotion.fromJson(e as Map<String, dynamic>)).toList();
   }
 }

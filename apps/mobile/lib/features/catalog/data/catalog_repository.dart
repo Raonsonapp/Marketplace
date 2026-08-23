@@ -27,8 +27,12 @@ class CatalogRepository {
   final ApiClient _client;
 
   Future<List<Category>> getCategories() async {
-    final raw = await _client.getRaw('/categories');
-    final list = (raw as List<dynamic>? ) ?? const [];
+    // GET /categories wraps its array in {"data": [...]} (see
+    // CatalogHandler.Categories), not a bare JSON array — use `get`, not
+    // `getRaw`, so this matches that shape instead of throwing a cast
+    // error the moment the response is a Map.
+    final json = await _client.get('/categories');
+    final list = (json['data'] as List<dynamic>?) ?? const [];
     return list.map((e) => Category.fromJson(e as Map<String, dynamic>)).toList();
   }
 

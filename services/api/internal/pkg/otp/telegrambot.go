@@ -19,6 +19,29 @@ type ChatIDLookup interface {
 	ChatIDForPhone(ctx context.Context, phone string) (chatID int64, found bool, err error)
 }
 
+// TelegramBotReachable probes api.telegram.org with the given token before
+// cmd/server/main.go commits to the bot delivery path. Real-world failure
+// mode this guards against: some hosting networks (observed on a Hugging
+// Face Space) can't complete a TLS handshake to api.telegram.org at all —
+// every getUpdates call in the poller times out forever, no phone ever
+// gets linked, and every login attempt would be stuck at
+// CodeTelegramNotLinked permanently with no way out. Better to notice that
+// at startup and fall back to Telegram Gateway/console than to silently
+// lock every user out of login.
+func TelegramBotReachable(token string, timeout time.Duration) bool {
+	client := &http.Client{Timeout: timeout}
+	req, err := http.NewRequest(http.MethodGet, "https://api.telegram.org/bot"+token+"/getMe", nil)
+	if err != nil {
+		return false
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return false
+	}
+	defer resp.Body.Close()
+	return true
+}
+
 // TelegramBotSender delivers OTP codes as a message from a regular Telegram
 // bot (created via @BotFather — see docs/SMS_PROVIDERS.md), as an
 // alternative to TelegramGatewaySender for accounts that already have a bot

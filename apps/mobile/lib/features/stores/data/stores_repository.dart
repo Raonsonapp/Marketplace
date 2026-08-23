@@ -12,11 +12,13 @@ class StoresRepository {
   final ApiClient _client;
 
   Future<List<Store>> getNearbyStores({required double lat, required double lng}) async {
-    final raw = await _client.getRaw('/stores', queryParameters: {
+    // GET /stores wraps its array in {"data": [...]} (see
+    // CatalogHandler.Stores) — use `get`, not `getRaw`, to match that shape.
+    final json = await _client.get('/stores', queryParameters: {
       'lat': lat,
       'lng': lng,
     });
-    final list = (raw as List<dynamic>?) ?? const [];
+    final list = (json['data'] as List<dynamic>?) ?? const [];
     return list.map((e) => Store.fromJson(e as Map<String, dynamic>)).toList();
   }
 

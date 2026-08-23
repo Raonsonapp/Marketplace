@@ -84,9 +84,15 @@ func run() error {
 	// ---- auth primitives ----
 	tokenMgr := auth.NewTokenManager(cfg.JWTSecret, cfg.AccessTTL)
 	limiter := auth.NewLimiter(rdb)
+	botReachable := cfg.TelegramBotToken != "" && otp.TelegramBotReachable(cfg.TelegramBotToken, 6*time.Second)
+	if cfg.TelegramBotToken != "" && !botReachable {
+		log.Printf("otp: TELEGRAM_BOT_TOKEN is set but api.telegram.org is unreachable from this host " +
+			"(TLS handshake failure) — falling back instead of permanently locking out login; see docs/SMS_PROVIDERS.md")
+	}
+
 	var otpSender otp.Sender = otp.NewConsoleSender()
 	switch {
-	case cfg.TelegramBotToken != "":
+	case botReachable:
 		telegramLinks := repository.NewTelegramLinkLookupAdapter(telegramLinkRepo, pool)
 		otpSender = otp.NewTelegramBotSender(cfg.TelegramBotToken, cfg.TelegramBotUsername, telegramLinks)
 		go telegrambot.NewPoller(cfg.TelegramBotToken, telegramLinks).Run(ctx)

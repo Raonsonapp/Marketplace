@@ -3,20 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/api_client.dart';
 import 'support_models.dart';
 
-/// Calls `/support/conversations*` (docs/API_SPEC.md). Conversation lists
-/// and one conversation's message history are both bare arrays here (like
-/// `/addresses`) — a single user has a small, bounded number of support
-/// tickets and, within one ticket, this app loads the full history once
-/// and then relies on the WebSocket for anything new rather than paging
-/// through old messages.
+/// Calls `/support/conversations*` (docs/API_SPEC.md). A single user has a
+/// small, bounded number of support tickets and, within one ticket, this
+/// app loads the full history once and then relies on the WebSocket for
+/// anything new rather than paging through old messages.
 class SupportRepository {
   SupportRepository(this._client);
 
   final ApiClient _client;
 
   Future<List<SupportConversation>> getConversations() async {
-    final raw = await _client.getRaw('/support/conversations');
-    final list = (raw as List<dynamic>?) ?? const [];
+    // `ApiClient.get` normalizes a bare JSON array into `{"data": [...]}`
+    // (see `ApiClient._asMap`), so this reads the same way whether the
+    // backend returns a plain array or the `{data, next_cursor}` envelope
+    // ListConversations actually uses (docs/API_SPEC.md conventions).
+    final json = await _client.get('/support/conversations');
+    final list = (json['data'] as List<dynamic>?) ?? const [];
     return list.map((e) => SupportConversation.fromJson(e as Map<String, dynamic>)).toList();
   }
 
