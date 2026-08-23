@@ -24,7 +24,12 @@ if (hasKeystoreProperties) {
 
 android {
     namespace = "tj.tajikshop.app"
-    compileSdk = flutter.compileSdkVersion
+    // flutter.compileSdkVersion (36 on this Flutter version) is too low:
+    // flutter_secure_storage's AAR metadata requires compiling against
+    // Android SDK 37 or higher, and the release build fails hard
+    // (:app:checkReleaseAarMetadata) otherwise. Pin it explicitly rather
+    // than relying on Flutter's bundled default.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
