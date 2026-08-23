@@ -33,6 +33,20 @@ Phase 2 (backend) is complete and verified.
       Console-OTP remains the no-external-account local-dev fallback. See
       `docs/FIREBASE_SETUP.md` for the external (Firebase console) steps
       required to turn on real SMS delivery — cannot be done from a sandbox.
+- [x] Telegram Gateway SMS provider (`internal/pkg/otp/telegram.go`) — the
+      recommended free, no-billing-account SMS path for Tajikistan/Central
+      Asia/Russia, requested after the user flagged that Firebase Phone
+      Auth needs a Google Cloud Blaze account. Auto-selected by
+      `cmd/server/main.go` when `TELEGRAM_GATEWAY_TOKEN` is set; see
+      `docs/SMS_PROVIDERS.md` for the comparison of all three options.
+- [x] App icon processed from the user-supplied artwork (background
+      removed, tightly cropped) at `apps/mobile/assets/branding/` — see
+      `docs/BRANDING.md`. Wiring into `flutter_launcher_icons` is part of
+      the in-progress mobile work below.
+- [x] Google Play submission paperwork: `docs/GOOGLE_PLAY_LISTING.md`
+      (store copy in tj/ru/en), `docs/GOOGLE_PLAY_DATA_SAFETY.md`,
+      `docs/PRIVACY_POLICY.md` (trilingual, needs public hosting before
+      submission — see that doc).
 
 ## In progress
 
@@ -47,7 +61,12 @@ Phase 2 (backend) is complete and verified.
       the order detail screen (wired to `/ws/orders/:id` where possible);
       and Firebase Phone Auth wired into the phone-login screens (falling
       back to the console-OTP flow until the user completes the Firebase
-      console setup in `docs/FIREBASE_SETUP.md`).
+      console setup in `docs/FIREBASE_SETUP.md`). Third wave in flight:
+      real app icon via `flutter_launcher_icons`, a third language
+      (English, alongside Tajik/Russian), and a GPS + OpenStreetMap
+      "nearby stores" screen (device location via `geolocator`,
+      vendor-neutral map via `flutter_map` — no paid Google Maps key —
+      showing store markers with what each store carries).
 
 ## Not started
 
@@ -66,14 +85,18 @@ Phase 2 (backend) is complete and verified.
 
 ## Known issues / open decisions
 
-- SMS delivery: two paths now exist — console-log OTP (no setup, dev
-  default) and Firebase Phone Auth (real, free-tier SMS to +992 numbers).
-  Firebase requires one-time external console setup by the project owner
-  (see `docs/FIREBASE_SETUP.md`) that cannot be completed from a sandbox.
+- SMS delivery: three paths now exist — console-log OTP (no setup, dev
+  default), Telegram Gateway (recommended: free, no billing account,
+  strong in Tajikistan/CIS), and Firebase Phone Auth (real SMS but needs a
+  Google Cloud Blaze billing account). See `docs/SMS_PROVIDERS.md`.
 - Real online payment provider not yet selected — `payment.Provider`
   interface has only `cash_on_delivery` implemented, as required.
-- Map provider intentionally not chosen — delivery-zone checks use raw
-  lat/lng + GeoJSON polygon in Postgres, no map SDK dependency yet.
+- Map provider: backend delivery-zone checks still use raw lat/lng +
+  GeoJSON polygon in Postgres (no map SDK dependency). The mobile "nearby
+  stores" map (in progress) uses `flutter_map` + OpenStreetMap tiles
+  specifically to avoid a paid/API-key-gated vendor.
+- Google Play screenshots/feature graphic not yet produced — needs a
+  stable, running UI to capture from (Phase 9 task).
 
 ## Files created (updated per commit)
 
