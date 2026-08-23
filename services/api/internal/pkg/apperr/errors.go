@@ -13,133 +13,145 @@ import (
 type Code string
 
 const (
-	CodeValidation          Code = "VALIDATION_ERROR"
-	CodeUnauthorized        Code = "UNAUTHORIZED"
-	CodeForbidden           Code = "FORBIDDEN"
-	CodeNotFound            Code = "NOT_FOUND"
-	CodeConflict            Code = "CONFLICT"
-	CodeInternal            Code = "INTERNAL_ERROR"
-	CodeRateLimited         Code = "RATE_LIMITED"
-	CodePhoneInvalid        Code = "PHONE_INVALID"
-	CodeOTPInvalid          Code = "OTP_INVALID"
-	CodeOTPExpired          Code = "OTP_EXPIRED"
-	CodeOTPMaxAttempts      Code = "OTP_MAX_ATTEMPTS"
-	CodeOTPCooldown         Code = "OTP_COOLDOWN"
-	CodeSessionExpired      Code = "SESSION_EXPIRED"
-	CodeSessionRevoked      Code = "SESSION_REVOKED"
-	CodeOutOfStock          Code = "OUT_OF_STOCK"
-	CodeCartEmpty           Code = "CART_EMPTY"
-	CodeCartStoreMismatch   Code = "CART_STORE_MISMATCH"
-	CodeProductNotFound     Code = "PRODUCT_NOT_FOUND"
-	CodePromoInvalid        Code = "PROMO_INVALID"
-	CodePromoExpired        Code = "PROMO_EXPIRED"
-	CodePromoMinOrder       Code = "PROMO_MIN_ORDER_NOT_MET"
-	CodePromoLimitReached   Code = "PROMO_LIMIT_REACHED"
-	CodeAddressOutOfZone    Code = "ADDRESS_OUT_OF_ZONE"
-	CodeAddressRequired     Code = "ADDRESS_REQUIRED"
-	CodeInsufficientBonus   Code = "INSUFFICIENT_BONUS_BALANCE"
-	CodeMinOrderNotMet      Code = "MIN_ORDER_NOT_MET"
-	CodeOrderNotCancelable  Code = "ORDER_NOT_CANCELABLE"
-	CodeIdempotencyRequired Code = "IDEMPOTENCY_KEY_REQUIRED"
-	CodeIdempotencyConflict Code = "IDEMPOTENCY_KEY_CONFLICT"
+	CodeValidation            Code = "VALIDATION_ERROR"
+	CodeUnauthorized          Code = "UNAUTHORIZED"
+	CodeForbidden             Code = "FORBIDDEN"
+	CodeNotFound              Code = "NOT_FOUND"
+	CodeConflict              Code = "CONFLICT"
+	CodeInternal              Code = "INTERNAL_ERROR"
+	CodeRateLimited           Code = "RATE_LIMITED"
+	CodePhoneInvalid          Code = "PHONE_INVALID"
+	CodeOTPInvalid            Code = "OTP_INVALID"
+	CodeOTPExpired            Code = "OTP_EXPIRED"
+	CodeOTPMaxAttempts        Code = "OTP_MAX_ATTEMPTS"
+	CodeOTPCooldown           Code = "OTP_COOLDOWN"
+	CodeSessionExpired        Code = "SESSION_EXPIRED"
+	CodeSessionRevoked        Code = "SESSION_REVOKED"
+	CodeOutOfStock            Code = "OUT_OF_STOCK"
+	CodeCartEmpty             Code = "CART_EMPTY"
+	CodeCartStoreMismatch     Code = "CART_STORE_MISMATCH"
+	CodeProductNotFound       Code = "PRODUCT_NOT_FOUND"
+	CodePromoInvalid          Code = "PROMO_INVALID"
+	CodePromoExpired          Code = "PROMO_EXPIRED"
+	CodePromoMinOrder         Code = "PROMO_MIN_ORDER_NOT_MET"
+	CodePromoLimitReached     Code = "PROMO_LIMIT_REACHED"
+	CodeAddressOutOfZone      Code = "ADDRESS_OUT_OF_ZONE"
+	CodeAddressRequired       Code = "ADDRESS_REQUIRED"
+	CodeInsufficientBonus     Code = "INSUFFICIENT_BONUS_BALANCE"
+	CodeMinOrderNotMet        Code = "MIN_ORDER_NOT_MET"
+	CodeOrderNotCancelable    Code = "ORDER_NOT_CANCELABLE"
+	CodeIdempotencyRequired   Code = "IDEMPOTENCY_KEY_REQUIRED"
+	CodeIdempotencyConflict   Code = "IDEMPOTENCY_KEY_CONFLICT"
+	CodeFirebaseNotConfigured Code = "FIREBASE_NOT_CONFIGURED"
+	CodeFirebaseTokenInvalid  Code = "FIREBASE_TOKEN_INVALID"
+	CodeFirebasePhoneMissing  Code = "FIREBASE_PHONE_MISSING"
 )
 
 // httpStatus maps each code to its HTTP status.
 var httpStatus = map[Code]int{
-	CodeValidation:          http.StatusBadRequest,
-	CodeUnauthorized:        http.StatusUnauthorized,
-	CodeForbidden:           http.StatusForbidden,
-	CodeNotFound:            http.StatusNotFound,
-	CodeConflict:            http.StatusConflict,
-	CodeInternal:            http.StatusInternalServerError,
-	CodeRateLimited:         http.StatusTooManyRequests,
-	CodePhoneInvalid:        http.StatusBadRequest,
-	CodeOTPInvalid:          http.StatusBadRequest,
-	CodeOTPExpired:          http.StatusBadRequest,
-	CodeOTPMaxAttempts:      http.StatusTooManyRequests,
-	CodeOTPCooldown:         http.StatusTooManyRequests,
-	CodeSessionExpired:      http.StatusUnauthorized,
-	CodeSessionRevoked:      http.StatusUnauthorized,
-	CodeOutOfStock:          http.StatusConflict,
-	CodeCartEmpty:           http.StatusBadRequest,
-	CodeCartStoreMismatch:   http.StatusConflict,
-	CodeProductNotFound:     http.StatusNotFound,
-	CodePromoInvalid:        http.StatusBadRequest,
-	CodePromoExpired:        http.StatusBadRequest,
-	CodePromoMinOrder:       http.StatusBadRequest,
-	CodePromoLimitReached:   http.StatusBadRequest,
-	CodeAddressOutOfZone:    http.StatusBadRequest,
-	CodeAddressRequired:     http.StatusBadRequest,
-	CodeInsufficientBonus:   http.StatusBadRequest,
-	CodeMinOrderNotMet:      http.StatusBadRequest,
-	CodeOrderNotCancelable:  http.StatusConflict,
-	CodeIdempotencyRequired: http.StatusBadRequest,
-	CodeIdempotencyConflict: http.StatusConflict,
+	CodeValidation:            http.StatusBadRequest,
+	CodeUnauthorized:          http.StatusUnauthorized,
+	CodeForbidden:             http.StatusForbidden,
+	CodeNotFound:              http.StatusNotFound,
+	CodeConflict:              http.StatusConflict,
+	CodeInternal:              http.StatusInternalServerError,
+	CodeRateLimited:           http.StatusTooManyRequests,
+	CodePhoneInvalid:          http.StatusBadRequest,
+	CodeOTPInvalid:            http.StatusBadRequest,
+	CodeOTPExpired:            http.StatusBadRequest,
+	CodeOTPMaxAttempts:        http.StatusTooManyRequests,
+	CodeOTPCooldown:           http.StatusTooManyRequests,
+	CodeSessionExpired:        http.StatusUnauthorized,
+	CodeSessionRevoked:        http.StatusUnauthorized,
+	CodeOutOfStock:            http.StatusConflict,
+	CodeCartEmpty:             http.StatusBadRequest,
+	CodeCartStoreMismatch:     http.StatusConflict,
+	CodeProductNotFound:       http.StatusNotFound,
+	CodePromoInvalid:          http.StatusBadRequest,
+	CodePromoExpired:          http.StatusBadRequest,
+	CodePromoMinOrder:         http.StatusBadRequest,
+	CodePromoLimitReached:     http.StatusBadRequest,
+	CodeAddressOutOfZone:      http.StatusBadRequest,
+	CodeAddressRequired:       http.StatusBadRequest,
+	CodeInsufficientBonus:     http.StatusBadRequest,
+	CodeMinOrderNotMet:        http.StatusBadRequest,
+	CodeOrderNotCancelable:    http.StatusConflict,
+	CodeIdempotencyRequired:   http.StatusBadRequest,
+	CodeIdempotencyConflict:   http.StatusConflict,
+	CodeFirebaseNotConfigured: http.StatusServiceUnavailable,
+	CodeFirebaseTokenInvalid:  http.StatusUnauthorized,
+	CodeFirebasePhoneMissing:  http.StatusBadRequest,
 }
 
 // messagesTJ / messagesRU hold the localized default messages per code.
 var messagesTJ = map[Code]string{
-	CodeValidation:          "Маълумоти воридшуда нодуруст аст",
-	CodeUnauthorized:        "Шумо бояд ворид шавед",
-	CodeForbidden:           "Дастрасӣ манъ аст",
-	CodeNotFound:            "Маълумот ёфт нашуд",
-	CodeConflict:            "Ихтилофи маълумот рух дод",
-	CodeInternal:            "Хатогии дохилии сервер",
-	CodeRateLimited:         "Шумораи дархостҳо зиёд аст, лутфан баъдтар кӯшиш кунед",
-	CodePhoneInvalid:        "Рақами телефон нодуруст аст",
-	CodeOTPInvalid:          "Рамзи тасдиқ нодуруст аст",
-	CodeOTPExpired:          "Мӯҳлати рамзи тасдиқ гузаштааст",
-	CodeOTPMaxAttempts:      "Шумораи кӯшишҳо зиёд аст, рамзи нав дархост кунед",
-	CodeOTPCooldown:         "Лутфан пеш аз дархости рамзи нав интизор шавед",
-	CodeSessionExpired:      "Мӯҳлати воридшавӣ гузаштааст, лутфан аз нав ворид шавед",
-	CodeSessionRevoked:      "Ин ҷаласа бекор карда шудааст",
-	CodeOutOfStock:          "Маҳсулот дар анбор нест",
-	CodeCartEmpty:           "Сабади харид холӣ аст",
-	CodeCartStoreMismatch:   "Маҳсулот аз дӯкони дигар аст",
-	CodeProductNotFound:     "Маҳсулот ёфт нашуд",
-	CodePromoInvalid:        "Рамзи промо нодуруст аст",
-	CodePromoExpired:        "Мӯҳлати рамзи промо гузаштааст",
-	CodePromoMinOrder:       "Маблағи фармоиш барои ин рамзи промо кофӣ нест",
-	CodePromoLimitReached:   "Лимити истифодаи рамзи промо тамом шуд",
-	CodeAddressOutOfZone:    "Ин суроға берун аз минтақаи расонидан аст",
-	CodeAddressRequired:     "Суроға барои расонидан лозим аст",
-	CodeInsufficientBonus:   "Маблағи бонус кофӣ нест",
-	CodeMinOrderNotMet:      "Маблағи фармоиш аз ҳадди ақал камтар аст",
-	CodeOrderNotCancelable:  "Ин фармоишро бекор кардан имконнопазир аст",
-	CodeIdempotencyRequired: "Сарлавҳаи Idempotency-Key лозим аст",
-	CodeIdempotencyConflict: "Ин дархост бо маълумоти дигар аллакай коркард шудааст",
+	CodeValidation:            "Маълумоти воридшуда нодуруст аст",
+	CodeUnauthorized:          "Шумо бояд ворид шавед",
+	CodeForbidden:             "Дастрасӣ манъ аст",
+	CodeNotFound:              "Маълумот ёфт нашуд",
+	CodeConflict:              "Ихтилофи маълумот рух дод",
+	CodeInternal:              "Хатогии дохилии сервер",
+	CodeRateLimited:           "Шумораи дархостҳо зиёд аст, лутфан баъдтар кӯшиш кунед",
+	CodePhoneInvalid:          "Рақами телефон нодуруст аст",
+	CodeOTPInvalid:            "Рамзи тасдиқ нодуруст аст",
+	CodeOTPExpired:            "Мӯҳлати рамзи тасдиқ гузаштааст",
+	CodeOTPMaxAttempts:        "Шумораи кӯшишҳо зиёд аст, рамзи нав дархост кунед",
+	CodeOTPCooldown:           "Лутфан пеш аз дархости рамзи нав интизор шавед",
+	CodeSessionExpired:        "Мӯҳлати воридшавӣ гузаштааст, лутфан аз нав ворид шавед",
+	CodeSessionRevoked:        "Ин ҷаласа бекор карда шудааст",
+	CodeOutOfStock:            "Маҳсулот дар анбор нест",
+	CodeCartEmpty:             "Сабади харид холӣ аст",
+	CodeCartStoreMismatch:     "Маҳсулот аз дӯкони дигар аст",
+	CodeProductNotFound:       "Маҳсулот ёфт нашуд",
+	CodePromoInvalid:          "Рамзи промо нодуруст аст",
+	CodePromoExpired:          "Мӯҳлати рамзи промо гузаштааст",
+	CodePromoMinOrder:         "Маблағи фармоиш барои ин рамзи промо кофӣ нест",
+	CodePromoLimitReached:     "Лимити истифодаи рамзи промо тамом шуд",
+	CodeAddressOutOfZone:      "Ин суроға берун аз минтақаи расонидан аст",
+	CodeAddressRequired:       "Суроға барои расонидан лозим аст",
+	CodeInsufficientBonus:     "Маблағи бонус кофӣ нест",
+	CodeMinOrderNotMet:        "Маблағи фармоиш аз ҳадди ақал камтар аст",
+	CodeOrderNotCancelable:    "Ин фармоишро бекор кардан имконнопазир аст",
+	CodeIdempotencyRequired:   "Сарлавҳаи Idempotency-Key лозим аст",
+	CodeIdempotencyConflict:   "Ин дархост бо маълумоти дигар аллакай коркард шудааст",
+	CodeFirebaseNotConfigured: "Воридшавӣ тавассути SMS ҳоло фаъол нест",
+	CodeFirebaseTokenInvalid:  "Тасдиқи SMS нодуруст ё мӯҳлаташ гузаштааст",
+	CodeFirebasePhoneMissing:  "Рақами телефон тасдиқшуда ёфт нашуд",
 }
 
 var messagesRU = map[Code]string{
-	CodeValidation:          "Введённые данные некорректны",
-	CodeUnauthorized:        "Необходимо войти в систему",
-	CodeForbidden:           "Доступ запрещён",
-	CodeNotFound:            "Данные не найдены",
-	CodeConflict:            "Конфликт данных",
-	CodeInternal:            "Внутренняя ошибка сервера",
-	CodeRateLimited:         "Слишком много запросов, попробуйте позже",
-	CodePhoneInvalid:        "Некорректный номер телефона",
-	CodeOTPInvalid:          "Неверный код подтверждения",
-	CodeOTPExpired:          "Срок действия кода истёк",
-	CodeOTPMaxAttempts:      "Слишком много попыток, запросите новый код",
-	CodeOTPCooldown:         "Подождите перед повторным запросом кода",
-	CodeSessionExpired:      "Сессия истекла, войдите снова",
-	CodeSessionRevoked:      "Эта сессия отозвана",
-	CodeOutOfStock:          "Товара нет в наличии",
-	CodeCartEmpty:           "Корзина пуста",
-	CodeCartStoreMismatch:   "Товар из другого магазина",
-	CodeProductNotFound:     "Товар не найден",
-	CodePromoInvalid:        "Промокод недействителен",
-	CodePromoExpired:        "Срок действия промокода истёк",
-	CodePromoMinOrder:       "Сумма заказа недостаточна для этого промокода",
-	CodePromoLimitReached:   "Лимит использования промокода исчерпан",
-	CodeAddressOutOfZone:    "Этот адрес находится вне зоны доставки",
-	CodeAddressRequired:     "Для доставки требуется адрес",
-	CodeInsufficientBonus:   "Недостаточно бонусов",
-	CodeMinOrderNotMet:      "Сумма заказа меньше минимальной",
-	CodeOrderNotCancelable:  "Этот заказ нельзя отменить",
-	CodeIdempotencyRequired: "Требуется заголовок Idempotency-Key",
-	CodeIdempotencyConflict: "Этот запрос уже был обработан с другими данными",
+	CodeValidation:            "Введённые данные некорректны",
+	CodeUnauthorized:          "Необходимо войти в систему",
+	CodeForbidden:             "Доступ запрещён",
+	CodeNotFound:              "Данные не найдены",
+	CodeConflict:              "Конфликт данных",
+	CodeInternal:              "Внутренняя ошибка сервера",
+	CodeRateLimited:           "Слишком много запросов, попробуйте позже",
+	CodePhoneInvalid:          "Некорректный номер телефона",
+	CodeOTPInvalid:            "Неверный код подтверждения",
+	CodeOTPExpired:            "Срок действия кода истёк",
+	CodeOTPMaxAttempts:        "Слишком много попыток, запросите новый код",
+	CodeOTPCooldown:           "Подождите перед повторным запросом кода",
+	CodeSessionExpired:        "Сессия истекла, войдите снова",
+	CodeSessionRevoked:        "Эта сессия отозвана",
+	CodeOutOfStock:            "Товара нет в наличии",
+	CodeCartEmpty:             "Корзина пуста",
+	CodeCartStoreMismatch:     "Товар из другого магазина",
+	CodeProductNotFound:       "Товар не найден",
+	CodePromoInvalid:          "Промокод недействителен",
+	CodePromoExpired:          "Срок действия промокода истёк",
+	CodePromoMinOrder:         "Сумма заказа недостаточна для этого промокода",
+	CodePromoLimitReached:     "Лимит использования промокода исчерпан",
+	CodeAddressOutOfZone:      "Этот адрес находится вне зоны доставки",
+	CodeAddressRequired:       "Для доставки требуется адрес",
+	CodeInsufficientBonus:     "Недостаточно бонусов",
+	CodeMinOrderNotMet:        "Сумма заказа меньше минимальной",
+	CodeOrderNotCancelable:    "Этот заказ нельзя отменить",
+	CodeIdempotencyRequired:   "Требуется заголовок Idempotency-Key",
+	CodeIdempotencyConflict:   "Этот запрос уже был обработан с другими данными",
+	CodeFirebaseNotConfigured: "Вход через SMS пока не подключён",
+	CodeFirebaseTokenInvalid:  "Подтверждение SMS недействительно или истекло",
+	CodeFirebasePhoneMissing:  "Подтверждённый номер телефона не найден",
 }
 
 // Error is the application error type carried through the service layer and

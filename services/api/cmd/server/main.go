@@ -81,9 +81,10 @@ func run() error {
 		cfg.OTPTTL, cfg.OTPResendCD, cfg.BcryptCost,
 	)
 	sessionMgr := auth.NewSessionManager(repository.NewSessionStoreAdapter(sessionRepo, pool), cfg.RefreshTTL)
+	firebaseVerifier := auth.NewFirebaseVerifier(cfg.FirebaseWebAPIKey)
 
 	// ---- services ----
-	authSvc := service.NewAuthService(pool, otpMgr, sessionMgr, tokenMgr, userRepo)
+	authSvc := service.NewAuthService(pool, otpMgr, sessionMgr, tokenMgr, userRepo, firebaseVerifier)
 	catalogSvc := service.NewCatalogService(pool, categoryRepo, productRepo, storeRepo, inventoryRepo)
 	homeSvc := service.NewHomeService(pool, categoryRepo, productRepo, storeRepo, brandRepo, orderRepo, catalogSvc)
 	cartSvc := service.NewCartService(pool, cartRepo, productRepo, inventoryRepo, storeRepo)

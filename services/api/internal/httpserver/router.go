@@ -41,6 +41,7 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 		{
 			authGroup.POST("/send-otp", h.Auth.SendOTP)
 			authGroup.POST("/verify-otp", h.Auth.VerifyOTP)
+			authGroup.POST("/firebase-verify", h.Auth.FirebaseVerify)
 			authGroup.POST("/refresh", h.Auth.Refresh)
 			authGroup.POST("/logout", h.Auth.Logout)
 		}

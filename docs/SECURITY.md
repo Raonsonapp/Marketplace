@@ -19,6 +19,15 @@
   Profile → Security (Phase 5+).
 - Google Sign-In (optional): server verifies the Google ID token signature
   and audience server-side before ever trusting `sub`/phone/email claims.
+- **Firebase Phone Auth (`POST /auth/firebase-verify`)**: the real-SMS
+  registration path — see `docs/FIREBASE_SETUP.md`. Firebase's own
+  infrastructure sends and verifies the SMS code on the device; the backend
+  never sees the code, only the resulting ID token, which it confirms is
+  genuine (`internal/auth/firebase.go`, `accounts:lookup` against Google)
+  before extracting the verified phone number and issuing a normal
+  TajikShop session (same `issueTokens` path, same session/JWT rules above).
+  The console-OTP flow (`send-otp`/`verify-otp`) remains available as the
+  offline/local-dev fallback that needs no external account.
 
 ## Authorization (RBAC)
 

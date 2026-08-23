@@ -73,6 +73,25 @@ func (h *AuthHandler) VerifyOTP(c *gin.Context) {
 	})
 }
 
+// FirebaseVerify handles POST /auth/firebase-verify — the real-SMS
+// registration/login path (Firebase Phone Auth). See docs/FIREBASE_SETUP.md.
+func (h *AuthHandler) FirebaseVerify(c *gin.Context) {
+	var req dto.FirebaseVerifyRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		handleErr(c, apperr.New(apperr.CodeValidation, nil))
+		return
+	}
+	res, err := h.svc.FirebaseVerify(c.Request.Context(), req.IDToken, req.FullName, deviceInfo(c))
+	if err != nil {
+		handleErr(c, err)
+		return
+	}
+	ok(c, dto.AuthResponse{
+		AccessToken: res.AccessToken, RefreshToken: res.RefreshToken,
+		User: dto.NewUserResponse(*res.User), IsNewUser: res.IsNewUser,
+	})
+}
+
 // Refresh handles POST /auth/refresh.
 func (h *AuthHandler) Refresh(c *gin.Context) {
 	var req dto.RefreshRequest

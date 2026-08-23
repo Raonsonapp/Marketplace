@@ -32,6 +32,17 @@ type LogoutRequest struct {
 	RefreshToken string `json:"refresh_token" binding:"required"`
 }
 
+// FirebaseVerifyRequest is the body for POST /auth/firebase-verify — the
+// real-SMS registration/login path. The mobile app sends the ID token it
+// received from Firebase Phone Auth after the user entered the code
+// Firebase texted to their device; the server never sees the SMS code
+// itself, only this token, which it verifies with Google before issuing a
+// TajikShop session.
+type FirebaseVerifyRequest struct {
+	IDToken  string  `json:"id_token" binding:"required"`
+	FullName *string `json:"full_name"`
+}
+
 // UserResponse mirrors a user for API responses (GET /profile, verify-otp, etc).
 type UserResponse struct {
 	ID        string    `json:"id"`

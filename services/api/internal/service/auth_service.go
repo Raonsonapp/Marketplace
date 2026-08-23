@@ -12,6 +12,7 @@ import (
 
 	"tajikshop/api/internal/auth"
 	"tajikshop/api/internal/models"
+	"tajikshop/api/internal/pkg/apperr"
 	"tajikshop/api/internal/repository"
 )
 
@@ -23,11 +24,14 @@ type AuthService struct {
 	sessionMgr *auth.SessionManager
 	tokenMgr   *auth.TokenManager
 	users      *repository.UserRepository
+	firebase   *auth.FirebaseVerifier
 }
 
-// NewAuthService builds an AuthService.
-func NewAuthService(db *pgxpool.Pool, otpMgr *auth.OTPManager, sessionMgr *auth.SessionManager, tokenMgr *auth.TokenManager, users *repository.UserRepository) *AuthService {
-	return &AuthService{db: db, otpMgr: otpMgr, sessionMgr: sessionMgr, tokenMgr: tokenMgr, users: users}
+// NewAuthService builds an AuthService. firebase may be nil-Configured() (no
+// Web API key set) — FirebaseVerify then returns a clean "not configured"
+// error instead of attempting a network call.
+func NewAuthService(db *pgxpool.Pool, otpMgr *auth.OTPManager, sessionMgr *auth.SessionManager, tokenMgr *auth.TokenManager, users *repository.UserRepository, firebase *auth.FirebaseVerifier) *AuthService {
+	return &AuthService{db: db, otpMgr: otpMgr, sessionMgr: sessionMgr, tokenMgr: tokenMgr, users: users, firebase: firebase}
 }
 
 // SendOTP issues a new OTP for phone, returning the resend cooldown in seconds.
@@ -63,6 +67,49 @@ func (s *AuthService) VerifyOTP(ctx context.Context, phone, code string, device 
 			return nil, fmt.Errorf("service: create user: %w", err)
 		}
 		isNewUser = true
+	}
+
+	return s.issueTokens(ctx, user, isNewUser, device)
+}
+
+// FirebaseVerify is the real-SMS registration/login path: it verifies a
+// Firebase Phone Auth ID token (Firebase itself sent and validated the SMS
+// code on the client) and finds-or-creates the TajikShop user for the
+// verified phone number, exactly like VerifyOTP does for the console-OTP
+// path — the two paths converge on the same session issuance so the rest of
+// the app never needs to know which one a user signed in with.
+func (s *AuthService) FirebaseVerify(ctx context.Context, idToken string, fullName *string, device auth.DeviceInfo) (*VerifyResult, error) {
+	phone, _, err := s.firebase.VerifyIDToken(ctx, idToken)
+	if err != nil {
+		switch err {
+		case auth.ErrFirebaseNotConfigured:
+			return nil, apperr.New(apperr.CodeFirebaseNotConfigured, nil)
+		case auth.ErrFirebasePhoneMissing:
+			return nil, apperr.New(apperr.CodeFirebasePhoneMissing, nil)
+		case auth.ErrFirebaseTokenInvalid:
+			return nil, apperr.New(apperr.CodeFirebaseTokenInvalid, nil)
+		default:
+			return nil, fmt.Errorf("service: verify firebase token: %w", err)
+		}
+	}
+
+	isNewUser := false
+	user, err := s.users.GetByPhone(ctx, s.db, phone)
+	if err != nil {
+		if err != repository.ErrNotFound {
+			return nil, fmt.Errorf("service: lookup user: %w", err)
+		}
+		user, err = s.users.Create(ctx, s.db, phone)
+		if err != nil {
+			return nil, fmt.Errorf("service: create user: %w", err)
+		}
+		isNewUser = true
+	}
+
+	if isNewUser && fullName != nil && *fullName != "" {
+		if updated, err := s.users.UpdateProfile(ctx, s.db, user.ID, fullName, nil, nil); err == nil {
+			user = updated
+		}
 	}
 
 	return s.issueTokens(ctx, user, isNewUser, device)

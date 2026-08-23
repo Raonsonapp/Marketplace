@@ -36,6 +36,12 @@ type Config struct {
 	CORSOrigins   []string
 	MigrationsDir string
 
+	// FirebaseWebAPIKey enables POST /auth/firebase-verify (Firebase Phone
+	// Auth as the real-SMS registration path — see docs/FIREBASE_SETUP.md).
+	// Optional: when empty, that endpoint returns FIREBASE_NOT_CONFIGURED
+	// and the console-OTP flow (send-otp/verify-otp) keeps working as-is.
+	FirebaseWebAPIKey string
+
 	// LoyaltyEarnRatePercent is the percentage of order total credited back
 	// as TajBonus on delivery/creation (business rule, not schema-enforced).
 	LoyaltyEarnRatePercent float64
@@ -96,6 +102,7 @@ func Load() (*Config, error) {
 	}
 
 	cfg.MigrationsDir = getOr("MIGRATIONS_DIR", "migrations")
+	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
 
 	origins := getOr("CORS_ORIGINS", "http://localhost:3000")
 	for _, o := range strings.Split(origins, ",") {

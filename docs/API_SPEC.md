@@ -35,6 +35,11 @@ POST   /auth/send-otp          { phone }                        -> { retry_after
 POST   /auth/verify-otp        { phone, code }                   -> { access_token, refresh_token, user, is_new_user }
 POST   /auth/refresh           { refresh_token }                 -> { access_token, refresh_token }
 POST   /auth/logout            { refresh_token }                 -> 204
+POST   /auth/firebase-verify   { id_token, full_name? }          -> same shape as verify-otp — real-SMS
+                                                                     path via Firebase Phone Auth, see
+                                                                     docs/FIREBASE_SETUP.md. Returns
+                                                                     FIREBASE_NOT_CONFIGURED (503) if the
+                                                                     backend has no FIREBASE_WEB_API_KEY set.
 POST   /auth/google             { id_token }                      -> same as verify-otp (optional)
 ```
 
