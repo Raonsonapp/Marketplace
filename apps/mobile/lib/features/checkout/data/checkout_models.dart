@@ -16,7 +16,7 @@ enum DeliveryMethod {
 /// before the user places an order (docs/API_SPEC.md, docs/SECURITY.md: the
 /// client only ever displays this, never recomputes it).
 @freezed
-class CheckoutQuote with _$CheckoutQuote {
+abstract class CheckoutQuote with _$CheckoutQuote {
   const factory CheckoutQuote({
     required String subtotal,
     @Default('0.00') String discount,
@@ -32,7 +32,7 @@ class CheckoutQuote with _$CheckoutQuote {
 /// `POST /orders` response — just enough to route to the order-detail
 /// screen and show the confirmation.
 @freezed
-class PlacedOrder with _$PlacedOrder {
+abstract class PlacedOrder with _$PlacedOrder {
   const factory PlacedOrder({
     required String id,
     required String orderNumber,

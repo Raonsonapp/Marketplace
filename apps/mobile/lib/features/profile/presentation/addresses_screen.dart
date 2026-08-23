@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../core/models/address.dart';
 import '../../../core/theme/app_colors.dart';
@@ -25,13 +26,13 @@ class AddressesScreen extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.profileAddresses)),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddAddressSheet(context, ref),
-        child: const Icon(Icons.add),
+        child: const Icon(LucideIcons.plus),
       ),
       body: addressesAsync.when(
         data: (addresses) {
           if (addresses.isEmpty) {
             return EmptyStateView(
-              icon: Icons.location_on_outlined,
+              icon: LucideIcons.mapPin,
               title: l10n.checkoutAddressEmpty,
               actionLabel: l10n.checkoutAddressAdd,
               onAction: () => _showAddAddressSheet(context, ref),
@@ -40,12 +41,12 @@ class AddressesScreen extends ConsumerWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.md),
             itemCount: addresses.length,
-            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
             itemBuilder: (context, index) {
               final address = addresses[index];
               return Card(
                 child: ListTile(
-                  leading: const Icon(Icons.location_on_outlined),
+                  leading: const Icon(LucideIcons.mapPin),
                   title: Text(address.displayLine),
                   subtitle: address.isDefault ? Text(l10n.addressDefault) : null,
                   trailing: PopupMenuButton<String>(

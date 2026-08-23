@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
@@ -42,9 +43,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final pages = [
-      _OnboardingPage(icon: Icons.shopping_basket_outlined, title: l10n.onboardingTitle1, body: l10n.onboardingBody1),
-      _OnboardingPage(icon: Icons.electric_bolt_outlined, title: l10n.onboardingTitle2, body: l10n.onboardingBody2),
-      _OnboardingPage(icon: Icons.card_giftcard_outlined, title: l10n.onboardingTitle3, body: l10n.onboardingBody3),
+      _OnboardingPage(icon: LucideIcons.shoppingBag, title: l10n.onboardingTitle1, body: l10n.onboardingBody1),
+      _OnboardingPage(icon: LucideIcons.zap, title: l10n.onboardingTitle2, body: l10n.onboardingBody2),
+      _OnboardingPage(icon: LucideIcons.gift, title: l10n.onboardingTitle3, body: l10n.onboardingBody3),
     ];
     final isLast = _page == pages.length - 1;
 

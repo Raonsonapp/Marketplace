@@ -131,7 +131,7 @@ class ProductRowSkeleton extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: itemCount,
-        separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+        separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
         itemBuilder: (context, index) => const SizedBox(
           width: 150,
           child: ProductCardSkeleton(),

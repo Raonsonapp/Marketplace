@@ -12,7 +12,7 @@ import '../data/auth_repository.dart';
 part 'otp_controller.freezed.dart';
 
 @freezed
-class OtpState with _$OtpState {
+abstract class OtpState with _$OtpState {
   const factory OtpState({
     required String phone,
     @Default('') String code,

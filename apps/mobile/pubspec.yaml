@@ -14,7 +14,6 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  lucide_icons: ^0.257.0
 
   # State management
   flutter_riverpod: ^2.6.1
@@ -38,6 +37,13 @@ dependencies:
   collection: ^1.19.1
   uuid: ^4.5.1
 
+  # Barcode / price scanner
+  mobile_scanner: ^7.4.0
+  permission_handler: ^11.3.1
+
+  # Realtime order tracking
+  web_socket_channel: ^3.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -54,3 +60,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  fonts:
+    - family: Lucide
+      fonts:
+        - asset: assets/fonts/Lucide.ttf

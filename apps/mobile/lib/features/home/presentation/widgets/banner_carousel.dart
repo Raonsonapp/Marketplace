@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/models/banner_item.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -51,12 +52,12 @@ class _BannerCarouselState extends State<BannerCarousel> {
                             color: Theme.of(context).colorScheme.surfaceContainerHighest,
                           ),
                           child: banner.imageUrl.isEmpty
-                              ? const Icon(Icons.image_outlined)
+                              ? const Icon(LucideIcons.image)
                               : Image.network(
                                   banner.imageUrl,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(Icons.broken_image_outlined),
+                                      const Icon(LucideIcons.imageOff),
                                 ),
                         ),
                         if (banner.title != null)

@@ -6,7 +6,7 @@ part 'brand.g.dart';
 /// A brand, used by the home feed's `featured_brands` section and product
 /// filters (see docs/API_SPEC.md).
 @freezed
-class Brand with _$Brand {
+abstract class Brand with _$Brand {
   const factory Brand({
     required String id,
     required String name,

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/otp_verification_screen.dart';
 import '../../features/auth/presentation/phone_entry_screen.dart';
+import '../../features/barcode/presentation/barcode_scanner_screen.dart';
 import '../../features/cart/presentation/cart_screen.dart';
 import '../../features/catalog/presentation/catalog_screen.dart';
 import '../../features/catalog/presentation/category_products_screen.dart';
@@ -127,6 +128,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.search,
         builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.barcodeScanner,
+        builder: (context, state) => const BarcodeScannerScreen(),
       ),
       GoRoute(
         path: RoutePaths.productDetail,

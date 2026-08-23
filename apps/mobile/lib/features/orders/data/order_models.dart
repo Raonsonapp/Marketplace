@@ -49,7 +49,7 @@ enum OrderStatus {
 }
 
 @freezed
-class OrderItemLine with _$OrderItemLine {
+abstract class OrderItemLine with _$OrderItemLine {
   const factory OrderItemLine({
     required String productId,
     required String nameSnapshot,
@@ -62,7 +62,7 @@ class OrderItemLine with _$OrderItemLine {
 }
 
 @freezed
-class OrderStatusEvent with _$OrderStatusEvent {
+abstract class OrderStatusEvent with _$OrderStatusEvent {
   const factory OrderStatusEvent({
     required String status,
     String? note,
@@ -74,7 +74,7 @@ class OrderStatusEvent with _$OrderStatusEvent {
 
 /// Order list row (`GET /orders` — docs/API_SPEC.md).
 @freezed
-class OrderSummary with _$OrderSummary {
+abstract class OrderSummary with _$OrderSummary {
   const factory OrderSummary({
     required String id,
     required String orderNumber,
@@ -89,7 +89,7 @@ class OrderSummary with _$OrderSummary {
 
 /// Full order detail (`GET /orders/:id` — docs/API_SPEC.md).
 @freezed
-class OrderDetail with _$OrderDetail {
+abstract class OrderDetail with _$OrderDetail {
   const factory OrderDetail({
     required String id,
     required String orderNumber,

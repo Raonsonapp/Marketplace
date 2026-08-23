@@ -16,7 +16,7 @@ part 'checkout_controller.freezed.dart';
 const String kCashOnDeliveryMethod = 'cash_on_delivery';
 
 @freezed
-class CheckoutState with _$CheckoutState {
+abstract class CheckoutState with _$CheckoutState {
   const factory CheckoutState({
     @Default(AsyncValue.loading()) AsyncValue<List<Address>> addresses,
     String? selectedAddressId,

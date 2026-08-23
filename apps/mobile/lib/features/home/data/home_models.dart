@@ -13,7 +13,7 @@ part 'home_models.g.dart';
 /// is nullable/omittable — the backend leaves a section out entirely when
 /// it has nothing to show, rather than sending an empty array.
 @freezed
-class HomeFeed with _$HomeFeed {
+abstract class HomeFeed with _$HomeFeed {
   const factory HomeFeed({
     List<BannerItem>? banners,
     List<Category>? categories,

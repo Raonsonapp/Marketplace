@@ -25,6 +25,7 @@ class ErrorMapper {
           return _mapBadResponse(error);
         case DioExceptionType.badCertificate:
         case DioExceptionType.unknown:
+        default:
           return const NetworkException(NetworkErrorKind.unknown);
       }
     }

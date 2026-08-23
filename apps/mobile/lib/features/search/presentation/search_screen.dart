@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
@@ -62,6 +63,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           onChanged: (value) => ref.read(searchControllerProvider.notifier).updateQuery(value),
           onSubmitted: (value) => ref.read(searchControllerProvider.notifier).submitSearch(value),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(LucideIcons.scanLine),
+            tooltip: l10n.barcodeScanTitle,
+            onPressed: () => context.push(RoutePaths.barcodeScanner),
+          ),
+        ],
       ),
       body: _buildBody(context, l10n, state, favoriteIds),
     );
@@ -88,7 +96,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         );
       }
       if (results.items.isEmpty) {
-        return EmptyStateView(icon: Icons.search_off, title: l10n.searchNoResults);
+        return EmptyStateView(icon: LucideIcons.searchX, title: l10n.searchNoResults);
       }
       return GridView.builder(
         controller: _scrollController,
@@ -148,7 +156,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           ...state.recentSearches.map(
             (query) => ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.history),
+              leading: const Icon(LucideIcons.history),
               title: Text(query),
               onTap: () => _search(query),
             ),

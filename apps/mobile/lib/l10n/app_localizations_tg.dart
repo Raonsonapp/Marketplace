@@ -600,4 +600,50 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get splashTagline => 'Хариди осон, расонидани тез';
+
+  @override
+  String get barcodeScanTitle => 'Сканери рамз';
+
+  @override
+  String get barcodeScanInstructions =>
+      'Рамзи маҳсулотро дар чорчӯба ҷойгир кунед';
+
+  @override
+  String get barcodeCameraPermissionTitle => 'Дастрасӣ ба камера лозим аст';
+
+  @override
+  String get barcodeCameraPermissionMessage =>
+      'Барои сканеркунии рамзи маҳсулот лутфан ба камера дастрасӣ диҳед';
+
+  @override
+  String get barcodeCameraPermissionGrant => 'Додани дастрасӣ';
+
+  @override
+  String get barcodeCameraPermissionOpenSettings => 'Кушодани танзимот';
+
+  @override
+  String get barcodeNotFoundTitle => 'Маҳсулот ёфт нашуд';
+
+  @override
+  String barcodeNotFoundMessage(String code) {
+    return 'Мутаассифона, ягон маҳсулот бо рамзи $code ёфт нашуд';
+  }
+
+  @override
+  String get barcodeScanAgain => 'Аз нав сканер кардан';
+
+  @override
+  String get barcodeResultTitle => 'Натиҷаи сканер';
+
+  @override
+  String get barcodeToggleFlash => 'Чарроғак';
+
+  @override
+  String get barcodeSwitchCamera => 'Иваз кардани камера';
+
+  @override
+  String get orderTrackingTitle => 'Пайгирии фармоиш';
+
+  @override
+  String get orderTrackingLive => 'Зинда';
 }

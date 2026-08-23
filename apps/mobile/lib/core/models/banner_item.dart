@@ -5,7 +5,7 @@ part 'banner_item.g.dart';
 
 /// A home-feed promotional banner (see docs/API_SPEC.md `GET /home`).
 @freezed
-class BannerItem with _$BannerItem {
+abstract class BannerItem with _$BannerItem {
   const factory BannerItem({
     required String id,
     required String imageUrl,

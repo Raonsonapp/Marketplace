@@ -6,7 +6,7 @@ part 'address.g.dart';
 /// A saved delivery address (`/addresses*` — docs/API_SPEC.md), matching
 /// docs/DATABASE_SCHEMA.md's `addresses` table.
 @freezed
-class Address with _$Address {
+abstract class Address with _$Address {
   const factory Address({
     required String id,
     required String city,

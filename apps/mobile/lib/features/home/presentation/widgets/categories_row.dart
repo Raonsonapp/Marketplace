@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/models/category.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -31,7 +32,7 @@ class CategoriesRow extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             itemCount: categories.length,
-            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
             itemBuilder: (context, index) {
               final category = categories[index];
               return GestureDetector(
@@ -48,13 +49,13 @@ class CategoriesRow extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: category.iconUrl == null || category.iconUrl!.isEmpty
-                            ? const Icon(Icons.category_outlined)
+                            ? const Icon(LucideIcons.layoutGrid)
                             : ClipOval(
                                 child: Image.network(
                                   category.iconUrl!,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(Icons.category_outlined),
+                                      const Icon(LucideIcons.layoutGrid),
                                 ),
                               ),
                       ),

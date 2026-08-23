@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/models/product.dart';
@@ -56,7 +57,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 actions: [
                   IconButton(
                     icon: Icon(
-                      product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                      product.isFavorite ? LucideIcons.heart : LucideIcons.heart,
                       color: product.isFavorite ? AppColors.emeraldGreen : null,
                     ),
                     onPressed: () => _toggleFavorite(context, product.id),
@@ -100,7 +101,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       Row(
                         children: [
                           Icon(
-                            product.inStock ? Icons.check_circle_outline : Icons.cancel_outlined,
+                            product.inStock ? LucideIcons.checkCircle : LucideIcons.xCircle,
                             size: 16,
                             color: product.inStock ? AppColors.emeraldGreen : AppColors.error,
                           ),
@@ -122,7 +123,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       if (!product.inStock) ...[
                         const SizedBox(height: AppSpacing.lg),
                         EmptyStateView(
-                          icon: Icons.production_quantity_limits,
+                          icon: LucideIcons.packageX,
                           title: l10n.productUnavailableTitle,
                           message: l10n.productUnavailableMessage,
                         ),
@@ -136,7 +137,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemCount: detail.related.length,
-                            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+                            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
                             itemBuilder: (context, index) {
                               final related = detail.related[index];
                               return SizedBox(
@@ -198,12 +199,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.remove),
+                    icon: const Icon(LucideIcons.minus),
                     onPressed: _quantity <= 1 ? null : () => setState(() => _quantity--),
                   ),
                   Text('$_quantity', style: Theme.of(context).textTheme.titleMedium),
                   IconButton(
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(LucideIcons.plus),
                     onPressed: () => setState(() => _quantity++),
                   ),
                 ],
@@ -213,7 +214,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             Expanded(
               child: PrimaryButton(
                 label: l10n.productAddToCart,
-                icon: Icons.shopping_cart_outlined,
+                icon: LucideIcons.shoppingCart,
                 onPressed: () => _addToCart(context, product),
               ),
             ),

@@ -12,7 +12,7 @@ import '../data/search_repository.dart';
 part 'search_controller.freezed.dart';
 
 @freezed
-class SearchScreenState with _$SearchScreenState {
+abstract class SearchScreenState with _$SearchScreenState {
   const factory SearchScreenState({
     @Default('') String query,
     @Default(false) bool isSearching,

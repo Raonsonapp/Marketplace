@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../network/app_exception.dart';
@@ -55,7 +56,7 @@ class ErrorStateView extends StatelessWidget {
                 color: AppColors.error.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.error_outline, size: 40, color: AppColors.error),
+              child: const Icon(LucideIcons.alertCircle, size: 40, color: AppColors.error),
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
@@ -74,7 +75,7 @@ class ErrorStateView extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             ElevatedButton.icon(
               onPressed: onRetry,
-              icon: const Icon(Icons.refresh),
+              icon: const Icon(LucideIcons.refreshCw),
               label: Text(l10n.commonRetry),
             ),
           ],

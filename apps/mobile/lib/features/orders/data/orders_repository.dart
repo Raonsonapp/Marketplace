@@ -28,7 +28,7 @@ class OrdersRepository {
   }) async {
     final json = await _client.get('/orders', queryParameters: {
       'status': filter.apiValue,
-      if (cursor != null) 'cursor': cursor,
+      'cursor': ?cursor,
     });
     return PaginatedResponse.fromJson(json, OrderSummary.fromJson);
   }

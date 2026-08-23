@@ -207,5 +207,21 @@
   "languageTajik": "Таджикский",
   "languageRussian": "Русский",
 
-  "splashTagline": "Лёгкие покупки, быстрая доставка"
+  "splashTagline": "Лёгкие покупки, быстрая доставка",
+
+  "barcodeScanTitle": "Сканер штрихкода",
+  "barcodeScanInstructions": "Наведите камеру на штрихкод товара",
+  "barcodeCameraPermissionTitle": "Требуется доступ к камере",
+  "barcodeCameraPermissionMessage": "Чтобы отсканировать штрихкод товара, разрешите доступ к камере",
+  "barcodeCameraPermissionGrant": "Разрешить доступ",
+  "barcodeCameraPermissionOpenSettings": "Открыть настройки",
+  "barcodeNotFoundTitle": "Товар не найден",
+  "barcodeNotFoundMessage": "К сожалению, товар со штрихкодом {code} не найден",
+  "barcodeScanAgain": "Сканировать снова",
+  "barcodeResultTitle": "Результат сканирования",
+  "barcodeToggleFlash": "Фонарик",
+  "barcodeSwitchCamera": "Сменить камеру",
+
+  "orderTrackingTitle": "Отслеживание заказа",
+  "orderTrackingLive": "Онлайн"
 }

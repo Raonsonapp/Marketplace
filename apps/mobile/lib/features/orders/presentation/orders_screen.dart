@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -63,14 +64,14 @@ class _OrdersList extends ConsumerWidget {
     return state.when(
       data: (data) {
         if (data.items.isEmpty) {
-          return EmptyStateView(icon: Icons.receipt_long_outlined, title: emptyMessage);
+          return EmptyStateView(icon: LucideIcons.receipt, title: emptyMessage);
         }
         return RefreshIndicator(
           onRefresh: () => ref.read(provider.notifier).refresh(),
           child: ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.md),
             itemCount: data.items.length,
-            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
             itemBuilder: (context, index) {
               final order = data.items[index];
               return InkWell(

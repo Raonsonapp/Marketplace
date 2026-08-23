@@ -21,7 +21,7 @@ class SearchRepository {
     final json = await _client.get('/search', queryParameters: {
       'q': query,
       'limit': limit,
-      if (cursor != null) 'cursor': cursor,
+      'cursor': ?cursor,
     });
     return PaginatedResponse.fromJson(json, Product.fromJson);
   }

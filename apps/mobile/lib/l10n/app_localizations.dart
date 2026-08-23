@@ -1225,6 +1225,90 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Хариди осон, расонидани тез'**
   String get splashTagline;
+
+  /// No description provided for @barcodeScanTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Сканери рамз'**
+  String get barcodeScanTitle;
+
+  /// No description provided for @barcodeScanInstructions.
+  ///
+  /// In tg, this message translates to:
+  /// **'Рамзи маҳсулотро дар чорчӯба ҷойгир кунед'**
+  String get barcodeScanInstructions;
+
+  /// No description provided for @barcodeCameraPermissionTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дастрасӣ ба камера лозим аст'**
+  String get barcodeCameraPermissionTitle;
+
+  /// No description provided for @barcodeCameraPermissionMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Барои сканеркунии рамзи маҳсулот лутфан ба камера дастрасӣ диҳед'**
+  String get barcodeCameraPermissionMessage;
+
+  /// No description provided for @barcodeCameraPermissionGrant.
+  ///
+  /// In tg, this message translates to:
+  /// **'Додани дастрасӣ'**
+  String get barcodeCameraPermissionGrant;
+
+  /// No description provided for @barcodeCameraPermissionOpenSettings.
+  ///
+  /// In tg, this message translates to:
+  /// **'Кушодани танзимот'**
+  String get barcodeCameraPermissionOpenSettings;
+
+  /// No description provided for @barcodeNotFoundTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Маҳсулот ёфт нашуд'**
+  String get barcodeNotFoundTitle;
+
+  /// No description provided for @barcodeNotFoundMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мутаассифона, ягон маҳсулот бо рамзи {code} ёфт нашуд'**
+  String barcodeNotFoundMessage(String code);
+
+  /// No description provided for @barcodeScanAgain.
+  ///
+  /// In tg, this message translates to:
+  /// **'Аз нав сканер кардан'**
+  String get barcodeScanAgain;
+
+  /// No description provided for @barcodeResultTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Натиҷаи сканер'**
+  String get barcodeResultTitle;
+
+  /// No description provided for @barcodeToggleFlash.
+  ///
+  /// In tg, this message translates to:
+  /// **'Чарроғак'**
+  String get barcodeToggleFlash;
+
+  /// No description provided for @barcodeSwitchCamera.
+  ///
+  /// In tg, this message translates to:
+  /// **'Иваз кардани камера'**
+  String get barcodeSwitchCamera;
+
+  /// No description provided for @orderTrackingTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Пайгирии фармоиш'**
+  String get orderTrackingTitle;
+
+  /// No description provided for @orderTrackingLive.
+  ///
+  /// In tg, this message translates to:
+  /// **'Зинда'**
+  String get orderTrackingLive;
 }
 
 class _AppLocalizationsDelegate

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/localization/locale_controller.dart';
@@ -26,17 +27,17 @@ class SettingsScreen extends ConsumerWidget {
         children: [
           Card(
             child: ListTile(
-              leading: const Icon(Icons.language_outlined),
+              leading: const Icon(LucideIcons.globe),
               title: Text(l10n.profileLanguage),
               subtitle: Text(languageLabel),
-              trailing: const Icon(Icons.chevron_right),
+              trailing: const Icon(LucideIcons.chevronRight),
               onTap: () => context.push(RoutePaths.languageSelection),
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
           OutlinedButton.icon(
             onPressed: () => _confirmLogout(context, ref),
-            icon: const Icon(Icons.logout, color: AppColors.error),
+            icon: const Icon(LucideIcons.logOut, color: AppColors.error),
             label: Text(l10n.authLogout, style: const TextStyle(color: AppColors.error)),
           ),
         ],

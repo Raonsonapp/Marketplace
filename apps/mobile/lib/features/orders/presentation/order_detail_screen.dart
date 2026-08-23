@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -77,7 +78,7 @@ class OrderDetailScreen extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxs),
                         child: Row(
                           children: [
-                            Icon(Icons.circle, size: 8, color: orderStatusColor(event.status)),
+                            Icon(LucideIcons.circle, size: 8, color: orderStatusColor(event.status)),
                             const SizedBox(width: AppSpacing.xs),
                             Expanded(child: Text(orderStatusLabel(l10n, event.status))),
                             Text(

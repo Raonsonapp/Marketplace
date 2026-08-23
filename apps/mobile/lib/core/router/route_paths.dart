@@ -15,6 +15,7 @@ class RoutePaths {
 
   static const categoryProducts = '/catalog/category/:categoryId';
   static const search = '/search';
+  static const barcodeScanner = '/barcode';
   static const productDetail = '/product/:productId';
   static const favorites = '/favorites';
   static const checkout = '/checkout';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../l10n/app_localizations.dart';
@@ -45,28 +46,28 @@ class AppShell extends ConsumerWidget {
         onDestinationSelected: onTap,
         destinations: [
           NavigationDestination(
-            icon: const Icon(Icons.storefront_outlined),
-            selectedIcon: const Icon(Icons.storefront),
+            icon: const Icon(LucideIcons.store),
+            selectedIcon: const Icon(LucideIcons.store),
             label: l10n.navHome,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.grid_view_outlined),
-            selectedIcon: const Icon(Icons.grid_view),
+            icon: const Icon(LucideIcons.layoutGrid),
+            selectedIcon: const Icon(LucideIcons.layoutGrid),
             label: l10n.navCatalog,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            selectedIcon: const Icon(Icons.shopping_cart),
+            icon: const Icon(LucideIcons.shoppingCart),
+            selectedIcon: const Icon(LucideIcons.shoppingCart),
             label: l10n.navCart,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.receipt_long_outlined),
-            selectedIcon: const Icon(Icons.receipt_long),
+            icon: const Icon(LucideIcons.receipt),
+            selectedIcon: const Icon(LucideIcons.receipt),
             label: l10n.navOrders,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
+            icon: const Icon(LucideIcons.user),
+            selectedIcon: const Icon(LucideIcons.user),
             label: l10n.navProfile,
           ),
         ],

@@ -9,7 +9,7 @@ part 'cart_models.g.dart';
 /// live-recalculated [lineTotal] and [isAvailable] flag since the server
 /// re-checks price/stock on every cart read.
 @freezed
-class CartItem with _$CartItem {
+abstract class CartItem with _$CartItem {
   const factory CartItem({
     required String id,
     required Product product,
@@ -26,7 +26,7 @@ class CartItem with _$CartItem {
 /// only ever displays these values, never derives its own (docs/SECURITY.md:
 /// "client never computes money").
 @freezed
-class Cart with _$Cart {
+abstract class Cart with _$Cart {
   const factory Cart({
     @Default(<CartItem>[]) List<CartItem> items,
     @Default(<CartItem>[]) List<CartItem> savedForLater,

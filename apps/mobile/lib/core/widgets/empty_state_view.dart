@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
@@ -10,7 +11,7 @@ class EmptyStateView extends StatelessWidget {
     super.key,
     required this.title,
     this.message,
-    this.icon = Icons.inbox_outlined,
+    this.icon = LucideIcons.inbox,
     this.actionLabel,
     this.onAction,
   });

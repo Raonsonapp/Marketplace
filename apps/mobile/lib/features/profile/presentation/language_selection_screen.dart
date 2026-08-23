@@ -17,23 +17,23 @@ class LanguageSelectionScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.languageSelectTitle)),
-      body: ListView(
-        children: [
-          RadioListTile<String>(
-            value: 'tg',
-            groupValue: currentLocale.languageCode,
-            title: Text(l10n.languageTajik),
-            activeColor: AppColors.emeraldGreen,
-            onChanged: (value) => ref.read(localeControllerProvider.notifier).setLanguage(value!),
-          ),
-          RadioListTile<String>(
-            value: 'ru',
-            groupValue: currentLocale.languageCode,
-            title: Text(l10n.languageRussian),
-            activeColor: AppColors.emeraldGreen,
-            onChanged: (value) => ref.read(localeControllerProvider.notifier).setLanguage(value!),
-          ),
-        ],
+      body: RadioGroup<String>(
+        groupValue: currentLocale.languageCode,
+        onChanged: (value) => ref.read(localeControllerProvider.notifier).setLanguage(value!),
+        child: ListView(
+          children: [
+            RadioListTile<String>(
+              value: 'tg',
+              title: Text(l10n.languageTajik),
+              activeColor: AppColors.emeraldGreen,
+            ),
+            RadioListTile<String>(
+              value: 'ru',
+              title: Text(l10n.languageRussian),
+              activeColor: AppColors.emeraldGreen,
+            ),
+          ],
+        ),
       ),
     );
   }

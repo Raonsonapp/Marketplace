@@ -15,7 +15,7 @@ class FavoritesRepository {
 
   Future<PaginatedResponse<Product>> getFavorites({String? cursor}) async {
     final json = await _client.get('/favorites', queryParameters: {
-      if (cursor != null) 'cursor': cursor,
+      'cursor': ?cursor,
     });
     return PaginatedResponse.fromJson(json, Product.fromJson);
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -98,12 +99,12 @@ class _DeliveryMethodSelector extends ConsumerWidget {
         ButtonSegment(
           value: DeliveryMethod.delivery,
           label: Text(l10n.checkoutDeliveryMethodDelivery),
-          icon: const Icon(Icons.delivery_dining_outlined),
+          icon: const Icon(LucideIcons.bike),
         ),
         ButtonSegment(
           value: DeliveryMethod.pickup,
           label: Text(l10n.checkoutDeliveryMethodPickup),
-          icon: const Icon(Icons.storefront_outlined),
+          icon: const Icon(LucideIcons.store),
         ),
       ],
       selected: {state.deliveryMethod},
@@ -126,32 +127,34 @@ class _AddressSection extends ConsumerWidget {
         if (addresses.isEmpty) {
           return OutlinedButton.icon(
             onPressed: () => context.push(RoutePaths.addresses),
-            icon: const Icon(Icons.add_location_alt_outlined),
+            icon: const Icon(LucideIcons.mapPin),
             label: Text(l10n.checkoutAddressAdd),
           );
         }
-        return Column(
-          children: [
-            ...addresses.map((address) => RadioListTile<String>(
-                  contentPadding: EdgeInsets.zero,
-                  value: address.id,
-                  groupValue: state.selectedAddressId,
-                  title: Text(address.displayLine),
-                  onChanged: (value) {
-                    if (value != null) {
-                      ref.read(checkoutControllerProvider.notifier).selectAddress(value);
-                    }
-                  },
-                )),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton.icon(
-                onPressed: () => context.push(RoutePaths.addresses),
-                icon: const Icon(Icons.add, size: 18),
-                label: Text(l10n.checkoutAddressAdd),
+        return RadioGroup<String>(
+          groupValue: state.selectedAddressId,
+          onChanged: (value) {
+            if (value != null) {
+              ref.read(checkoutControllerProvider.notifier).selectAddress(value);
+            }
+          },
+          child: Column(
+            children: [
+              ...addresses.map((address) => RadioListTile<String>(
+                    contentPadding: EdgeInsets.zero,
+                    value: address.id,
+                    title: Text(address.displayLine),
+                  )),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: () => context.push(RoutePaths.addresses),
+                  icon: const Icon(LucideIcons.plus, size: 18),
+                  label: Text(l10n.checkoutAddressAdd),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
       error: (error, stackTrace) => ErrorStateView(error: error, onRetry: () {}),
@@ -168,40 +171,44 @@ class _DeliveryTimeSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    return Column(
-      children: [
-        RadioListTile<bool>(
-          contentPadding: EdgeInsets.zero,
-          value: true,
-          groupValue: state.isAsap,
-          title: Text(l10n.checkoutTimeAsap),
-          onChanged: (_) => ref.read(checkoutControllerProvider.notifier).setAsap(true),
-        ),
-        RadioListTile<bool>(
-          contentPadding: EdgeInsets.zero,
-          value: false,
-          groupValue: state.isAsap,
-          title: Text(
-            state.scheduledAt != null
-                ? DateFormat('d MMM, HH:mm').format(state.scheduledAt!)
-                : l10n.checkoutTimeScheduled,
+    return RadioGroup<bool>(
+      groupValue: state.isAsap,
+      onChanged: (value) async {
+        if (value == true) {
+          ref.read(checkoutControllerProvider.notifier).setAsap(true);
+          return;
+        }
+        final now = DateTime.now();
+        final date = await showDatePicker(
+          context: context,
+          initialDate: now,
+          firstDate: now,
+          lastDate: now.add(const Duration(days: 7)),
+        );
+        if (date == null || !context.mounted) return;
+        final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+        if (time == null) return;
+        final scheduled = DateTime(date.year, date.month, date.day, time.hour, time.minute);
+        ref.read(checkoutControllerProvider.notifier).setScheduledAt(scheduled);
+      },
+      child: Column(
+        children: [
+          RadioListTile<bool>(
+            contentPadding: EdgeInsets.zero,
+            value: true,
+            title: Text(l10n.checkoutTimeAsap),
           ),
-          onChanged: (_) async {
-            final now = DateTime.now();
-            final date = await showDatePicker(
-              context: context,
-              initialDate: now,
-              firstDate: now,
-              lastDate: now.add(const Duration(days: 7)),
-            );
-            if (date == null || !context.mounted) return;
-            final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-            if (time == null) return;
-            final scheduled = DateTime(date.year, date.month, date.day, time.hour, time.minute);
-            ref.read(checkoutControllerProvider.notifier).setScheduledAt(scheduled);
-          },
-        ),
-      ],
+          RadioListTile<bool>(
+            contentPadding: EdgeInsets.zero,
+            value: false,
+            title: Text(
+              state.scheduledAt != null
+                  ? DateFormat('d MMM, HH:mm').format(state.scheduledAt!)
+                  : l10n.checkoutTimeScheduled,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -218,12 +225,14 @@ class _PaymentMethodSelector extends StatelessWidget {
         border: Border.all(color: Theme.of(context).colorScheme.outline),
         borderRadius: BorderRadius.circular(AppSpacing.buttonRadius),
       ),
-      child: RadioListTile<String>(
-        value: kCashOnDeliveryMethod,
+      child: RadioGroup<String>(
         groupValue: kCashOnDeliveryMethod,
-        title: Text(l10n.checkoutPaymentCashOnDelivery),
-        secondary: const Icon(Icons.payments_outlined),
         onChanged: (_) {},
+        child: RadioListTile<String>(
+          value: kCashOnDeliveryMethod,
+          title: Text(l10n.checkoutPaymentCashOnDelivery),
+          secondary: const Icon(LucideIcons.creditCard),
+        ),
       ),
     );
   }
@@ -250,7 +259,7 @@ class _OrderConfirmation extends StatelessWidget {
                   color: AppColors.discountBadgeBackground,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.check_circle, color: AppColors.emeraldGreen, size: 56),
+                child: const Icon(LucideIcons.checkCircle2, color: AppColors.emeraldGreen, size: 56),
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
@@ -29,7 +30,7 @@ class ProfileScreen extends ConsumerWidget {
           final user = profile ?? sessionUser;
           if (user == null) {
             return EmptyStateView(
-              icon: Icons.person_outline,
+              icon: LucideIcons.user,
               title: l10n.profileGuestTitle,
               message: l10n.profileGuestMessage,
               actionLabel: l10n.authSignIn,
@@ -49,7 +50,7 @@ class ProfileScreen extends ConsumerWidget {
                             ? NetworkImage(user.avatarUrl!)
                             : null,
                     child: user.avatarUrl == null || user.avatarUrl!.isEmpty
-                        ? const Icon(Icons.person, color: AppColors.emeraldGreen, size: 32)
+                        ? const Icon(LucideIcons.user, color: AppColors.emeraldGreen, size: 32)
                         : null,
                   ),
                   const SizedBox(width: AppSpacing.md),
@@ -68,29 +69,29 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.edit_outlined),
+                    icon: const Icon(LucideIcons.edit3),
                     onPressed: () => context.push(RoutePaths.profileEdit),
                   ),
                 ],
               ),
               const SizedBox(height: AppSpacing.lg),
               _MenuTile(
-                icon: Icons.receipt_long_outlined,
+                icon: LucideIcons.receipt,
                 label: l10n.profileMyOrders,
                 onTap: () => context.go(RoutePaths.orders),
               ),
               _MenuTile(
-                icon: Icons.favorite_border,
+                icon: LucideIcons.heart,
                 label: l10n.profileFavorites,
                 onTap: () => context.push(RoutePaths.favorites),
               ),
               _MenuTile(
-                icon: Icons.location_on_outlined,
+                icon: LucideIcons.mapPin,
                 label: l10n.profileAddresses,
                 onTap: () => context.push(RoutePaths.addresses),
               ),
               _MenuTile(
-                icon: Icons.settings_outlined,
+                icon: LucideIcons.settings,
                 label: l10n.profileSettings,
                 onTap: () => context.push(RoutePaths.profileSettings),
               ),
@@ -121,7 +122,7 @@ class _MenuTile extends StatelessWidget {
       child: ListTile(
         leading: Icon(icon),
         title: Text(label),
-        trailing: const Icon(Icons.chevron_right),
+        trailing: const Icon(LucideIcons.chevronRight),
         onTap: onTap,
       ),
     );

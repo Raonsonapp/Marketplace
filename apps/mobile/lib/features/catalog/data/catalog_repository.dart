@@ -39,7 +39,7 @@ class CatalogRepository {
   }) async {
     final json = await _client.get('/categories/$categoryId/products', queryParameters: {
       'limit': limit,
-      if (cursor != null) 'cursor': cursor,
+      'cursor': ?cursor,
     });
     return PaginatedResponse.fromJson(json, Product.fromJson);
   }
@@ -60,15 +60,15 @@ class CatalogRepository {
     final json = await _client.get('/products', queryParameters: {
       'limit': limit,
       'sort': sort.apiValue,
-      if (cursor != null) 'cursor': cursor,
-      if (categoryId != null) 'category_id': categoryId,
-      if (brandId != null) 'brand_id': brandId,
-      if (minPrice != null) 'min_price': minPrice,
-      if (maxPrice != null) 'max_price': maxPrice,
-      if (minRating != null) 'min_rating': minRating,
-      if (hasDiscount != null) 'has_discount': hasDiscount,
-      if (storeId != null) 'store_id': storeId,
-      if (inStock != null) 'in_stock': inStock,
+      'cursor': ?cursor,
+      'category_id': ?categoryId,
+      'brand_id': ?brandId,
+      'min_price': ?minPrice,
+      'max_price': ?maxPrice,
+      'min_rating': ?minRating,
+      'has_discount': ?hasDiscount,
+      'store_id': ?storeId,
+      'in_stock': ?inStock,
     });
     return PaginatedResponse.fromJson(json, Product.fromJson);
   }

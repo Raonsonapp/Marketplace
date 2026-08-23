@@ -7,7 +7,7 @@ part 'auth_models.g.dart';
 
 /// `POST /auth/send-otp` response (see docs/API_SPEC.md).
 @freezed
-class SendOtpResult with _$SendOtpResult {
+abstract class SendOtpResult with _$SendOtpResult {
   const factory SendOtpResult({required int retryAfterSeconds}) = _SendOtpResult;
 
   factory SendOtpResult.fromJson(Map<String, dynamic> json) => _$SendOtpResultFromJson(json);
@@ -15,7 +15,7 @@ class SendOtpResult with _$SendOtpResult {
 
 /// `POST /auth/verify-otp` / `POST /auth/refresh` response payload.
 @freezed
-class AuthTokens with _$AuthTokens {
+abstract class AuthTokens with _$AuthTokens {
   const factory AuthTokens({
     required String accessToken,
     required String refreshToken,

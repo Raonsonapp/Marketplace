@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/network/app_exception.dart';
@@ -48,7 +49,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               data: (cart) {
                 if (cart.isEmpty) {
                   return EmptyStateView(
-                    icon: Icons.shopping_cart_outlined,
+                    icon: LucideIcons.shoppingCart,
                     title: l10n.cartEmptyTitle,
                     message: l10n.cartEmptyMessage,
                     actionLabel: l10n.catalogTitle,
@@ -143,7 +144,7 @@ class _PromoCodeField extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.local_offer_outlined, size: 18),
+            const Icon(LucideIcons.tag, size: 18),
             const SizedBox(width: AppSpacing.xs),
             Expanded(child: Text(currentCode!)),
             TextButton(

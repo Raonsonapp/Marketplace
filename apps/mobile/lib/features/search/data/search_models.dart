@@ -5,7 +5,7 @@ part 'search_models.g.dart';
 
 /// `GET /search/suggestions` response (docs/API_SPEC.md).
 @freezed
-class SearchSuggestions with _$SearchSuggestions {
+abstract class SearchSuggestions with _$SearchSuggestions {
   const factory SearchSuggestions({
     @Default(<String>[]) List<String> suggestions,
     @Default(<String>[]) List<String> popular,

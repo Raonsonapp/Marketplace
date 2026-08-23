@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
@@ -31,7 +32,7 @@ class OfflineBanner extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.wifi_off, size: 16, color: AppColors.warning),
+                  const Icon(LucideIcons.wifiOff, size: 16, color: AppColors.warning),
                   const SizedBox(width: AppSpacing.xs),
                   Flexible(
                     child: Text(

@@ -40,7 +40,7 @@ class HomeProductSection extends ConsumerWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             itemCount: products.length,
-            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
             itemBuilder: (context, index) {
               final product = products[index].copyWith(
                 isFavorite: favoriteIds.contains(products[index].id),

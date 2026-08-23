@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -64,7 +65,7 @@ class CartTotalsSummary extends StatelessWidget {
           const SizedBox(height: AppSpacing.xs),
           Row(
             children: [
-              Icon(Icons.verified_outlined, size: 14, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+              Icon(LucideIcons.shieldCheck, size: 14, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
               const SizedBox(width: AppSpacing.xxs),
               Expanded(
                 child: Text(

@@ -6,7 +6,7 @@ part 'store.g.dart';
 /// A store/pickup point from `GET /stores`, `GET /stores/:id`, and the
 /// home feed's `nearby_stores` section (see docs/API_SPEC.md).
 @freezed
-class Store with _$Store {
+abstract class Store with _$Store {
   const factory Store({
     required String id,
     required String name,

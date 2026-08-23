@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
@@ -28,7 +29,7 @@ class FavoritesScreen extends ConsumerWidget {
         data: (data) {
           if (data.items.isEmpty) {
             return EmptyStateView(
-              icon: Icons.favorite_border,
+              icon: LucideIcons.heart,
               title: l10n.favoritesEmptyTitle,
               message: l10n.favoritesEmptyMessage,
             );

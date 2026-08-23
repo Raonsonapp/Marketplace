@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
@@ -57,7 +58,7 @@ class _PhoneEntryScreenState extends ConsumerState<PhoneEntryScreen> {
                   gradient: AppColors.primaryGradient,
                   borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
                 ),
-                child: const Icon(Icons.storefront, color: Colors.white, size: 32),
+                child: const Icon(LucideIcons.store, color: Colors.white, size: 32),
               ),
               const SizedBox(height: AppSpacing.lg),
               Text(l10n.authWelcomeTitle, style: Theme.of(context).textTheme.headlineMedium),

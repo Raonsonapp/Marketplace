@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -97,7 +98,7 @@ class CartItemTile extends StatelessWidget {
                         ),
                       const Spacer(),
                       IconButton(
-                        icon: const Icon(Icons.delete_outline, size: 20),
+                        icon: const Icon(LucideIcons.trash2, size: 20),
                         onPressed: onRemove,
                         tooltip: l10n.cartRemoveItem,
                       ),
@@ -131,7 +132,7 @@ class _QuantityStepper extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: const Icon(Icons.remove, size: 16),
+            icon: const Icon(LucideIcons.minus, size: 16),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             onPressed: onChanged == null || quantity <= 1 ? null : () => onChanged!(quantity - 1),
@@ -141,7 +142,7 @@ class _QuantityStepper extends StatelessWidget {
             child: Text('$quantity', textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
           ),
           IconButton(
-            icon: const Icon(Icons.add, size: 16),
+            icon: const Icon(LucideIcons.plus, size: 16),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
             onPressed: onChanged == null ? null : () => onChanged!(quantity + 1),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/theme/app_spacing.dart';
 
@@ -38,12 +39,12 @@ class _ProductGalleryState extends State<ProductGallery> {
               return DecoratedBox(
                 decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainerHighest),
                 child: url.isEmpty
-                    ? const Center(child: Icon(Icons.image_outlined, size: 56))
+                    ? const Center(child: Icon(LucideIcons.image, size: 56))
                     : Image.network(
                         url,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) =>
-                            const Center(child: Icon(Icons.broken_image_outlined, size: 56)),
+                            const Center(child: Icon(LucideIcons.imageOff, size: 56)),
                       ),
               );
             },

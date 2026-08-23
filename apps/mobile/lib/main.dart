@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/localization/fallback_localizations_delegate.dart';
 import 'core/localization/locale_controller.dart';
 import 'core/router/app_router.dart';
 import 'core/storage/preferences_storage.dart';
@@ -41,7 +42,15 @@ class TajikShopApp extends ConsumerWidget {
       themeMode: ThemeMode.dark,
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: const [
+        ...AppLocalizations.localizationsDelegates,
+        // Flutter's own Material/Cupertino/Widgets localizations don't
+        // ship a Tajik translation upstream — these fill that gap for
+        // framework-chrome strings only (see the delegate docs).
+        FallbackMaterialLocalizationsDelegate(),
+        FallbackCupertinoLocalizationsDelegate(),
+        FallbackWidgetsLocalizationsDelegate(),
+      ],
       routerConfig: router,
     );
   }

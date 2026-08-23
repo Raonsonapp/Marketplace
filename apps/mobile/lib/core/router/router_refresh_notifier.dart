@@ -7,6 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// widget-tree context.
 class RouterRefreshNotifier extends ChangeNotifier {
   RouterRefreshNotifier(Ref ref, ProviderListenable providers) {
-    ref.listen(providers, (_, __) => notifyListeners());
+    ref.listen(providers, (_, _) => notifyListeners());
   }
 }

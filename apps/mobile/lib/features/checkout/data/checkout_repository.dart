@@ -21,10 +21,10 @@ class CheckoutRepository {
     String? bonusAmount,
   }) async {
     final json = await _client.post('/checkout/quote', data: {
-      if (addressId != null) 'address_id': addressId,
+      'address_id': ?addressId,
       'delivery_method': deliveryMethod.apiValue,
-      if (promoCode != null) 'promo_code': promoCode,
-      if (bonusAmount != null) 'bonus_amount': bonusAmount,
+      'promo_code': ?promoCode,
+      'bonus_amount': ?bonusAmount,
     });
     return CheckoutQuote.fromJson(json);
   }
@@ -46,12 +46,12 @@ class CheckoutRepository {
     final json = await _client.post(
       '/orders',
       data: {
-        if (addressId != null) 'address_id': addressId,
+        'address_id': ?addressId,
         'delivery_method': deliveryMethod.apiValue,
         if (scheduledAt != null) 'scheduled_at': scheduledAt.toIso8601String(),
         'payment_method': paymentMethod,
-        if (promoCode != null) 'promo_code': promoCode,
-        if (bonusAmount != null) 'bonus_amount': bonusAmount,
+        'promo_code': ?promoCode,
+        'bonus_amount': ?bonusAmount,
       },
       headers: {'Idempotency-Key': idempotencyKey},
     );

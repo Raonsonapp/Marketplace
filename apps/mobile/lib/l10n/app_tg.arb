@@ -226,5 +226,24 @@
   "languageTajik": "Тоҷикӣ",
   "languageRussian": "Русӣ",
 
-  "splashTagline": "Хариди осон, расонидани тез"
+  "splashTagline": "Хариди осон, расонидани тез",
+
+  "barcodeScanTitle": "Сканери рамз",
+  "barcodeScanInstructions": "Рамзи маҳсулотро дар чорчӯба ҷойгир кунед",
+  "barcodeCameraPermissionTitle": "Дастрасӣ ба камера лозим аст",
+  "barcodeCameraPermissionMessage": "Барои сканеркунии рамзи маҳсулот лутфан ба камера дастрасӣ диҳед",
+  "barcodeCameraPermissionGrant": "Додани дастрасӣ",
+  "barcodeCameraPermissionOpenSettings": "Кушодани танзимот",
+  "barcodeNotFoundTitle": "Маҳсулот ёфт нашуд",
+  "barcodeNotFoundMessage": "Мутаассифона, ягон маҳсулот бо рамзи {code} ёфт нашуд",
+  "@barcodeNotFoundMessage": {
+    "placeholders": {"code": {"type": "String"}}
+  },
+  "barcodeScanAgain": "Аз нав сканер кардан",
+  "barcodeResultTitle": "Натиҷаи сканер",
+  "barcodeToggleFlash": "Чарроғак",
+  "barcodeSwitchCamera": "Иваз кардани камера",
+
+  "orderTrackingTitle": "Пайгирии фармоиш",
+  "orderTrackingLive": "Зинда"
 }

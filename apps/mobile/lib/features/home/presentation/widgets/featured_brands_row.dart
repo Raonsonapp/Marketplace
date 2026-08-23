@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/models/brand.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -25,7 +26,7 @@ class FeaturedBrandsRow extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             itemCount: brands.length,
-            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
             itemBuilder: (context, index) {
               final brand = brands[index];
               return Container(
@@ -37,12 +38,12 @@ class FeaturedBrandsRow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
                 ),
                 child: brand.logoUrl == null || brand.logoUrl!.isEmpty
-                    ? const Icon(Icons.local_offer_outlined)
+                    ? const Icon(LucideIcons.tag)
                     : Image.network(
                         brand.logoUrl!,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.local_offer_outlined),
+                            const Icon(LucideIcons.tag),
                       ),
               );
             },

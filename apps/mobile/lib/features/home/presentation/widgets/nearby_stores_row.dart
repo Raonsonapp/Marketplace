@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/models/store.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -26,7 +27,7 @@ class NearbyStoresRow extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             itemCount: stores.length,
-            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
             itemBuilder: (context, index) {
               final store = stores[index];
               return Container(
@@ -46,14 +47,14 @@ class NearbyStoresRow extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
                       ),
                       child: store.logoUrl == null || store.logoUrl!.isEmpty
-                          ? const Icon(Icons.storefront_outlined, size: 20)
+                          ? const Icon(LucideIcons.store, size: 20)
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(AppSpacing.chipRadius),
                               child: Image.network(
                                 store.logoUrl!,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.storefront_outlined, size: 20),
+                                    const Icon(LucideIcons.store, size: 20),
                               ),
                             ),
                     ),

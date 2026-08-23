@@ -6,7 +6,7 @@ part 'app_user.g.dart';
 /// The authenticated user's profile, matching the `users` table exposed via
 /// `GET /profile` / `POST /auth/verify-otp` (see docs/API_SPEC.md).
 @freezed
-class AppUser with _$AppUser {
+abstract class AppUser with _$AppUser {
   const factory AppUser({
     required String id,
     required String phone,

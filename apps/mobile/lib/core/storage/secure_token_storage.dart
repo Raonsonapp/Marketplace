@@ -39,8 +39,10 @@ class SecureTokenStorage {
 }
 
 final secureStorageProvider = Provider<FlutterSecureStorage>((ref) {
+  // Default AndroidOptions already use strong AES-GCM + RSA-OAEP key
+  // wrapping (flutter_secure_storage >= 10) with no extra flags needed.
   return const FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    aOptions: AndroidOptions(),
   );
 });
 

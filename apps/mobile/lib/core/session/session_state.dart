@@ -11,7 +11,7 @@ enum AuthStatus { authenticated, unauthenticated }
 /// docs/API_SPEC.md: catalog/home/search work anonymously but personalize
 /// when a token is present).
 @freezed
-class SessionState with _$SessionState {
+abstract class SessionState with _$SessionState {
   const factory SessionState({
     required AuthStatus status,
     AppUser? user,

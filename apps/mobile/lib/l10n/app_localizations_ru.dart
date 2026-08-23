@@ -594,4 +594,49 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get splashTagline => 'Лёгкие покупки, быстрая доставка';
+
+  @override
+  String get barcodeScanTitle => 'Сканер штрихкода';
+
+  @override
+  String get barcodeScanInstructions => 'Наведите камеру на штрихкод товара';
+
+  @override
+  String get barcodeCameraPermissionTitle => 'Требуется доступ к камере';
+
+  @override
+  String get barcodeCameraPermissionMessage =>
+      'Чтобы отсканировать штрихкод товара, разрешите доступ к камере';
+
+  @override
+  String get barcodeCameraPermissionGrant => 'Разрешить доступ';
+
+  @override
+  String get barcodeCameraPermissionOpenSettings => 'Открыть настройки';
+
+  @override
+  String get barcodeNotFoundTitle => 'Товар не найден';
+
+  @override
+  String barcodeNotFoundMessage(String code) {
+    return 'К сожалению, товар со штрихкодом $code не найден';
+  }
+
+  @override
+  String get barcodeScanAgain => 'Сканировать снова';
+
+  @override
+  String get barcodeResultTitle => 'Результат сканирования';
+
+  @override
+  String get barcodeToggleFlash => 'Фонарик';
+
+  @override
+  String get barcodeSwitchCamera => 'Сменить камеру';
+
+  @override
+  String get orderTrackingTitle => 'Отслеживание заказа';
+
+  @override
+  String get orderTrackingLive => 'Онлайн';
 }

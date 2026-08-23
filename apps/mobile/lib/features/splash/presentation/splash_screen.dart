@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -27,7 +28,7 @@ class SplashScreen extends StatelessWidget {
                   gradient: AppColors.primaryGradient,
                   borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
                 ),
-                child: const Icon(Icons.storefront, color: Colors.white, size: 44),
+                child: const Icon(LucideIcons.store, color: Colors.white, size: 44),
               ),
               const SizedBox(height: AppSpacing.md),
               Text(

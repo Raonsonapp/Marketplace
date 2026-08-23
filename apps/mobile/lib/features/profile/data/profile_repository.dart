@@ -20,9 +20,9 @@ class ProfileRepository {
     String? language,
   }) async {
     final json = await _client.patch('/profile', data: {
-      if (fullName != null) 'full_name': fullName,
-      if (email != null) 'email': email,
-      if (language != null) 'language': language,
+      'full_name': ?fullName,
+      'email': ?email,
+      'language': ?language,
     });
     return AppUser.fromJson(json);
   }

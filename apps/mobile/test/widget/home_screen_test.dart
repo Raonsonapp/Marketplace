@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tajikshop/core/localization/fallback_localizations_delegate.dart';
 import 'package:tajikshop/core/network/api_client.dart';
 import 'package:tajikshop/core/network/app_exception.dart';
 import 'package:tajikshop/core/storage/secure_token_storage.dart';
@@ -57,11 +58,16 @@ void main() {
           _FailingHomeRepository(const Duration(milliseconds: 50)),
         ),
       ],
-      child: const MaterialApp(
-        locale: Locale('tg'),
+      child: MaterialApp(
+        locale: const Locale('tg'),
         supportedLocales: AppLocalizations.supportedLocales,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        home: HomeScreen(),
+        localizationsDelegates: const [
+          ...AppLocalizations.localizationsDelegates,
+          FallbackMaterialLocalizationsDelegate(),
+          FallbackCupertinoLocalizationsDelegate(),
+          FallbackWidgetsLocalizationsDelegate(),
+        ],
+        home: const HomeScreen(),
       ),
     );
 

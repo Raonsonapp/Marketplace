@@ -9,7 +9,7 @@ part 'product.g.dart';
 /// floats, and are rendered only via [CurrencyFormatter] — the client never
 /// computes prices (see docs/SECURITY.md).
 @freezed
-class Product with _$Product {
+abstract class Product with _$Product {
   const factory Product({
     required String id,
     required String name,
@@ -39,7 +39,7 @@ class Product with _$Product {
 /// `product_repository.dart`) since the API returns the product fields
 /// flattened alongside a `related` array rather than nested.
 @freezed
-class ProductDetail with _$ProductDetail {
+abstract class ProductDetail with _$ProductDetail {
   const factory ProductDetail({
     required Product product,
     @Default(<Product>[]) List<Product> related,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
@@ -25,7 +26,7 @@ class CatalogScreen extends ConsumerWidget {
         title: Text(l10n.catalogTitle),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(LucideIcons.search),
             onPressed: () => context.push(RoutePaths.search),
           ),
         ],
@@ -74,13 +75,13 @@ class CatalogScreen extends ConsumerWidget {
                             shape: BoxShape.circle,
                           ),
                           child: category.iconUrl == null || category.iconUrl!.isEmpty
-                              ? const Icon(Icons.category_outlined)
+                              ? const Icon(LucideIcons.layoutGrid)
                               : ClipOval(
                                   child: Image.network(
                                     category.iconUrl!,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) =>
-                                        const Icon(Icons.category_outlined),
+                                        const Icon(LucideIcons.layoutGrid),
                                   ),
                                 ),
                         ),

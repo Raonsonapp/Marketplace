@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../models/product.dart';
 import '../theme/app_colors.dart';
@@ -45,12 +46,12 @@ class ProductCard extends StatelessWidget {
                       color: theme.colorScheme.surfaceContainerHighest,
                     ),
                     child: product.imageUrl.isEmpty
-                        ? const Icon(Icons.image_outlined, size: 32)
+                        ? const Icon(LucideIcons.image, size: 32)
                         : Image.network(
                             product.imageUrl,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
-                                const Icon(Icons.broken_image_outlined, size: 32),
+                                const Icon(LucideIcons.imageOff, size: 32),
                             loadingBuilder: (context, child, progress) {
                               if (progress == null) return child;
                               return const Center(
@@ -165,7 +166,7 @@ class _FavoriteButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(6),
           child: Icon(
-            isFavorite ? Icons.favorite : Icons.favorite_border,
+            isFavorite ? LucideIcons.heart : LucideIcons.heart,
             size: 18,
             color: isFavorite ? AppColors.neonGreenHighlight : Colors.white,
           ),

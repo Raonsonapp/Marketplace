@@ -8,7 +8,7 @@ import '../data/auth_repository.dart';
 part 'phone_entry_controller.freezed.dart';
 
 @freezed
-class PhoneEntryState with _$PhoneEntryState {
+abstract class PhoneEntryState with _$PhoneEntryState {
   const factory PhoneEntryState({
     @Default('') String rawInput,
     @Default(false) bool isSubmitting,
