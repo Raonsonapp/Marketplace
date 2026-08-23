@@ -29,3 +29,14 @@ class RoutePaths {
   static String productDetailPath(String productId) => '/product/$productId';
   static String orderDetailPath(String orderId) => '/orders/$orderId';
 }
+
+/// Passed via `GoRouter`'s `extra` to the OTP screen — carries the Firebase
+/// `verificationId` (docs/FIREBASE_SETUP.md) alongside the phone number
+/// when the phone-entry screen went through Firebase Phone Auth rather
+/// than the console-OTP fallback.
+class OtpRouteArgs {
+  const OtpRouteArgs({required this.phone, this.firebaseVerificationId});
+
+  final String phone;
+  final String? firebaseVerificationId;
+}

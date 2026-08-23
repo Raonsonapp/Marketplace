@@ -14,7 +14,9 @@ import '../../../core/storage/secure_token_storage.dart';
 class OrderTrackingSocket {
   OrderTrackingSocket(this._ref);
 
-  final Ref _ref;
+  // WidgetRef (not Ref — a distinct type in Riverpod): this is always
+  // constructed from a ConsumerState's `ref` field (see OrderDetailScreen).
+  final WidgetRef _ref;
   WebSocketChannel? _channel;
   StreamSubscription<dynamic>? _subscription;
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tajikshop/core/icons/app_icons.dart';
@@ -12,21 +14,105 @@ import '../../../core/widgets/skeleton_loader.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/order_detail_controller.dart';
 import '../data/order_models.dart';
+import '../data/order_tracking_socket.dart';
 import 'widgets/order_status_badge.dart';
+import 'widgets/order_tracking_timeline.dart';
 
-/// Order detail screen (`GET /orders/:id` — docs/API_SPEC.md): items,
-/// status history, cancel/reorder actions.
-class OrderDetailScreen extends ConsumerWidget {
+/// Order detail screen (`GET /orders/:id` — docs/API_SPEC.md): items, a
+/// live-updating status timeline, cancel/reorder actions.
+///
+/// Tracking: tries `WS /ws/orders/:orderId` for push updates while the
+/// screen is open; if that never connects (or drops), falls back to
+/// polling `GET /orders/:id` every few seconds — either way the screen
+/// stays correct. Both stop once the order reaches a terminal status
+/// (delivered/cancelled) or the screen is closed.
+class OrderDetailScreen extends ConsumerStatefulWidget {
   const OrderDetailScreen({super.key, required this.orderId});
 
   final String orderId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<OrderDetailScreen> createState() => _OrderDetailScreenState();
+}
+
+class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
+  late final OrderTrackingSocket _socket;
+  Timer? _pollTimer;
+  bool _wsConnected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _socket = OrderTrackingSocket(ref);
+    _startTracking();
+  }
+
+  @override
+  void dispose() {
+    _pollTimer?.cancel();
+    _socket.disconnect();
+    super.dispose();
+  }
+
+  void _startTracking() {
+    _socket.connect(
+      orderId: widget.orderId,
+      onStatus: (payload) {
+        // The server may push either `{"status": "..."}` or a full order
+        // object; either way, the safest, always-correct reaction is a
+        // fresh REST fetch rather than trying to patch the local state
+        // from a partial payload.
+        if (!mounted) return;
+        setState(() => _wsConnected = true);
+        _stopPollingIfTerminal(payload['status'] as String?);
+        ref.read(orderDetailControllerProvider(widget.orderId).notifier).refresh();
+      },
+      onDone: () {
+        if (!mounted) return;
+        setState(() => _wsConnected = false);
+        _startPollingFallback();
+      },
+      onError: (_) {
+        if (!mounted) return;
+        setState(() => _wsConnected = false);
+        _startPollingFallback();
+      },
+    );
+    // Also arm the polling fallback immediately: if the WebSocket never
+    // calls back at all (e.g. connect() hangs on a flaky network), the
+    // screen must still refresh itself rather than go stale forever.
+    _startPollingFallback();
+  }
+
+  void _startPollingFallback() {
+    if (_pollTimer != null) return;
+    _pollTimer = Timer.periodic(const Duration(seconds: 8), (_) {
+      if (_wsConnected) return; // WS is live — no need to also poll.
+      ref.read(orderDetailControllerProvider(widget.orderId).notifier).refresh();
+    });
+  }
+
+  void _stopPollingIfTerminal(String? rawStatus) {
+    if (rawStatus == null) return;
+    final status = OrderStatus.fromApi(rawStatus);
+    if (!status.isActive) {
+      _pollTimer?.cancel();
+      _pollTimer = null;
+      _socket.disconnect();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final provider = orderDetailControllerProvider(orderId);
+    final provider = orderDetailControllerProvider(widget.orderId);
     final orderAsync = ref.watch(provider);
     final languageCode = Localizations.localeOf(context).languageCode;
+
+    ref.listen(provider, (previous, next) {
+      final order = next.valueOrNull;
+      if (order != null) _stopPollingIfTerminal(order.status);
+    });
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.orderDetailTitle)),
@@ -49,6 +135,18 @@ class OrderDetailScreen extends ConsumerWidget {
                 Text(
                   DateFormat('d MMM yyyy, HH:mm').format(order.createdAt),
                   style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                Container(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
+                  ),
+                  child: OrderTrackingTimeline(
+                    currentStatus: order.status,
+                    isLive: _wsConnected && status.isActive,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(l10n.orderItemsTitle, style: Theme.of(context).textTheme.titleMedium),
@@ -168,6 +266,6 @@ class OrderDetailScreen extends ConsumerWidget {
       ),
     );
     if (confirmed != true) return;
-    await ref.read(orderDetailControllerProvider(orderId).notifier).cancel(reasonController.text);
+    await ref.read(orderDetailControllerProvider(widget.orderId).notifier).cancel(reasonController.text);
   }
 }

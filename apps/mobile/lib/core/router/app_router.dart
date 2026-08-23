@@ -93,6 +93,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.otp,
         builder: (context, state) {
+          final extra = state.extra;
+          if (extra is OtpRouteArgs) {
+            return OtpVerificationScreen(
+              phone: extra.phone,
+              firebaseVerificationId: extra.firebaseVerificationId,
+            );
+          }
+          // Fallback for a deep link / restored route with no `extra`
+          // (e.g. `?phone=...` only) — always uses the console-OTP path.
           final phone = state.uri.queryParameters['phone'] ?? '';
           return OtpVerificationScreen(phone: phone);
         },

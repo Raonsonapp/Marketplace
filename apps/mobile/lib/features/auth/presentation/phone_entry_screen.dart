@@ -37,9 +37,21 @@ class _PhoneEntryScreenState extends ConsumerState<PhoneEntryScreen> {
     final state = ref.watch(phoneEntryControllerProvider);
 
     ref.listen(phoneEntryControllerProvider, (previous, next) {
+      if (next.autoVerifiedAndLoggedIn) {
+        // Firebase auto-verified the code on-device (Android SMS
+        // auto-retrieval) and login already completed — skip OTP entry.
+        context.go(RoutePaths.home);
+        return;
+      }
       if (next.otpSent && next.normalizedPhone != null) {
         ref.read(phoneEntryControllerProvider.notifier).resetOtpSentFlag();
-        context.push('${RoutePaths.otp}?phone=${Uri.encodeComponent(next.normalizedPhone!)}');
+        context.push(
+          RoutePaths.otp,
+          extra: OtpRouteArgs(
+            phone: next.normalizedPhone!,
+            firebaseVerificationId: next.firebaseVerificationId,
+          ),
+        );
       }
     });
 

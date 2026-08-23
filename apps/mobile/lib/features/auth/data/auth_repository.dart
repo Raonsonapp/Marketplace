@@ -23,6 +23,22 @@ class AuthRepository {
     return AuthTokens.fromJson(json);
   }
 
+  /// `POST /auth/firebase-verify` — the real-SMS registration path (see
+  /// docs/FIREBASE_SETUP.md, docs/SECURITY.md). [idToken] comes from
+  /// `FirebaseAuth.signInWithCredential(...).user.getIdToken()` after the
+  /// user enters the code Firebase texted them; the backend verifies it
+  /// with Google and returns the same shape as [verifyOtp].
+  Future<AuthTokens> verifyFirebaseToken({
+    required String idToken,
+    String? fullName,
+  }) async {
+    final json = await _client.post('/auth/firebase-verify', data: {
+      'id_token': idToken,
+      'full_name': ?fullName,
+    });
+    return AuthTokens.fromJson(json);
+  }
+
   Future<AuthTokens> refresh({required String refreshToken}) async {
     final json = await _client.post('/auth/refresh', data: {'refresh_token': refreshToken});
     return AuthTokens.fromJson(json);

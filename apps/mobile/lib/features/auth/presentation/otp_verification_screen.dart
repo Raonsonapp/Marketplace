@@ -16,9 +16,13 @@ import '../application/otp_controller.dart';
 /// OTP-entry screen for the [phone] number that just received a code
 /// (docs/API_SPEC.md `POST /auth/verify-otp`).
 class OtpVerificationScreen extends ConsumerStatefulWidget {
-  const OtpVerificationScreen({super.key, required this.phone});
+  const OtpVerificationScreen({super.key, required this.phone, this.firebaseVerificationId});
 
   final String phone;
+
+  /// Non-null when the phone-entry screen went through Firebase Phone Auth
+  /// (docs/FIREBASE_SETUP.md) rather than the console-OTP fallback.
+  final String? firebaseVerificationId;
 
   @override
   ConsumerState<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
@@ -36,7 +40,9 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final provider = otpControllerProvider(widget.phone);
+    final provider = otpControllerProvider(
+      (phone: widget.phone, firebaseVerificationId: widget.firebaseVerificationId),
+    );
     final state = ref.watch(provider);
 
     ref.listen(provider, (previous, next) {
