@@ -5,9 +5,9 @@ Update this file whenever a phase/feature status changes.
 
 ## Current phase
 
-**Phase 3 in progress** (mobile foundation, now also covering the barcode
-scanner and order delivery-status timeline pulled forward from Phase 5).
-Phase 2 (backend) is complete and verified.
+**Phase 3 complete and verified.** Phase 2 (backend) is also complete and
+verified. Merged to `main` at the user's request. Next up: Phase 4 (run
+mobile + backend together live) and Phase 5 remainder.
 
 ## Completed
 
@@ -48,30 +48,37 @@ Phase 2 (backend) is complete and verified.
       `docs/PRIVACY_POLICY.md` (trilingual, needs public hosting before
       submission — see that doc).
 
-## In progress
-
-- [ ] Phase 3 — Flutter foundation (`apps/mobile`): theme, tj/ru
-      localization, GoRouter, Dio API client, Riverpod providers, core
-      widgets/states, splash/onboarding/auth/home/catalog/cart/checkout/
-      orders/favorites/profile screens. Pulled forward from Phase 5 at the
-      user's request: outline icon set (`lucide_icons`, Feather-style
-      fallback) replacing default Material icons app-wide; a real barcode/
-      price scanner screen (`mobile_scanner` against
-      `GET /products/barcode/:code`); an order delivery-status timeline on
-      the order detail screen (wired to `/ws/orders/:id` where possible);
-      and Firebase Phone Auth wired into the phone-login screens (falling
-      back to the console-OTP flow until the user completes the Firebase
-      console setup in `docs/FIREBASE_SETUP.md`). Third wave in flight:
-      real app icon via `flutter_launcher_icons`, a third language
-      (English, alongside Tajik/Russian), and a GPS + OpenStreetMap
-      "nearby stores" screen (device location via `geolocator`,
-      vendor-neutral map via `flutter_map` — no paid Google Maps key —
-      showing store markers with what each store carries).
+- [x] Phase 3 — Flutter foundation (`apps/mobile`): theme (dark primary +
+      light, brand colors), tj/ru/en localization, GoRouter
+      (`StatefulShellRoute` bottom nav + auth redirect guard), Dio API
+      client (auth-refresh interceptor, typed exceptions), Riverpod
+      providers, core widgets/states (empty/error/skeleton/offline), and
+      full screens: auth (phone+OTP), home feed, catalog, product detail,
+      search, cart (server-totals only, never computed client-side),
+      checkout (COD + idempotency key), orders (tabs + detail), favorites,
+      profile/settings/addresses. Plus, pulled forward from Phase 5 at the
+      user's request: a bundled outline icon set (Lucide font + glyphs,
+      offline, no broken third-party package dependency); a real barcode/
+      price scanner (`mobile_scanner` against
+      `GET /products/barcode/:code`, on-demand camera permission); an
+      order delivery-status timeline (WebSocket `/ws/orders/:id` with an
+      8s-polling fallback); Firebase Phone Auth wired with an automatic
+      fallback to the console-OTP flow when no real Firebase project is
+      configured yet; the real app icon via `flutter_launcher_icons`
+      (Android adaptive icon + iOS AppIcon, from the user's processed
+      artwork); and a GPS + OpenStreetMap "nearby stores" screen
+      (`geolocator` + `flutter_map`, no paid Google Maps key, tap-to-see
+      each store's distance/delivery-pickup flags/sample products).
+      Verified in-session: `flutter analyze` — 0 issues; `flutter test` —
+      23/23 passing; `flutter_launcher_icons`/`build_runner` ran clean.
 
 ## Not started
 
-- [ ] Phase 4 — Full core-commerce vertical slice wired end-to-end against a
-      running backend (currently wired in code but not yet run together live)
+- [ ] Phase 4 — Run the mobile app against the live backend
+      (`docker compose up` + `flutter run`) to validate the full vertical
+      slice end-to-end; currently wired in code on both sides but never
+      exercised together live in this sandbox (no Android/emulator
+      environment here — see PROJECT_STATE known issues)
 - [ ] Phase 5 remainder — promotions, reviews, notifications, support chat
       (barcode scanner and delivery-status tracking pulled into Phase 3, see
       above)
@@ -97,6 +104,12 @@ Phase 2 (backend) is complete and verified.
   specifically to avoid a paid/API-key-gated vendor.
 - Google Play screenshots/feature graphic not yet produced — needs a
   stable, running UI to capture from (Phase 9 task).
+- Firebase Phone Auth's Dart-level fallback (try/catch around
+  `Firebase.initializeApp`) is structurally verified, but the mobile app
+  itself has never been launched on a device/emulator in this sandbox — a
+  native-level Firebase SDK failure on the still-placeholder
+  `firebase_options.dart` cannot be fully ruled out until someone completes
+  `docs/FIREBASE_SETUP.md` and runs the app for real.
 
 ## Files created (updated per commit)
 
@@ -112,11 +125,13 @@ list; this section summarizes top-level additions per phase.
 
 ## Next tasks
 
-1. Finish Phase 3 mobile foundation (incl. scanner/delivery-timeline/icons).
+1. Merged into `main` (this commit) at the user's explicit, repeated request.
 2. Run the mobile app against the live backend via `docker compose up` +
    `flutter run` to validate the vertical slice end-to-end (Phase 4).
-3. Decide and merge the completed work into `main` (user has asked for a
-   direct push once the current build is verified).
+3. Complete the external, sandbox-can't-do-this setup: `docs/FIREBASE_SETUP.md`
+   (if Firebase Phone Auth is wanted) and/or get a `TELEGRAM_GATEWAY_TOKEN`
+   (recommended, see `docs/SMS_PROVIDERS.md`); host `docs/PRIVACY_POLICY.md`
+   at a public URL for Play Console.
 4. Continue into Phase 5 remainder (promotions, reviews, notifications,
    support chat), then Phase 6 admin panel, Phase 7 tests, Phase 9 Android
-   release prep.
+   release prep (incl. real Play Store screenshots).
