@@ -40,9 +40,13 @@ Any managed Postgres works; **Supabase** is what this account already uses
 elsewhere and has a free tier:
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. Project Settings → Database → copy the **connection string** (URI,
-   "Session pooler" or "Direct connection" both work). It looks like:
-   `postgres://postgres:<password>@<host>:5432/postgres`.
+2. Project Settings → Database → Connection string → **use the "Session
+   pooler" tab, not "Direct connection".** Supabase's direct-connection
+   hostname (`db.<ref>.supabase.co`) is IPv6-only; Hugging Face Spaces
+   containers have no IPv6 egress, so a direct-connection URL fails with a
+   DNS lookup error at startup ("no such host"). The Session pooler
+   hostname (`aws-0-<region>.pooler.supabase.com`, port `5432`) is
+   IPv4-reachable and works as a drop-in `DATABASE_URL`.
 3. That whole string is your `DATABASE_URL` secret (step 4). The backend
    applies every migration automatically on first boot
    (`internal/db/migrate.go`) — you do not need to run anything by hand.
