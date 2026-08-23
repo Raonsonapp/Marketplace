@@ -75,7 +75,13 @@ func run() error {
 	// ---- auth primitives ----
 	tokenMgr := auth.NewTokenManager(cfg.JWTSecret, cfg.AccessTTL)
 	limiter := auth.NewLimiter(rdb)
-	otpSender := otp.NewConsoleSender()
+	var otpSender otp.Sender = otp.NewConsoleSender()
+	if cfg.TelegramGatewayToken != "" {
+		otpSender = otp.NewTelegramGatewaySender(cfg.TelegramGatewayToken)
+		log.Printf("otp: delivering codes via Telegram Gateway")
+	} else {
+		log.Printf("otp: TELEGRAM_GATEWAY_TOKEN not set, logging OTP codes to console (dev mode)")
+	}
 	otpMgr := auth.NewOTPManager(
 		repository.NewOTPStoreAdapter(otpRepo, pool), otpSender, limiter,
 		cfg.OTPTTL, cfg.OTPResendCD, cfg.BcryptCost,

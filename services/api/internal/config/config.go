@@ -42,6 +42,13 @@ type Config struct {
 	// and the console-OTP flow (send-otp/verify-otp) keeps working as-is.
 	FirebaseWebAPIKey string
 
+	// TelegramGatewayToken enables sending console-OTP codes for
+	// send-otp/verify-otp through Telegram Gateway instead of logging them —
+	// see docs/SMS_PROVIDERS.md. This is the recommended free-of-billing SMS
+	// path for Tajikistan/Central Asia/Russia. Optional: when empty, OTP
+	// codes are logged via ConsoleSender (local dev) as before.
+	TelegramGatewayToken string
+
 	// LoyaltyEarnRatePercent is the percentage of order total credited back
 	// as TajBonus on delivery/creation (business rule, not schema-enforced).
 	LoyaltyEarnRatePercent float64
@@ -103,6 +110,7 @@ func Load() (*Config, error) {
 
 	cfg.MigrationsDir = getOr("MIGRATIONS_DIR", "migrations")
 	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
+	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
 
 	origins := getOr("CORS_ORIGINS", "http://localhost:3000")
 	for _, o := range strings.Split(origins, ",") {

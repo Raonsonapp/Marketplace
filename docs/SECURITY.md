@@ -7,7 +7,10 @@
   bcrypt hash in `otp_codes`, 5-minute expiry, max 5 verification attempts
   (`otp_codes.attempts`), one active OTP per phone (older ones invalidated
   on a new send). Resend cooldown of 60s enforced via Redis key
-  `otp:cooldown:<phone>`.
+  `otp:cooldown:<phone>`. Delivery is pluggable (`otp.Sender`): console
+  logging in dev, Telegram Gateway in production by default — see
+  `docs/SMS_PROVIDERS.md` for the full comparison, including the Firebase
+  Phone Auth alternative below.
 - Rate limiting (Redis, sliding window): 5 OTP sends / phone / hour, 20 / IP
   / hour; 5 verify attempts / phone / 15 min.
 - On success: JWT access token (RS256, 15 min TTL) + opaque refresh token
