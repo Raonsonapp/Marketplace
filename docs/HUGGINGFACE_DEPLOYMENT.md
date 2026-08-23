@@ -174,6 +174,26 @@ Actions → "Deploy to Hugging Face Spaces" → Run workflow — useful the very
 first time, to push the Dockerfile/README to a brand-new Space instead of
 copy-pasting them by hand.
 
+## Prepared-statement errors through a pooled connection
+
+If the container logs ever show `prepared statement "stmtcache_..." already
+exists (SQLSTATE 42P05)`, or a migration fails with `relation "..." already
+exists` right after that, it's a known pgx-vs-pooler interaction: pgx names
+its prepared statements deterministically by SQL hash, and a pooler
+(Supabase's Session/Transaction pooler, PgBouncer, Supavisor, ...) can hand a
+reconnecting client a backend connection that still has a same-named
+statement left over from a previous, abruptly-terminated container instance
+— the name collides. Both `internal/db/postgres.go` (the app's pool) and
+`internal/db/migrate.go` (the migration runner) already force
+`default_query_exec_mode=simple_protocol`, which never names or caches a
+prepared statement, so this shouldn't happen going forward. The
+`relation "..." already exists` symptom means an *earlier* crash already got
+far enough to run the CREATE TABLE statements before hitting this bug, so
+the schema is half-applied without `schema_migrations` recording it — if you
+hit that on a fresh project with no real data yet, reset it once from
+Supabase's SQL Editor (`DROP SCHEMA public CASCADE; CREATE SCHEMA public;`)
+and let the next boot re-run every migration cleanly.
+
 ## Known limits of this setup
 
 - Hugging Face Spaces sleep after inactivity on the free tier — the first
