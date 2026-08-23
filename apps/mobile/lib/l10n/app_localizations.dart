@@ -1389,6 +1389,330 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Дидани каталог'**
   String get storeBrowseCatalog;
+
+  /// No description provided for @loyaltyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'TajBonus'**
+  String get loyaltyTitle;
+
+  /// No description provided for @loyaltyBalance.
+  ///
+  /// In tg, this message translates to:
+  /// **'Тавозун'**
+  String get loyaltyBalance;
+
+  /// No description provided for @loyaltyLifetimeEarned.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар маҷмӯъ ба даст омад: {amount}'**
+  String loyaltyLifetimeEarned(String amount);
+
+  /// No description provided for @loyaltyTransactionsTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Таърихи амалиёт'**
+  String get loyaltyTransactionsTitle;
+
+  /// No description provided for @loyaltyEmptyTransactionsTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳанӯз амалиёте нест'**
+  String get loyaltyEmptyTransactionsTitle;
+
+  /// No description provided for @loyaltyEmptyTransactionsMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Бо харидҳои худ TajBonus ҷамъ кунед — амалиётҳои шумо дар ин ҷо пайдо мешаванд'**
+  String get loyaltyEmptyTransactionsMessage;
+
+  /// No description provided for @loyaltyTypeEarn.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҷамъшуда'**
+  String get loyaltyTypeEarn;
+
+  /// No description provided for @loyaltyTypeSpend.
+  ///
+  /// In tg, this message translates to:
+  /// **'Истифодашуда'**
+  String get loyaltyTypeSpend;
+
+  /// No description provided for @loyaltyTypeExpire.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мӯҳлаташ гузашт'**
+  String get loyaltyTypeExpire;
+
+  /// No description provided for @loyaltyTypeAdjust.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ислоҳшуда'**
+  String get loyaltyTypeAdjust;
+
+  /// No description provided for @loyaltyTypeCampaign.
+  ///
+  /// In tg, this message translates to:
+  /// **'Бонуси акция'**
+  String get loyaltyTypeCampaign;
+
+  /// No description provided for @loyaltyTierStandard.
+  ///
+  /// In tg, this message translates to:
+  /// **'Стандартӣ'**
+  String get loyaltyTierStandard;
+
+  /// No description provided for @loyaltyTierSilver.
+  ///
+  /// In tg, this message translates to:
+  /// **'Нуқрагӣ'**
+  String get loyaltyTierSilver;
+
+  /// No description provided for @loyaltyTierGold.
+  ///
+  /// In tg, this message translates to:
+  /// **'Тиллоӣ'**
+  String get loyaltyTierGold;
+
+  /// No description provided for @loyaltyTierPlatinum.
+  ///
+  /// In tg, this message translates to:
+  /// **'Платинагӣ'**
+  String get loyaltyTierPlatinum;
+
+  /// No description provided for @promotionsTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Пешниҳодҳо'**
+  String get promotionsTitle;
+
+  /// No description provided for @promotionsEmptyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Пешниҳоде нест'**
+  String get promotionsEmptyTitle;
+
+  /// No description provided for @promotionsEmptyMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар айни замон пешниҳоди фаъол надоред. Баъдтар аз нав санҷед.'**
+  String get promotionsEmptyMessage;
+
+  /// No description provided for @promotionsValidUntil.
+  ///
+  /// In tg, this message translates to:
+  /// **'То {date} амал мекунад'**
+  String promotionsValidUntil(String date);
+
+  /// No description provided for @promotionsCopyCode.
+  ///
+  /// In tg, this message translates to:
+  /// **'Нусхабардории рамз: {code}'**
+  String promotionsCopyCode(String code);
+
+  /// No description provided for @promotionsCodeCopied.
+  ///
+  /// In tg, this message translates to:
+  /// **'Рамз нусхабардорӣ шуд'**
+  String get promotionsCodeCopied;
+
+  /// No description provided for @reviewsTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шарҳҳо'**
+  String get reviewsTitle;
+
+  /// No description provided for @reviewsEmptyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳанӯз шарҳе нест'**
+  String get reviewsEmptyTitle;
+
+  /// No description provided for @reviewsEmptyMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Аввалин шахсе бошед, ки дар бораи ин маҳсулот шарҳ менависад'**
+  String get reviewsEmptyMessage;
+
+  /// No description provided for @reviewsAnonymousReviewer.
+  ///
+  /// In tg, this message translates to:
+  /// **'Харидор'**
+  String get reviewsAnonymousReviewer;
+
+  /// No description provided for @reviewsLeaveReview.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шарҳ навиштан'**
+  String get reviewsLeaveReview;
+
+  /// No description provided for @reviewsWriteTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шарҳ навиштан'**
+  String get reviewsWriteTitle;
+
+  /// No description provided for @reviewsForPurchase.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шарҳ барои: {productName}'**
+  String reviewsForPurchase(String productName);
+
+  /// No description provided for @reviewsTextLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шарҳи шумо'**
+  String get reviewsTextLabel;
+
+  /// No description provided for @reviewsTextHint.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар бораи маҳсулот нависед…'**
+  String get reviewsTextHint;
+
+  /// No description provided for @reviewsImageUrlLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Суратро замима кунед'**
+  String get reviewsImageUrlLabel;
+
+  /// No description provided for @reviewsImageUrlHint.
+  ///
+  /// In tg, this message translates to:
+  /// **'Пайванди сурат (URL)'**
+  String get reviewsImageUrlHint;
+
+  /// No description provided for @reviewsSubmit.
+  ///
+  /// In tg, this message translates to:
+  /// **'Фиристодани шарҳ'**
+  String get reviewsSubmit;
+
+  /// No description provided for @reviewsSubmitSuccess.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ташаккур! Шарҳи шумо фиристода шуд'**
+  String get reviewsSubmitSuccess;
+
+  /// No description provided for @reviewsDuplicateError.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шумо аллакай барои ин харид шарҳ навиштаед'**
+  String get reviewsDuplicateError;
+
+  /// No description provided for @notificationsTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Огоҳномаҳо'**
+  String get notificationsTitle;
+
+  /// No description provided for @notificationsEmptyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Огоҳнома нест'**
+  String get notificationsEmptyTitle;
+
+  /// No description provided for @notificationsEmptyMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Огоҳномаҳои шумо дар ин ҷо пайдо мешаванд'**
+  String get notificationsEmptyMessage;
+
+  /// No description provided for @notificationsPreferencesTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Танзими огоҳномаҳо'**
+  String get notificationsPreferencesTitle;
+
+  /// No description provided for @notificationsPrefOrders.
+  ///
+  /// In tg, this message translates to:
+  /// **'Фармоишҳо'**
+  String get notificationsPrefOrders;
+
+  /// No description provided for @notificationsPrefPromotions.
+  ///
+  /// In tg, this message translates to:
+  /// **'Тахфифҳо ва акцияҳо'**
+  String get notificationsPrefPromotions;
+
+  /// No description provided for @notificationsPrefPersonalOffers.
+  ///
+  /// In tg, this message translates to:
+  /// **'Пешниҳодҳои шахсӣ'**
+  String get notificationsPrefPersonalOffers;
+
+  /// No description provided for @notificationsPrefBonusUpdates.
+  ///
+  /// In tg, this message translates to:
+  /// **'Тағйироти TajBonus'**
+  String get notificationsPrefBonusUpdates;
+
+  /// No description provided for @notificationsPrefNewProducts.
+  ///
+  /// In tg, this message translates to:
+  /// **'Маҳсулоти нав'**
+  String get notificationsPrefNewProducts;
+
+  /// No description provided for @supportTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дастгирӣ'**
+  String get supportTitle;
+
+  /// No description provided for @supportNewConversation.
+  ///
+  /// In tg, this message translates to:
+  /// **'Муроҷиати нав'**
+  String get supportNewConversation;
+
+  /// No description provided for @supportEmptyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳанӯз муроҷиате нест'**
+  String get supportEmptyTitle;
+
+  /// No description provided for @supportEmptyMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Агар савол дошта бошед, бо мо тамос гиред'**
+  String get supportEmptyMessage;
+
+  /// No description provided for @supportStatusOpen.
+  ///
+  /// In tg, this message translates to:
+  /// **'Фаъол'**
+  String get supportStatusOpen;
+
+  /// No description provided for @supportStatusClosed.
+  ///
+  /// In tg, this message translates to:
+  /// **'Пӯшидашуда'**
+  String get supportStatusClosed;
+
+  /// No description provided for @supportChatTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Чат бо дастгирӣ'**
+  String get supportChatTitle;
+
+  /// No description provided for @supportChatEmptyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Паём нест'**
+  String get supportChatEmptyTitle;
+
+  /// No description provided for @supportChatEmptyMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Паёми аввалини худро фиристед'**
+  String get supportChatEmptyMessage;
+
+  /// No description provided for @supportChatInputHint.
+  ///
+  /// In tg, this message translates to:
+  /// **'Паём нависед…'**
+  String get supportChatInputHint;
 }
 
 class _AppLocalizationsDelegate

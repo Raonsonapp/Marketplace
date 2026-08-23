@@ -5,10 +5,11 @@ import '../../../core/network/api_client.dart';
 import 'notification_models.dart';
 
 /// Calls `/notifications*` (docs/API_SPEC.md). `POST /devices` (FCM token
-/// registration) is intentionally not called here — this pass wires only
-/// the REST-backed list/preferences UI; see docs note in the loyalty/
-/// notifications feature report for why real push receiving is out of
-/// scope (no `firebase_messaging` wiring yet to produce a real token).
+/// registration) is intentionally not called here: this pass wires only
+/// the REST-backed list/preferences UI. Real push delivery needs an actual
+/// FCM token, which needs `firebase_messaging` wired up first — that
+/// package isn't a dependency yet (only `firebase_core`/`firebase_auth`
+/// are, for Phone Auth), so there is no real token to register.
 class NotificationsRepository {
   NotificationsRepository(this._client);
 

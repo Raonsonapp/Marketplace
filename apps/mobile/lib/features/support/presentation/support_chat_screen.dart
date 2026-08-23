@@ -199,13 +199,13 @@ class _SupportChatScreenState extends ConsumerState<SupportChatScreen> {
     setState(() => _isSending = true);
     try {
       await ref.read(supportChatControllerProvider(widget.conversationId).notifier).send(text);
+      if (!mounted) return;
       _textController.clear();
       _scrollToBottom();
     } catch (error) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(ErrorStateView.messageFor(context, error))));
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(ErrorStateView.messageFor(context, error))));
     } finally {
       if (mounted) setState(() => _isSending = false);
     }

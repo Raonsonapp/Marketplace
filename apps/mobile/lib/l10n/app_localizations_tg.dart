@@ -688,4 +688,179 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get storeBrowseCatalog => 'Дидани каталог';
+
+  @override
+  String get loyaltyTitle => 'TajBonus';
+
+  @override
+  String get loyaltyBalance => 'Тавозун';
+
+  @override
+  String loyaltyLifetimeEarned(String amount) {
+    return 'Дар маҷмӯъ ба даст омад: $amount';
+  }
+
+  @override
+  String get loyaltyTransactionsTitle => 'Таърихи амалиёт';
+
+  @override
+  String get loyaltyEmptyTransactionsTitle => 'Ҳанӯз амалиёте нест';
+
+  @override
+  String get loyaltyEmptyTransactionsMessage =>
+      'Бо харидҳои худ TajBonus ҷамъ кунед — амалиётҳои шумо дар ин ҷо пайдо мешаванд';
+
+  @override
+  String get loyaltyTypeEarn => 'Ҷамъшуда';
+
+  @override
+  String get loyaltyTypeSpend => 'Истифодашуда';
+
+  @override
+  String get loyaltyTypeExpire => 'Мӯҳлаташ гузашт';
+
+  @override
+  String get loyaltyTypeAdjust => 'Ислоҳшуда';
+
+  @override
+  String get loyaltyTypeCampaign => 'Бонуси акция';
+
+  @override
+  String get loyaltyTierStandard => 'Стандартӣ';
+
+  @override
+  String get loyaltyTierSilver => 'Нуқрагӣ';
+
+  @override
+  String get loyaltyTierGold => 'Тиллоӣ';
+
+  @override
+  String get loyaltyTierPlatinum => 'Платинагӣ';
+
+  @override
+  String get promotionsTitle => 'Пешниҳодҳо';
+
+  @override
+  String get promotionsEmptyTitle => 'Пешниҳоде нест';
+
+  @override
+  String get promotionsEmptyMessage =>
+      'Дар айни замон пешниҳоди фаъол надоред. Баъдтар аз нав санҷед.';
+
+  @override
+  String promotionsValidUntil(String date) {
+    return 'То $date амал мекунад';
+  }
+
+  @override
+  String promotionsCopyCode(String code) {
+    return 'Нусхабардории рамз: $code';
+  }
+
+  @override
+  String get promotionsCodeCopied => 'Рамз нусхабардорӣ шуд';
+
+  @override
+  String get reviewsTitle => 'Шарҳҳо';
+
+  @override
+  String get reviewsEmptyTitle => 'Ҳанӯз шарҳе нест';
+
+  @override
+  String get reviewsEmptyMessage =>
+      'Аввалин шахсе бошед, ки дар бораи ин маҳсулот шарҳ менависад';
+
+  @override
+  String get reviewsAnonymousReviewer => 'Харидор';
+
+  @override
+  String get reviewsLeaveReview => 'Шарҳ навиштан';
+
+  @override
+  String get reviewsWriteTitle => 'Шарҳ навиштан';
+
+  @override
+  String reviewsForPurchase(String productName) {
+    return 'Шарҳ барои: $productName';
+  }
+
+  @override
+  String get reviewsTextLabel => 'Шарҳи шумо';
+
+  @override
+  String get reviewsTextHint => 'Дар бораи маҳсулот нависед…';
+
+  @override
+  String get reviewsImageUrlLabel => 'Суратро замима кунед';
+
+  @override
+  String get reviewsImageUrlHint => 'Пайванди сурат (URL)';
+
+  @override
+  String get reviewsSubmit => 'Фиристодани шарҳ';
+
+  @override
+  String get reviewsSubmitSuccess => 'Ташаккур! Шарҳи шумо фиристода шуд';
+
+  @override
+  String get reviewsDuplicateError =>
+      'Шумо аллакай барои ин харид шарҳ навиштаед';
+
+  @override
+  String get notificationsTitle => 'Огоҳномаҳо';
+
+  @override
+  String get notificationsEmptyTitle => 'Огоҳнома нест';
+
+  @override
+  String get notificationsEmptyMessage =>
+      'Огоҳномаҳои шумо дар ин ҷо пайдо мешаванд';
+
+  @override
+  String get notificationsPreferencesTitle => 'Танзими огоҳномаҳо';
+
+  @override
+  String get notificationsPrefOrders => 'Фармоишҳо';
+
+  @override
+  String get notificationsPrefPromotions => 'Тахфифҳо ва акцияҳо';
+
+  @override
+  String get notificationsPrefPersonalOffers => 'Пешниҳодҳои шахсӣ';
+
+  @override
+  String get notificationsPrefBonusUpdates => 'Тағйироти TajBonus';
+
+  @override
+  String get notificationsPrefNewProducts => 'Маҳсулоти нав';
+
+  @override
+  String get supportTitle => 'Дастгирӣ';
+
+  @override
+  String get supportNewConversation => 'Муроҷиати нав';
+
+  @override
+  String get supportEmptyTitle => 'Ҳанӯз муроҷиате нест';
+
+  @override
+  String get supportEmptyMessage => 'Агар савол дошта бошед, бо мо тамос гиред';
+
+  @override
+  String get supportStatusOpen => 'Фаъол';
+
+  @override
+  String get supportStatusClosed => 'Пӯшидашуда';
+
+  @override
+  String get supportChatTitle => 'Чат бо дастгирӣ';
+
+  @override
+  String get supportChatEmptyTitle => 'Паём нест';
+
+  @override
+  String get supportChatEmptyMessage => 'Паёми аввалини худро фиристед';
+
+  @override
+  String get supportChatInputHint => 'Паём нависед…';
 }

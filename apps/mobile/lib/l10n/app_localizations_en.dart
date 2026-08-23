@@ -681,4 +681,178 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get storeBrowseCatalog => 'Browse catalog';
+
+  @override
+  String get loyaltyTitle => 'TajBonus';
+
+  @override
+  String get loyaltyBalance => 'Balance';
+
+  @override
+  String loyaltyLifetimeEarned(String amount) {
+    return 'Lifetime earned: $amount';
+  }
+
+  @override
+  String get loyaltyTransactionsTitle => 'Transaction history';
+
+  @override
+  String get loyaltyEmptyTransactionsTitle => 'No transactions yet';
+
+  @override
+  String get loyaltyEmptyTransactionsMessage =>
+      'Shop to earn TajBonus — your transactions will show up here';
+
+  @override
+  String get loyaltyTypeEarn => 'Earned';
+
+  @override
+  String get loyaltyTypeSpend => 'Spent';
+
+  @override
+  String get loyaltyTypeExpire => 'Expired';
+
+  @override
+  String get loyaltyTypeAdjust => 'Adjustment';
+
+  @override
+  String get loyaltyTypeCampaign => 'Campaign bonus';
+
+  @override
+  String get loyaltyTierStandard => 'Standard';
+
+  @override
+  String get loyaltyTierSilver => 'Silver';
+
+  @override
+  String get loyaltyTierGold => 'Gold';
+
+  @override
+  String get loyaltyTierPlatinum => 'Platinum';
+
+  @override
+  String get promotionsTitle => 'Offers';
+
+  @override
+  String get promotionsEmptyTitle => 'No offers yet';
+
+  @override
+  String get promotionsEmptyMessage =>
+      'You have no active offers right now. Check back later.';
+
+  @override
+  String promotionsValidUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String promotionsCopyCode(String code) {
+    return 'Copy code: $code';
+  }
+
+  @override
+  String get promotionsCodeCopied => 'Code copied';
+
+  @override
+  String get reviewsTitle => 'Reviews';
+
+  @override
+  String get reviewsEmptyTitle => 'No reviews yet';
+
+  @override
+  String get reviewsEmptyMessage => 'Be the first to review this product';
+
+  @override
+  String get reviewsAnonymousReviewer => 'Customer';
+
+  @override
+  String get reviewsLeaveReview => 'Leave a review';
+
+  @override
+  String get reviewsWriteTitle => 'Write a review';
+
+  @override
+  String reviewsForPurchase(String productName) {
+    return 'Review for: $productName';
+  }
+
+  @override
+  String get reviewsTextLabel => 'Your review';
+
+  @override
+  String get reviewsTextHint => 'Tell us about the product…';
+
+  @override
+  String get reviewsImageUrlLabel => 'Attach a photo';
+
+  @override
+  String get reviewsImageUrlHint => 'Photo link (URL)';
+
+  @override
+  String get reviewsSubmit => 'Submit review';
+
+  @override
+  String get reviewsSubmitSuccess => 'Thanks! Your review has been submitted';
+
+  @override
+  String get reviewsDuplicateError => 'You\'ve already reviewed this purchase';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsEmptyTitle => 'No notifications';
+
+  @override
+  String get notificationsEmptyMessage =>
+      'Your notifications will show up here';
+
+  @override
+  String get notificationsPreferencesTitle => 'Notification settings';
+
+  @override
+  String get notificationsPrefOrders => 'Orders';
+
+  @override
+  String get notificationsPrefPromotions => 'Discounts & promotions';
+
+  @override
+  String get notificationsPrefPersonalOffers => 'Personal offers';
+
+  @override
+  String get notificationsPrefBonusUpdates => 'TajBonus updates';
+
+  @override
+  String get notificationsPrefNewProducts => 'New products';
+
+  @override
+  String get supportTitle => 'Support';
+
+  @override
+  String get supportNewConversation => 'New conversation';
+
+  @override
+  String get supportEmptyTitle => 'No conversations yet';
+
+  @override
+  String get supportEmptyMessage =>
+      'If you have a question, get in touch with us';
+
+  @override
+  String get supportStatusOpen => 'Open';
+
+  @override
+  String get supportStatusClosed => 'Closed';
+
+  @override
+  String get supportChatTitle => 'Support chat';
+
+  @override
+  String get supportChatEmptyTitle => 'No messages';
+
+  @override
+  String get supportChatEmptyMessage => 'Send your first message';
+
+  @override
+  String get supportChatInputHint => 'Write a message…';
 }

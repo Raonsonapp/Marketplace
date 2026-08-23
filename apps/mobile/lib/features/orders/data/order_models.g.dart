@@ -8,6 +8,7 @@ part of 'order_models.dart';
 
 _OrderItemLine _$OrderItemLineFromJson(Map<String, dynamic> json) =>
     _OrderItemLine(
+      id: json['id'] as String,
       productId: json['product_id'] as String,
       nameSnapshot: json['name_snapshot'] as String,
       unitPrice: json['unit_price'] as String,
@@ -17,6 +18,7 @@ _OrderItemLine _$OrderItemLineFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$OrderItemLineToJson(_OrderItemLine instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'product_id': instance.productId,
       'name_snapshot': instance.nameSnapshot,
       'unit_price': instance.unitPrice,

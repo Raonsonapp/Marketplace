@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderItemLine {
 
- String get productId; String get nameSnapshot; String get unitPrice; int get quantity; String get totalPrice;
+ String get id; String get productId; String get nameSnapshot; String get unitPrice; int get quantity; String get totalPrice;
 /// Create a copy of OrderItemLine
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $OrderItemLineCopyWith<OrderItemLine> get copyWith => _$OrderItemLineCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderItemLine&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.nameSnapshot, nameSnapshot) || other.nameSnapshot == nameSnapshot)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OrderItemLine&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.nameSnapshot, nameSnapshot) || other.nameSnapshot == nameSnapshot)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,productId,nameSnapshot,unitPrice,quantity,totalPrice);
+int get hashCode => Object.hash(runtimeType,id,productId,nameSnapshot,unitPrice,quantity,totalPrice);
 
 @override
 String toString() {
-  return 'OrderItemLine(productId: $productId, nameSnapshot: $nameSnapshot, unitPrice: $unitPrice, quantity: $quantity, totalPrice: $totalPrice)';
+  return 'OrderItemLine(id: $id, productId: $productId, nameSnapshot: $nameSnapshot, unitPrice: $unitPrice, quantity: $quantity, totalPrice: $totalPrice)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $OrderItemLineCopyWith<$Res>  {
   factory $OrderItemLineCopyWith(OrderItemLine value, $Res Function(OrderItemLine) _then) = _$OrderItemLineCopyWithImpl;
 @useResult
 $Res call({
- String productId, String nameSnapshot, String unitPrice, int quantity, String totalPrice
+ String id, String productId, String nameSnapshot, String unitPrice, int quantity, String totalPrice
 });
 
 
@@ -66,9 +66,10 @@ class _$OrderItemLineCopyWithImpl<$Res>
 
 /// Create a copy of OrderItemLine
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? productId = null,Object? nameSnapshot = null,Object? unitPrice = null,Object? quantity = null,Object? totalPrice = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = null,Object? nameSnapshot = null,Object? unitPrice = null,Object? quantity = null,Object? totalPrice = null,}) {
   return _then(OrderItemLine(
-productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,nameSnapshot: null == nameSnapshot ? _self.nameSnapshot : nameSnapshot // ignore: cast_nullable_to_non_nullable
 as String,unitPrice: null == unitPrice ? _self.unitPrice : unitPrice // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderItemLine() when $default != null:
-return $default(_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
+return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantit
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)  $default,) {final _that = this;
 switch (_that) {
 case _OrderItemLine():
-return $default(_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
+return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantit
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderItemLine() when $default != null:
-return $default(_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
+return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
   return null;
 
 }
@@ -214,9 +215,10 @@ return $default(_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantit
 @JsonSerializable()
 
 class _OrderItemLine implements OrderItemLine {
-  const _OrderItemLine({required this.productId, required this.nameSnapshot, required this.unitPrice, required this.quantity, required this.totalPrice});
+  const _OrderItemLine({required this.id, required this.productId, required this.nameSnapshot, required this.unitPrice, required this.quantity, required this.totalPrice});
   factory _OrderItemLine.fromJson(Map<String, dynamic> json) => _$OrderItemLineFromJson(json);
 
+@override final  String id;
 @override final  String productId;
 @override final  String nameSnapshot;
 @override final  String unitPrice;
@@ -236,16 +238,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderItemLine&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.nameSnapshot, nameSnapshot) || other.nameSnapshot == nameSnapshot)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OrderItemLine&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.nameSnapshot, nameSnapshot) || other.nameSnapshot == nameSnapshot)&&(identical(other.unitPrice, unitPrice) || other.unitPrice == unitPrice)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,productId,nameSnapshot,unitPrice,quantity,totalPrice);
+int get hashCode => Object.hash(runtimeType,id,productId,nameSnapshot,unitPrice,quantity,totalPrice);
 
 @override
 String toString() {
-  return 'OrderItemLine(productId: $productId, nameSnapshot: $nameSnapshot, unitPrice: $unitPrice, quantity: $quantity, totalPrice: $totalPrice)';
+  return 'OrderItemLine(id: $id, productId: $productId, nameSnapshot: $nameSnapshot, unitPrice: $unitPrice, quantity: $quantity, totalPrice: $totalPrice)';
 }
 
 
@@ -256,7 +258,7 @@ abstract mixin class _$OrderItemLineCopyWith<$Res> implements $OrderItemLineCopy
   factory _$OrderItemLineCopyWith(_OrderItemLine value, $Res Function(_OrderItemLine) _then) = __$OrderItemLineCopyWithImpl;
 @override @useResult
 $Res call({
- String productId, String nameSnapshot, String unitPrice, int quantity, String totalPrice
+ String id, String productId, String nameSnapshot, String unitPrice, int quantity, String totalPrice
 });
 
 
@@ -273,9 +275,10 @@ class __$OrderItemLineCopyWithImpl<$Res>
 
 /// Create a copy of OrderItemLine
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? productId = null,Object? nameSnapshot = null,Object? unitPrice = null,Object? quantity = null,Object? totalPrice = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = null,Object? nameSnapshot = null,Object? unitPrice = null,Object? quantity = null,Object? totalPrice = null,}) {
   return _then(_OrderItemLine(
-productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
 as String,nameSnapshot: null == nameSnapshot ? _self.nameSnapshot : nameSnapshot // ignore: cast_nullable_to_non_nullable
 as String,unitPrice: null == unitPrice ? _self.unitPrice : unitPrice // ignore: cast_nullable_to_non_nullable
 as String,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable

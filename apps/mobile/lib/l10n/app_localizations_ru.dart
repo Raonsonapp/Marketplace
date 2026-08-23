@@ -681,4 +681,177 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get storeBrowseCatalog => 'Смотреть каталог';
+
+  @override
+  String get loyaltyTitle => 'TajBonus';
+
+  @override
+  String get loyaltyBalance => 'Баланс';
+
+  @override
+  String loyaltyLifetimeEarned(String amount) {
+    return 'Всего накоплено: $amount';
+  }
+
+  @override
+  String get loyaltyTransactionsTitle => 'История операций';
+
+  @override
+  String get loyaltyEmptyTransactionsTitle => 'Пока нет операций';
+
+  @override
+  String get loyaltyEmptyTransactionsMessage =>
+      'Совершайте покупки и копите TajBonus — здесь появятся ваши операции';
+
+  @override
+  String get loyaltyTypeEarn => 'Начислено';
+
+  @override
+  String get loyaltyTypeSpend => 'Списано';
+
+  @override
+  String get loyaltyTypeExpire => 'Срок истёк';
+
+  @override
+  String get loyaltyTypeAdjust => 'Корректировка';
+
+  @override
+  String get loyaltyTypeCampaign => 'Бонус акции';
+
+  @override
+  String get loyaltyTierStandard => 'Стандарт';
+
+  @override
+  String get loyaltyTierSilver => 'Серебряный';
+
+  @override
+  String get loyaltyTierGold => 'Золотой';
+
+  @override
+  String get loyaltyTierPlatinum => 'Платиновый';
+
+  @override
+  String get promotionsTitle => 'Предложения';
+
+  @override
+  String get promotionsEmptyTitle => 'Пока нет предложений';
+
+  @override
+  String get promotionsEmptyMessage =>
+      'Сейчас у вас нет активных предложений. Загляните позже.';
+
+  @override
+  String promotionsValidUntil(String date) {
+    return 'Действует до $date';
+  }
+
+  @override
+  String promotionsCopyCode(String code) {
+    return 'Скопировать код: $code';
+  }
+
+  @override
+  String get promotionsCodeCopied => 'Код скопирован';
+
+  @override
+  String get reviewsTitle => 'Отзывы';
+
+  @override
+  String get reviewsEmptyTitle => 'Пока нет отзывов';
+
+  @override
+  String get reviewsEmptyMessage =>
+      'Будьте первым, кто оставит отзыв об этом товаре';
+
+  @override
+  String get reviewsAnonymousReviewer => 'Покупатель';
+
+  @override
+  String get reviewsLeaveReview => 'Оставить отзыв';
+
+  @override
+  String get reviewsWriteTitle => 'Написать отзыв';
+
+  @override
+  String reviewsForPurchase(String productName) {
+    return 'Отзыв о покупке: $productName';
+  }
+
+  @override
+  String get reviewsTextLabel => 'Ваш отзыв';
+
+  @override
+  String get reviewsTextHint => 'Расскажите о товаре…';
+
+  @override
+  String get reviewsImageUrlLabel => 'Прикрепить фото';
+
+  @override
+  String get reviewsImageUrlHint => 'Ссылка на фото (URL)';
+
+  @override
+  String get reviewsSubmit => 'Отправить отзыв';
+
+  @override
+  String get reviewsSubmitSuccess => 'Спасибо! Ваш отзыв отправлен';
+
+  @override
+  String get reviewsDuplicateError => 'Вы уже оставили отзыв об этой покупке';
+
+  @override
+  String get notificationsTitle => 'Уведомления';
+
+  @override
+  String get notificationsEmptyTitle => 'Нет уведомлений';
+
+  @override
+  String get notificationsEmptyMessage => 'Здесь появятся ваши уведомления';
+
+  @override
+  String get notificationsPreferencesTitle => 'Настройки уведомлений';
+
+  @override
+  String get notificationsPrefOrders => 'Заказы';
+
+  @override
+  String get notificationsPrefPromotions => 'Скидки и акции';
+
+  @override
+  String get notificationsPrefPersonalOffers => 'Персональные предложения';
+
+  @override
+  String get notificationsPrefBonusUpdates => 'Изменения TajBonus';
+
+  @override
+  String get notificationsPrefNewProducts => 'Новые товары';
+
+  @override
+  String get supportTitle => 'Поддержка';
+
+  @override
+  String get supportNewConversation => 'Новое обращение';
+
+  @override
+  String get supportEmptyTitle => 'Пока нет обращений';
+
+  @override
+  String get supportEmptyMessage => 'Если у вас есть вопрос, свяжитесь с нами';
+
+  @override
+  String get supportStatusOpen => 'Активно';
+
+  @override
+  String get supportStatusClosed => 'Закрыто';
+
+  @override
+  String get supportChatTitle => 'Чат с поддержкой';
+
+  @override
+  String get supportChatEmptyTitle => 'Нет сообщений';
+
+  @override
+  String get supportChatEmptyMessage => 'Отправьте своё первое сообщение';
+
+  @override
+  String get supportChatInputHint => 'Напишите сообщение…';
 }

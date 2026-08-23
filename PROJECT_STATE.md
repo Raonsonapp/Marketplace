@@ -5,9 +5,13 @@ Update this file whenever a phase/feature status changes.
 
 ## Current phase
 
-**Phase 3 complete and verified.** Phase 2 (backend) is also complete and
-verified. Merged to `main` at the user's request. Next up: Phase 4 (run
-mobile + backend together live) and Phase 5 remainder.
+**Phases 1–3 and 5 complete and verified**; Phase 5 (promotions, reviews,
+notifications, support chat) landed on both backend and mobile and is
+merged to `main`. Also fixed: the Android release build was silently
+signed with the debug keystore — now uses a real key.properties-based
+signing config with R8/ProGuard enabled. Next up: Phase 4 (run mobile +
+backend together live in a real Android environment), Phase 6 (admin
+panel), Phase 7 (fuller test suite), Phase 9 (real device/Play submission).
 
 ## Completed
 
@@ -71,6 +75,47 @@ mobile + backend together live) and Phase 5 remainder.
       each store's distance/delivery-pickup flags/sample products).
       Verified in-session: `flutter analyze` — 0 issues; `flutter test` —
       23/23 passing; `flutter_launcher_icons`/`build_runner` ran clean.
+- [x] Phase 5 — Promotions, reviews, notifications, support chat, on both
+      sides:
+      - **Backend**: `GET /promotions`, `POST /promo-codes/validate`
+        (reuses `CheckoutService`'s existing promo-validation logic against
+        the caller's live cart, no duplicated rules), `GET/POST /reviews`
+        (purchase-gated via a real join on `order_items`→`orders`, new
+        `DUPLICATE_REVIEW`/`REVIEW_REQUIRES_PURCHASE` apperr codes),
+        notifications list/mark-read/preferences/device registration,
+        support conversations/messages REST plus a real
+        `WS /ws/support/:conversationId` (generalized the existing
+        `ws.Hub` used by `/ws/orders/:id` rather than duplicating it).
+        Verified live against real Postgres/Redis: OTP→order→review
+        purchase-gating and duplicate rejection, promo validation/rejection,
+        notification preferences/mark-read ownership checks, and a genuine
+        WebSocket round-trip (POST a support message → connected socket
+        receives it; `/ws/orders/:id` regression-checked unaffected).
+        `go build`/`go vet`/`go test` all pass.
+      - **Mobile**: `lib/features/loyalty/` (TajBonus balance + transaction
+        ledger, entry point from Profile), `lib/features/promotions/`
+        (active campaigns/offers, wired from Home's "personal offers"
+        section), `lib/features/reviews/` (product-detail review list +
+        a write-review flow reachable only from a delivered order's real
+        line item, so `order_item_id` is never invented), 
+        `lib/features/notifications/` (list + preferences — REST only, see
+        known issues re: FCM), `lib/features/support/` (conversations +
+        a chat screen using a new `SupportChatSocket` mirroring the
+        existing `OrderTrackingSocket` connect/reconnect pattern). All
+        strings localized in tj/ru/en. Verified: `flutter analyze` —
+        0 issues; `flutter test` — 34/34 passing.
+- [x] Android release build fixed to sign for real: `android/app/build.gradle.kts`
+      previously hard-coded the release build type to the debug keystore
+      (unmodified Flutter template placeholder) — every "release" build was
+      actually debug-signed. Now reads `android/key.properties` (local dev)
+      or CI-provided `ANDROID_KEYSTORE_*` secrets
+      (`.github/workflows/android-release.yml`, which also had a second bug:
+      its keystore-decode step checked an unset `env` value and never ran).
+      Falls back to the debug key only when no real key is configured, and
+      does so loudly (Gradle + GitHub Actions warnings), never silently.
+      R8/ProGuard minification enabled with `android/app/proguard-rules.pro`.
+      Workflow now also triggers on push to `main` and `workflow_dispatch`,
+      not only on `v*` tags. See `docs/DEPLOYMENT.md`.
 
 ## Not started
 
@@ -79,9 +124,6 @@ mobile + backend together live) and Phase 5 remainder.
       slice end-to-end; currently wired in code on both sides but never
       exercised together live in this sandbox (no Android/emulator
       environment here — see PROJECT_STATE known issues)
-- [ ] Phase 5 remainder — promotions, reviews, notifications, support chat
-      (barcode scanner and delivery-status tracking pulled into Phase 3, see
-      above)
 - [ ] Phase 6 — Admin web panel (`apps/admin`)
 - [ ] Phase 7 — Test suites (unit/widget/API) incl. the required edge cases
       (out-of-stock, price-changed cart, invalid/expired promo, double order
@@ -110,6 +152,16 @@ mobile + backend together live) and Phase 5 remainder.
   native-level Firebase SDK failure on the still-placeholder
   `firebase_options.dart` cannot be fully ruled out until someone completes
   `docs/FIREBASE_SETUP.md` and runs the app for real.
+- Notifications are REST-list-only for now — `firebase_messaging` is not
+  yet wired into the mobile app (only `firebase_core`/`firebase_auth` for
+  phone sign-in), so there is no real push receiving yet and
+  `POST /devices` is intentionally not called (no real FCM token to
+  register). Adding real push is a reasonable Phase 6/7 follow-up.
+- `GET /promotions`'s response shape and promo-code validation being
+  scoped to the caller's current cart (rather than a bare code-only check)
+  were judgment calls made where `docs/API_SPEC.md` was underspecified —
+  worth confirming against the mobile UI's actual needs as Phase 4 (live
+  end-to-end run) proceeds.
 
 ## Files created (updated per commit)
 
@@ -125,13 +177,24 @@ list; this section summarizes top-level additions per phase.
 
 ## Next tasks
 
-1. Merged into `main` (this commit) at the user's explicit, repeated request.
+1. Merged into `main` at the user's explicit, repeated request (kept
+   up to date with every verified phase, most recently Phase 5 + the
+   Android release-signing fix).
 2. Run the mobile app against the live backend via `docker compose up` +
-   `flutter run` to validate the vertical slice end-to-end (Phase 4).
+   `flutter run` on a real Android environment to validate the full
+   vertical slice end-to-end (Phase 4) — not possible from this sandbox
+   (no Android SDK/emulator here).
 3. Complete the external, sandbox-can't-do-this setup: `docs/FIREBASE_SETUP.md`
    (if Firebase Phone Auth is wanted) and/or get a `TELEGRAM_GATEWAY_TOKEN`
    (recommended, see `docs/SMS_PROVIDERS.md`); host `docs/PRIVACY_POLICY.md`
-   at a public URL for Play Console.
-4. Continue into Phase 5 remainder (promotions, reviews, notifications,
-   support chat), then Phase 6 admin panel, Phase 7 tests, Phase 9 Android
-   release prep (incl. real Play Store screenshots).
+   at a public URL for Play Console; generate a real upload keystore and
+   set the four `ANDROID_KEYSTORE_*` GitHub secrets so release builds are
+   Play-Store-signed (see `docs/DEPLOYMENT.md`).
+4. Continue into Phase 6 (admin web panel), Phase 7 (fuller test suite:
+   out-of-stock, price-changed cart, invalid/expired promo, double order
+   submission, network timeout, unauthorized/expired token — several of
+   these are already covered by Phase 2/5's service-layer tests, but not
+   yet as an exhaustive suite), and Phase 9 (real Play Store screenshots,
+   feature graphic, and an actual signed build).
+5. Add real push notification delivery (`firebase_messaging` on mobile +
+   an FCM sender on the backend) — currently notifications are REST-only.
