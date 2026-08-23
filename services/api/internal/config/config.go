@@ -54,8 +54,15 @@ type Config struct {
 	// POST /uploads/presign — Cloudflare R2 in production (S3-compatible),
 	// any S3-compatible endpoint (e.g. MinIO) in local dev. Optional: when
 	// unset, that endpoint returns UPLOADS_NOT_CONFIGURED instead of
-	// failing unpredictably. Naming matches the R2_* convention already
-	// used by this account's other Hugging-Face-hosted services.
+	// failing unpredictably.
+	//
+	// Read from CF_ACCOUNT_ID/CF_R2_ACCESS_KEY_ID/CF_R2_SECRET_ACCESS_KEY/
+	// CF_R2_BUCKET/CF_R2_PUBLIC_URL — the actual secret names already
+	// configured on this account's Hugging Face Spaces (verified against
+	// a live Space's secret list), so an existing Space's secrets work
+	// here unchanged. R2Endpoint is derived from CF_ACCOUNT_ID
+	// (`https://<account>.r2.cloudflarestorage.com`, R2's standard S3 API
+	// endpoint shape) rather than needing its own variable.
 	R2Endpoint  string
 	R2AccessKey string
 	R2SecretKey string
@@ -125,11 +132,18 @@ func Load() (*Config, error) {
 	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
 	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
 
-	cfg.R2Endpoint = os.Getenv("R2_ENDPOINT")
-	cfg.R2AccessKey = os.Getenv("R2_ACCESS_KEY")
-	cfg.R2SecretKey = os.Getenv("R2_SECRET_KEY")
-	cfg.R2Bucket = os.Getenv("R2_BUCKET")
-	cfg.R2PublicURL = strings.TrimRight(os.Getenv("R2_PUBLIC_URL"), "/")
+	if override := os.Getenv("R2_ENDPOINT"); override != "" {
+		// Manual override for non-Cloudflare S3-compatible endpoints, e.g.
+		// local MinIO in docker-compose, which isn't reachable via a
+		// CF_ACCOUNT_ID-derived hostname.
+		cfg.R2Endpoint = override
+	} else if accountID := os.Getenv("CF_ACCOUNT_ID"); accountID != "" {
+		cfg.R2Endpoint = accountID + ".r2.cloudflarestorage.com"
+	}
+	cfg.R2AccessKey = os.Getenv("CF_R2_ACCESS_KEY_ID")
+	cfg.R2SecretKey = os.Getenv("CF_R2_SECRET_ACCESS_KEY")
+	cfg.R2Bucket = os.Getenv("CF_R2_BUCKET")
+	cfg.R2PublicURL = strings.TrimRight(os.Getenv("CF_R2_PUBLIC_URL"), "/")
 
 	origins := getOr("CORS_ORIGINS", "http://localhost:3000")
 	for _, o := range strings.Split(origins, ",") {

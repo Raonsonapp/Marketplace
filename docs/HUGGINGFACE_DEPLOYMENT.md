@@ -6,6 +6,33 @@ using the same free-hosting pattern as this account's other projects
 object storage). Everything below is an external step you do once in your
 own accounts; nothing here can be done from inside a coding sandbox.
 
+## Reusing an existing Space (e.g. the one behind "Superior AI")
+
+If you already have a Hugging Face Space with `DATABASE_URL`,
+`SUPABASE_URL`, `CF_ACCOUNT_ID`, `CF_R2_ACCESS_KEY_ID`,
+`CF_R2_SECRET_ACCESS_KEY`, `CF_R2_BUCKET`, and `CF_R2_PUBLIC_URL` already
+set as secrets, TajikShop's config reads those exact names — nothing to
+rename. You only need to:
+
+1. Add two secrets it doesn't have yet: **`REDIS_URL`** (see §2 below —
+   Upstash's free tier) and **`JWT_SECRET`** (any long random string,
+   e.g. `openssl rand -base64 48`).
+2. Replace that Space's root `Dockerfile` and `README.md` with
+   `infrastructure/huggingface/Dockerfile` and
+   `infrastructure/huggingface/README.md` from this repo (they build
+   TajikShop's `services/api` instead of whatever was there before).
+   Clone the Space's own git repo, copy the two files in, commit, push.
+3. Leftover secrets from the previous app (`BOT_TOKEN`, `HF_TOKEN`,
+   `AI_MODEL`, ...) are simply unused by TajikShop — harmless to leave, or
+   delete them if you'd rather tidy up.
+4. Push. The Space rebuilds, runs every DB migration automatically on
+   first boot, and starts serving. Check
+   `https://<you>-<space-name>.hf.space/healthz` for
+   `{"database":"ok","redis":"ok"}`.
+
+The rest of this document is the from-scratch walkthrough if you're
+setting up a new Space instead.
+
 ## 1. Managed Postgres (required)
 
 Any managed Postgres works; **Supabase** is what this account already uses
@@ -33,13 +60,18 @@ Powers `POST /api/v1/uploads/presign` (review photos, support-chat
 attachments). Skip this section if you don't need uploads yet; that
 endpoint just returns `UPLOADS_NOT_CONFIGURED` until it's set up.
 
-1. Cloudflare dashboard → R2 → create a bucket (e.g. `tajikshop-media`).
-2. R2 → Manage API tokens → create a token with read/write access to that
-   bucket. Note the **Access Key ID**, **Secret Access Key**, and the
-   account's R2 **S3 API endpoint**
-   (`https://<accountid>.r2.cloudflarestorage.com`).
-3. R2 → bucket → Settings → enable public access (or attach a custom
-   domain) to get a public base URL (`https://<id>.r2.dev` or your domain).
+1. Cloudflare dashboard → R2 → create a bucket (e.g. `tajikshop-media`) →
+   note it as `CF_R2_BUCKET`.
+2. Cloudflare dashboard → top-right account menu → note your **Account
+   ID** as `CF_ACCOUNT_ID` (the R2 S3 API endpoint,
+   `https://<account>.r2.cloudflarestorage.com`, is derived from this —
+   you don't set the endpoint directly).
+3. R2 → Manage API tokens → create a token with read/write access to that
+   bucket → note the **Access Key ID** (`CF_R2_ACCESS_KEY_ID`) and
+   **Secret Access Key** (`CF_R2_SECRET_ACCESS_KEY`).
+4. R2 → bucket → Settings → enable public access (or attach a custom
+   domain) → note that base URL as `CF_R2_PUBLIC_URL`
+   (`https://<id>.r2.dev` or your domain).
 
 ## 4. Create the Hugging Face Space
 
@@ -60,8 +92,8 @@ endpoint just returns `UPLOADS_NOT_CONFIGURED` until it's set up.
    - `JWT_SECRET` — a long random string (`openssl rand -base64 48`)
    - `TELEGRAM_GATEWAY_TOKEN` (recommended — see `docs/SMS_PROVIDERS.md`)
      and/or `FIREBASE_WEB_API_KEY` (see `docs/FIREBASE_SETUP.md`)
-   - `R2_ENDPOINT`, `R2_ACCESS_KEY`, `R2_SECRET_KEY`, `R2_BUCKET`,
-     `R2_PUBLIC_URL` (step 3, optional)
+   - `CF_ACCOUNT_ID`, `CF_R2_ACCESS_KEY_ID`, `CF_R2_SECRET_ACCESS_KEY`,
+     `CF_R2_BUCKET`, `CF_R2_PUBLIC_URL` (step 3, optional)
    - `CORS_ORIGINS` — your admin web origin(s), comma-separated
 4. The Space builds and starts automatically. Check
    `https://<you>-<space-name>.hf.space/healthz` — `{"database":"ok","redis":"ok"}`
