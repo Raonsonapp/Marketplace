@@ -1,25 +1,47 @@
 package db
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	nurl "net/url"
 	"strings"
+	"time"
 
 	"github.com/golang-migrate/migrate/v4"
 	pgxmigrate "github.com/golang-migrate/migrate/v4/database/pgx/v5"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
+	"github.com/jackc/pgx/v5"
 
 	"tajikshop/api/migrations"
 )
 
+// AppSchema is the dedicated Postgres schema TajikShop's own tables live
+// in — deliberately not "public". A managed database (this account's
+// Supabase project in particular) is routinely shared across more than one
+// app; "public" is exactly where an unrelated app's own tables land by
+// default, and this schema has already collided with a pre-existing
+// "users"/"categories" table pair that happened to share TajikShop's table
+// names but not its columns ("column \"name_tj\" does not exist"). Giving
+// TajikShop its own namespace makes that whole class of collision
+// impossible regardless of what else lives in the same database, with zero
+// per-query code changes needed: every unqualified table reference in this
+// codebase resolves against search_path, which both RunMigrations and
+// NewPostgresPool point at this schema.
+const AppSchema = "tajikshop"
+
 // RunMigrations applies every pending up-migration embedded from
 // services/api/migrations (copied from infrastructure/database/migrations,
 // the canonical source — see docs/ARCHITECTURE.md monorepo layout) against
-// databaseURL. It is safe to call on every process start: golang-migrate
-// tracks applied versions in a schema_migrations table and is a no-op when
-// the schema is already current.
+// databaseURL, inside the dedicated AppSchema (created first if it doesn't
+// exist yet). It is safe to call on every process start: golang-migrate
+// tracks applied versions in AppSchema's own schema_migrations table and is
+// a no-op when the schema is already current.
 func RunMigrations(databaseURL string) error {
+	if err := ensureAppSchema(databaseURL); err != nil {
+		return fmt.Errorf("migrate: create schema %q: %w%s", AppSchema, err, dbHostHint(err))
+	}
+
 	src, err := iofs.New(migrations.FS, ".")
 	if err != nil {
 		return fmt.Errorf("migrate: load embedded migrations: %w", err)
@@ -44,12 +66,29 @@ func RunMigrations(databaseURL string) error {
 	return nil
 }
 
+// ensureAppSchema creates AppSchema if it doesn't already exist, using a
+// throwaway connection on whatever schema the URL defaults to (this must
+// happen before anything sets search_path to AppSchema, since CREATE SCHEMA
+// obviously can't run inside the schema it's about to create).
+func ensureAppSchema(databaseURL string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	conn, err := pgx.Connect(ctx, databaseURL)
+	if err != nil {
+		return err
+	}
+	defer conn.Close(ctx)
+	_, err = conn.Exec(ctx, `CREATE SCHEMA IF NOT EXISTS `+pgx.Identifier{AppSchema}.Sanitize())
+	return err
+}
+
 // toMigrateURL rewrites a postgres:// or postgresql:// DATABASE_URL into the
 // pgx5:// scheme golang-migrate's pgx/v5 database driver registers itself
-// under (see database/pgx/v5.init), and forces simple query protocol so the
-// migration connection never names a prepared statement — see the matching
-// comment on DefaultQueryExecMode in postgres.go for why that matters
-// against a pooler (Supabase Session/Transaction pooler, PgBouncer, ...).
+// under (see database/pgx/v5.init), points it at AppSchema via search_path,
+// and forces simple query protocol so the migration connection never names
+// a prepared statement — see the matching comment on DefaultQueryExecMode
+// in postgres.go for why that matters against a pooler (Supabase
+// Session/Transaction pooler, PgBouncer, ...).
 func toMigrateURL(databaseURL string) (string, error) {
 	u, err := nurl.Parse(databaseURL)
 	if err != nil {
@@ -58,6 +97,7 @@ func toMigrateURL(databaseURL string) (string, error) {
 	u.Scheme = "pgx5"
 	q := u.Query()
 	q.Set("default_query_exec_mode", "simple_protocol")
+	q.Set("search_path", AppSchema)
 	u.RawQuery = q.Encode()
 	return u.String(), nil
 }

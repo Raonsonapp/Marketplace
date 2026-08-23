@@ -30,6 +30,13 @@ func NewPostgresPool(ctx context.Context, databaseURL string) (*pgxpool.Pool, er
 	// any pooler; direct, unpooled Postgres works fine with it too.
 	cfg.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
 
+	// Every table this app queries lives in AppSchema (see migrate.go), not
+	// "public" — RunMigrations already created it and applied migrations
+	// there. Setting search_path here means every unqualified table name in
+	// every existing query (there is no schema-qualification anywhere in
+	// this codebase) resolves against AppSchema automatically.
+	cfg.ConnConfig.RuntimeParams["search_path"] = AppSchema
+
 	pool, err := pgxpool.NewWithConfig(ctx, cfg)
 	if err != nil {
 		return nil, fmt.Errorf("db: create pool: %w", err)

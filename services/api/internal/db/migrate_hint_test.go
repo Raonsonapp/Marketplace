@@ -52,4 +52,7 @@ func TestToMigrateURL(t *testing.T) {
 	if !strings.Contains(got, "default_query_exec_mode=simple_protocol") {
 		t.Fatalf("expected default_query_exec_mode=simple_protocol query param, got %q", got)
 	}
+	if !strings.Contains(got, "search_path=tajikshop") {
+		t.Fatalf("expected search_path=tajikshop query param, got %q", got)
+	}
 }

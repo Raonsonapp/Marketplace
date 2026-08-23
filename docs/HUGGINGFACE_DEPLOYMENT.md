@@ -174,6 +174,33 @@ Actions → "Deploy to Hugging Face Spaces" → Run workflow — useful the very
 first time, to push the Dockerfile/README to a brand-new Space instead of
 copy-pasting them by hand.
 
+## TajikShop lives in its own Postgres schema, not "public"
+
+Every TajikShop table is created in a dedicated `tajikshop` schema
+(`internal/db/migrate.go`'s `AppSchema`), not Postgres's default `public`
+schema — `RunMigrations` creates that schema on first boot if it doesn't
+exist, and both the migration connection and the app's connection pool set
+`search_path=tajikshop` so every unqualified table name in the codebase
+resolves there automatically, no per-query changes needed.
+
+This matters specifically because §1 of this doc explicitly supports
+reusing one existing Supabase project across more than one app — and
+`public` is exactly where an unrelated app's own tables would already
+live. That's not hypothetical: it's what caused a real failure — a
+pre-existing `public.users`/`public.categories` pair (from something other
+than this app) happened to share TajikShop's table names but not their
+columns, so migrations reported `relation "users" already exists` and, once
+that was worked around, the app itself failed with
+`column "name_tj" does not exist`. Giving TajikShop its own schema makes
+that whole class of collision impossible regardless of what else is in the
+same database — nothing in `public` is ever read, written, or touched.
+
+If you hit either of those errors on an older deployment, no manual fix is
+needed: redeploy with the current code and it creates and populates the
+`tajikshop` schema fresh on next boot. Any stray `public.schema_migrations`
+row from an earlier manual "force version" workaround is harmless and can
+be ignored or dropped — it's not read by this schema-scoped setup.
+
 ## Prepared-statement errors through a pooled connection
 
 If the container logs ever show `prepared statement "stmtcache_..." already
