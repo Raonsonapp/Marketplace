@@ -8,6 +8,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -31,4 +32,23 @@ func (errNotFound) Error() string { return "repository: not found" }
 
 func isNoRows(err error) bool {
 	return err == pgx.ErrNoRows
+}
+
+// ErrConflict is returned when an insert/update violates a unique
+// constraint that the caller should map to a specific, user-facing app
+// error (e.g. a duplicate review) rather than a generic 500.
+var ErrConflict = errConflict{}
+
+type errConflict struct{}
+
+func (errConflict) Error() string { return "repository: conflict" }
+
+// isUniqueViolation reports whether err is a Postgres unique_violation
+// (SQLSTATE 23505), the error pgx returns for a violated UNIQUE constraint.
+func isUniqueViolation(err error) bool {
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		return pgErr.Code == "23505"
+	}
+	return false
 }

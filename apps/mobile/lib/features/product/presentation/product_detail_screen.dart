@@ -17,6 +17,7 @@ import '../../../core/widgets/skeleton_loader.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cart/application/cart_controller.dart';
 import '../../favorites/application/favorite_ids_controller.dart';
+import '../../reviews/presentation/widgets/product_reviews_section.dart';
 import '../application/product_detail_controller.dart';
 import 'widgets/product_gallery.dart';
 
@@ -155,6 +156,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           ),
                         ),
                       ],
+                      const SizedBox(height: AppSpacing.lg),
+                      ProductReviewsSection(productId: product.id),
                       const SizedBox(height: AppSpacing.xxl),
                     ],
                   ),

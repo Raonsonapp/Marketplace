@@ -1,12 +1,17 @@
 package service
 
 import (
+	"context"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 
 	"tajikshop/api/internal/models"
+	"tajikshop/api/internal/pkg/apperr"
 	"tajikshop/api/internal/pkg/money"
+	"tajikshop/api/internal/repository"
 )
 
 func m(s string) money.Money { return money.MustFromString(s) }
@@ -140,6 +145,101 @@ func TestEvaluateLineOutOfStock(t *testing.T) {
 				t.Errorf("evaluateLine(%d, %+v) = %v, want %v", c.requested, c.inv, got, c.want)
 			}
 		})
+	}
+}
+
+// promoCodeRow builds the fakeRow that repository.PromoCodeRepository's
+// GetActiveByCode/ListActivePublic scan into, in their exact column order
+// (see scanPromoCodeRow), so validatePromo's edge cases can be driven
+// end-to-end without a live Postgres.
+func promoCodeRow(discountType, discountValue, minOrder string, startsAt, endsAt *time.Time, usageLimit *int, perUserLimit int) fakeRow {
+	return fakeRow{values: []any{
+		uuid.New(), "TESTCODE", discountType, discountValue, minOrder, (*string)(nil),
+		startsAt, endsAt, usageLimit, perUserLimit,
+		[]uuid.UUID(nil), []uuid.UUID(nil), []uuid.UUID(nil), true,
+	}}
+}
+
+func TestValidatePromoInvalidCode(t *testing.T) {
+	svc := &CheckoutService{promos: repository.NewPromoCodeRepository()}
+	q := &fakeQuerier{rows: []fakeRow{{err: pgx.ErrNoRows}}}
+
+	_, _, err := svc.validatePromo(context.Background(), q, "NOPE", uuid.New(), uuid.New(), m("100.00"), nil)
+
+	assertPromoErr(t, err, apperr.CodePromoInvalid)
+}
+
+func TestValidatePromoExpired(t *testing.T) {
+	svc := &CheckoutService{promos: repository.NewPromoCodeRepository()}
+	past := time.Now().Add(-24 * time.Hour)
+	q := &fakeQuerier{rows: []fakeRow{promoCodeRow(models.DiscountTypeFixed, "10.00", "0.00", nil, &past, nil, 0)}}
+
+	_, _, err := svc.validatePromo(context.Background(), q, "TESTCODE", uuid.New(), uuid.New(), m("100.00"), nil)
+
+	assertPromoErr(t, err, apperr.CodePromoExpired)
+}
+
+func TestValidatePromoMinOrderNotMet(t *testing.T) {
+	svc := &CheckoutService{promos: repository.NewPromoCodeRepository()}
+	q := &fakeQuerier{rows: []fakeRow{promoCodeRow(models.DiscountTypeFixed, "10.00", "500.00", nil, nil, nil, 0)}}
+
+	// Subtotal (100.00) is below the promo's 500.00 minimum order amount.
+	_, _, err := svc.validatePromo(context.Background(), q, "TESTCODE", uuid.New(), uuid.New(), m("100.00"), nil)
+
+	assertPromoErr(t, err, apperr.CodePromoMinOrder)
+}
+
+func TestValidatePromoUsageLimitReached(t *testing.T) {
+	svc := &CheckoutService{promos: repository.NewPromoCodeRepository()}
+	limit := 5
+	q := &fakeQuerier{rows: []fakeRow{
+		promoCodeRow(models.DiscountTypeFixed, "10.00", "0.00", nil, nil, &limit, 0),
+		{values: []any{5}}, // CountUsageTotal: already at the global limit
+	}}
+
+	_, _, err := svc.validatePromo(context.Background(), q, "TESTCODE", uuid.New(), uuid.New(), m("100.00"), nil)
+
+	assertPromoErr(t, err, apperr.CodePromoLimitReached)
+}
+
+func TestValidatePromoPerUserLimitReached(t *testing.T) {
+	svc := &CheckoutService{promos: repository.NewPromoCodeRepository()}
+	q := &fakeQuerier{rows: []fakeRow{
+		promoCodeRow(models.DiscountTypeFixed, "10.00", "0.00", nil, nil, nil, 1),
+		{values: []any{1}}, // CountUsageByUser: this user already redeemed it once
+	}}
+
+	_, _, err := svc.validatePromo(context.Background(), q, "TESTCODE", uuid.New(), uuid.New(), m("100.00"), nil)
+
+	assertPromoErr(t, err, apperr.CodePromoLimitReached)
+}
+
+func TestValidatePromoValidComputesDiscount(t *testing.T) {
+	svc := &CheckoutService{promos: repository.NewPromoCodeRepository()}
+	q := &fakeQuerier{rows: []fakeRow{
+		promoCodeRow(models.DiscountTypePercentage, "10.00", "0.00", nil, nil, nil, 0),
+	}}
+
+	discount, promoID, err := svc.validatePromo(context.Background(), q, "TESTCODE", uuid.New(), uuid.New(), m("200.00"), nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if promoID == nil {
+		t.Fatal("expected a non-nil promo id")
+	}
+	if discount.String() != "20.00" {
+		t.Errorf("discount = %s, want 20.00 (10%% of 200.00)", discount)
+	}
+}
+
+func assertPromoErr(t *testing.T, err error, want apperr.Code) {
+	t.Helper()
+	ae, ok := apperr.As(err)
+	if !ok {
+		t.Fatalf("expected an *apperr.Error, got %v (%T)", err, err)
+	}
+	if ae.Code != want {
+		t.Errorf("code = %s, want %s", ae.Code, want)
 	}
 }
 

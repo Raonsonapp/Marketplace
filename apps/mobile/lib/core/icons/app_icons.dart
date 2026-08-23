@@ -72,4 +72,14 @@ class LucideIcons {
   static const IconData flashlight = IconData(0xf2ea, fontFamily: _family);
   static const IconData flashlightOff = IconData(0xf2eb, fontFamily: _family);
   static const IconData switchCamera = IconData(0xf518, fontFamily: _family);
+
+  // Added for TajBonus/promotions/reviews/notifications/support.
+  static const IconData star = IconData(0xf500, fontFamily: _family);
+  static const IconData coins = IconData(0xf245, fontFamily: _family);
+  static const IconData award = IconData(0xf172, fontFamily: _family);
+  static const IconData badgePercent = IconData(0xf17e, fontFamily: _family);
+  static const IconData bell = IconData(0xf19c, fontFamily: _family);
+  static const IconData messageCircle = IconData(0xf3cd, fontFamily: _family);
+  static const IconData send = IconData(0xf4b2, fontFamily: _family);
+  static const IconData headphones = IconData(0xf353, fontFamily: _family);
 }

@@ -19,9 +19,8 @@ import (
 
 // OrderWSHandler implements WS /ws/orders/:orderId: an authenticated,
 // ownership-checked live feed of one order's status. Support chat
-// (WS /ws/support/:conversationId) is Phase 5 scope per
-// docs/ARCHITECTURE.md's feature matrix and is not wired here; it can reuse
-// the same ws.Hub primitive when that feature lands.
+// (WS /ws/support/:conversationId) is SupportWSHandler, which shares the
+// same ws.Hub primitive but publishes on message POST instead of polling.
 type OrderWSHandler struct {
 	hub      *ws.Hub
 	orders   *service.OrderService

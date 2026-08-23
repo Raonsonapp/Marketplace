@@ -1,9 +1,9 @@
 // Package ws implements the realtime WebSocket endpoints from
 // docs/API_SPEC.md (WS /ws/orders/:orderId, WS /ws/support/:conversationId).
-// Phase 2 wires the order-status channel end to end (order cancellation
-// pushes a live update); the support chat channel is Phase 5 scope per
-// docs/ARCHITECTURE.md's feature matrix, so only the shared Hub primitive
-// is provided for it to build on later.
+// Both channels share this one Hub: order status is polled server-side and
+// broadcast on change (see httpapi.OrderWSHandler), while support messages
+// are broadcast directly by httpapi.SupportHandler.PostMessage the moment a
+// message is written, with httpapi.SupportWSHandler only joining rooms.
 package ws
 
 import (

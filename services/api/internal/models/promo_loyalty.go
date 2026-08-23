@@ -32,6 +32,31 @@ type PromoCode struct {
 	IsActive             bool
 }
 
+// Discount scope values, matching discounts.scope CHECK constraint.
+const (
+	DiscountScopeUser     = "user"
+	DiscountScopeCategory = "category"
+	DiscountScopeProduct  = "product"
+	DiscountScopeCampaign = "campaign"
+)
+
+// Discount mirrors the discounts table (personal/category/product/campaign
+// offers surfaced by GET /promotions).
+type Discount struct {
+	ID            uuid.UUID
+	Name          string
+	Scope         string
+	UserID        *uuid.UUID
+	CategoryID    *uuid.UUID
+	ProductID     *uuid.UUID
+	DiscountType  string
+	DiscountValue money.Money
+	StartsAt      *time.Time
+	EndsAt        *time.Time
+	IsActive      bool
+	CreatedAt     time.Time
+}
+
 // LoyaltyAccount mirrors loyalty_accounts.
 type LoyaltyAccount struct {
 	ID             uuid.UUID

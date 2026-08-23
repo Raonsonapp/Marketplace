@@ -51,6 +51,10 @@ enum OrderStatus {
 @freezed
 abstract class OrderItemLine with _$OrderItemLine {
   const factory OrderItemLine({
+    // `order_items.id` (docs/DATABASE_SCHEMA.md) — this is the
+    // `order_item_id` that `POST /reviews` requires, so a review always
+    // ties back to a real purchased line, never a client-invented id.
+    required String id,
     required String productId,
     required String nameSnapshot,
     required String unitPrice,

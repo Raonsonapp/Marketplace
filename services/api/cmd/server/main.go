@@ -71,6 +71,10 @@ func run() error {
 	promoRepo := repository.NewPromoCodeRepository()
 	loyaltyRepo := repository.NewLoyaltyRepository()
 	brandRepo := repository.NewBrandRepository()
+	discountRepo := repository.NewDiscountRepository()
+	reviewRepo := repository.NewReviewRepository()
+	notificationRepo := repository.NewNotificationRepository()
+	supportRepo := repository.NewSupportRepository()
 
 	// ---- auth primitives ----
 	tokenMgr := auth.NewTokenManager(cfg.JWTSecret, cfg.AccessTTL)
@@ -103,21 +107,30 @@ func run() error {
 	favoritesSvc := service.NewFavoritesService(pool, favoriteRepo, productRepo)
 	addressSvc := service.NewAddressService(pool, addressRepo)
 	profileSvc := service.NewProfileService(pool, userRepo)
+	promotionSvc := service.NewPromotionService(pool, discountRepo, promoRepo)
+	reviewSvc := service.NewReviewService(pool, reviewRepo)
+	notificationSvc := service.NewNotificationService(pool, notificationRepo)
+	supportSvc := service.NewSupportService(pool, supportRepo)
 
 	// ---- handlers ----
 	hub := ws.NewHub()
 	handlers := httpapi.Handlers{
-		Auth:      httpapi.NewAuthHandler(authSvc),
-		Catalog:   httpapi.NewCatalogHandler(catalogSvc, homeSvc),
-		Cart:      httpapi.NewCartHandler(cartSvc),
-		Checkout:  httpapi.NewCheckoutHandler(checkoutSvc),
-		Order:     httpapi.NewOrderHandler(orderSvc, checkoutSvc),
-		Favorites: httpapi.NewFavoritesHandler(favoritesSvc),
-		Loyalty:   httpapi.NewLoyaltyHandler(loyaltySvc),
-		Address:   httpapi.NewAddressHandler(addressSvc),
-		Profile:   httpapi.NewProfileHandler(profileSvc),
-		Health:    httpapi.NewHealthHandler(pool, rdb),
-		OrderWS:   httpapi.NewOrderWSHandler(hub, orderSvc, tokenMgr),
+		Auth:         httpapi.NewAuthHandler(authSvc),
+		Catalog:      httpapi.NewCatalogHandler(catalogSvc, homeSvc),
+		Cart:         httpapi.NewCartHandler(cartSvc),
+		Checkout:     httpapi.NewCheckoutHandler(checkoutSvc),
+		Order:        httpapi.NewOrderHandler(orderSvc, checkoutSvc),
+		Favorites:    httpapi.NewFavoritesHandler(favoritesSvc),
+		Loyalty:      httpapi.NewLoyaltyHandler(loyaltySvc),
+		Address:      httpapi.NewAddressHandler(addressSvc),
+		Profile:      httpapi.NewProfileHandler(profileSvc),
+		Health:       httpapi.NewHealthHandler(pool, rdb),
+		OrderWS:      httpapi.NewOrderWSHandler(hub, orderSvc, tokenMgr),
+		Promotion:    httpapi.NewPromotionHandler(promotionSvc, checkoutSvc),
+		Review:       httpapi.NewReviewHandler(reviewSvc),
+		Notification: httpapi.NewNotificationHandler(notificationSvc),
+		Support:      httpapi.NewSupportHandler(supportSvc, hub),
+		SupportWS:    httpapi.NewSupportWSHandler(hub, supportSvc, tokenMgr),
 	}
 
 	router := httpserver.NewRouter(handlers, tokenMgr, limiter, cfg.CORSOrigins)

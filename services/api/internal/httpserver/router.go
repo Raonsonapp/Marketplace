@@ -29,6 +29,9 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 	if h.OrderWS != nil {
 		r.GET("/ws/orders/:id", h.OrderWS.Serve)
 	}
+	if h.SupportWS != nil {
+		r.GET("/ws/support/:conversationId", h.SupportWS.Serve)
+	}
 
 	requireAuth := middleware.RequireAuth(tokenMgr)
 	optionalAuth := middleware.OptionalAuth(tokenMgr)
@@ -55,6 +58,9 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 		v1.GET("/products/:id", optionalAuth, h.Catalog.ProductDetail)
 		v1.GET("/products/barcode/:code", optionalAuth, h.Catalog.ProductByBarcode)
 		v1.GET("/search", optionalAuth, h.Catalog.Search)
+
+		v1.GET("/reviews", h.Review.List)
+		v1.GET("/promotions", optionalAuth, h.Promotion.List)
 
 		authed := v1.Group("")
 		authed.Use(requireAuth)
@@ -85,6 +91,20 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 
 			authed.GET("/profile", h.Profile.Get)
 			authed.PATCH("/profile", h.Profile.Update)
+
+			authed.POST("/promo-codes/validate", h.Promotion.Validate)
+			authed.POST("/reviews", h.Review.Create)
+
+			authed.GET("/notifications", h.Notification.List)
+			authed.PATCH("/notifications/:id/read", h.Notification.MarkRead)
+			authed.GET("/notifications/preferences", h.Notification.GetPreferences)
+			authed.PATCH("/notifications/preferences", h.Notification.UpdatePreferences)
+			authed.POST("/devices", h.Notification.RegisterDevice)
+
+			authed.GET("/support/conversations", h.Support.ListConversations)
+			authed.POST("/support/conversations", h.Support.CreateConversation)
+			authed.GET("/support/conversations/:id/messages", h.Support.ListMessages)
+			authed.POST("/support/conversations/:id/messages", h.Support.PostMessage)
 		}
 	}
 

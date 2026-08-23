@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tajikshop/core/icons/app_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/router/route_paths.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/utils/currency_formatter.dart';
@@ -12,6 +14,7 @@ import '../../../core/widgets/error_state_view.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/skeleton_loader.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../reviews/presentation/write_review_screen.dart';
 import '../application/order_detail_controller.dart';
 import '../data/order_models.dart';
 import '../data/order_tracking_socket.dart';
@@ -153,12 +156,43 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                 const SizedBox(height: AppSpacing.xs),
                 ...order.items.map((item) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxs),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Text('${item.nameSnapshot} ×${item.quantity}'),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text('${item.nameSnapshot} ×${item.quantity}'),
+                              ),
+                              Text(CurrencyFormatter.format(item.totalPrice,
+                                  languageCode: languageCode)),
+                            ],
                           ),
-                          Text(CurrencyFormatter.format(item.totalPrice, languageCode: languageCode)),
+                          // Only a delivered order's items were actually
+                          // received, so only those get a review action —
+                          // and it always carries this exact item's real
+                          // `order_item_id`, never a guessed one.
+                          if (status.isCompleted)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: TextButton.icon(
+                                onPressed: () => context.push(
+                                  RoutePaths.writeReview,
+                                  extra: WriteReviewRouteArgs(
+                                    productId: item.productId,
+                                    orderItemId: item.id,
+                                    productName: item.nameSnapshot,
+                                  ),
+                                ),
+                                icon: const Icon(LucideIcons.star, size: 16),
+                                label: Text(l10n.reviewsLeaveReview),
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size.zero,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     )),

@@ -420,6 +420,56 @@ func containsUUID(list []uuid.UUID, id uuid.UUID) bool {
 	return false
 }
 
+// PromoPreviewResult is the response for POST /promo-codes/validate: the
+// discount a promo code would resolve to against the caller's current cart,
+// computed without committing anything.
+type PromoPreviewResult struct {
+	Code           string
+	Subtotal       money.Money
+	DiscountAmount money.Money
+}
+
+// ValidatePromoCode previews a promo code against the caller's current
+// cart, applying the exact same server-side rules Quote/CreateOrder enforce
+// (docs/SECURITY.md: min_order_amount, date window, usage_limit,
+// per_user_limit, applicable scope) via the shared validatePromo helper —
+// nothing here is duplicated. Read-only; no promo_code_usage row is written.
+func (s *CheckoutService) ValidatePromoCode(ctx context.Context, userID uuid.UUID, code string) (*PromoPreviewResult, error) {
+	cart, err := s.carts.GetOrCreate(ctx, s.db, userID)
+	if err != nil {
+		return nil, fmt.Errorf("service: get cart: %w", err)
+	}
+	if cart.StoreID == nil {
+		return nil, apperr.New(apperr.CodeCartEmpty, nil)
+	}
+	items, err := s.carts.Items(ctx, s.db, cart.ID)
+	if err != nil {
+		return nil, fmt.Errorf("service: cart items: %w", err)
+	}
+	if len(items) == 0 {
+		return nil, apperr.New(apperr.CodeCartEmpty, nil)
+	}
+
+	lines, outOfStock, err := s.priceItems(ctx, s.db, *cart.StoreID, items)
+	if err != nil {
+		return nil, err
+	}
+	if len(outOfStock) > 0 {
+		return nil, outOfStockError(outOfStock)
+	}
+
+	var subtotal money.Money
+	for _, l := range lines {
+		subtotal = subtotal.Add(l.LineTotal)
+	}
+
+	discount, _, err := s.validatePromo(ctx, s.db, code, userID, *cart.StoreID, subtotal, lines)
+	if err != nil {
+		return nil, err
+	}
+	return &PromoPreviewResult{Code: code, Subtotal: subtotal, DiscountAmount: discount}, nil
+}
+
 // CreateOrderRequest is the service-level input for POST /orders.
 type CreateOrderRequest struct {
 	QuoteRequest
