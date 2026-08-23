@@ -26,6 +26,13 @@ Phase 2 (backend) is complete and verified.
       against real Postgres/Redis in-session (not just compiled); `go build`,
       `go vet`, `go test` all pass. Deviation: JWT is HS256 (not RS256 as
       drafted in docs/SECURITY.md) — documented in `internal/config`.
+- [x] Firebase Phone Auth (`POST /auth/firebase-verify`) — the real-SMS
+      registration path added at the user's request, adapted from the
+      verification approach already proven in their
+      `github.com/Raonsonapp/TajikShop` repo (`internal/auth/firebase.go`).
+      Console-OTP remains the no-external-account local-dev fallback. See
+      `docs/FIREBASE_SETUP.md` for the external (Firebase console) steps
+      required to turn on real SMS delivery — cannot be done from a sandbox.
 
 ## In progress
 
@@ -37,7 +44,10 @@ Phase 2 (backend) is complete and verified.
       fallback) replacing default Material icons app-wide; a real barcode/
       price scanner screen (`mobile_scanner` against
       `GET /products/barcode/:code`); an order delivery-status timeline on
-      the order detail screen (wired to `/ws/orders/:id` where possible).
+      the order detail screen (wired to `/ws/orders/:id` where possible);
+      and Firebase Phone Auth wired into the phone-login screens (falling
+      back to the console-OTP flow until the user completes the Firebase
+      console setup in `docs/FIREBASE_SETUP.md`).
 
 ## Not started
 
@@ -56,9 +66,10 @@ Phase 2 (backend) is complete and verified.
 
 ## Known issues / open decisions
 
-- Real SMS/OTP provider for Tajikistan not yet selected — dev uses a
-  console-log `otp.Sender` implementation behind the same interface real
-  providers will implement.
+- SMS delivery: two paths now exist — console-log OTP (no setup, dev
+  default) and Firebase Phone Auth (real, free-tier SMS to +992 numbers).
+  Firebase requires one-time external console setup by the project owner
+  (see `docs/FIREBASE_SETUP.md`) that cannot be completed from a sandbox.
 - Real online payment provider not yet selected — `payment.Provider`
   interface has only `cash_on_delivery` implemented, as required.
 - Map provider intentionally not chosen — delivery-zone checks use raw
