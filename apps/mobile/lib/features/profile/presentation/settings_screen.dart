@@ -18,7 +18,11 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final locale = ref.watch(localeControllerProvider);
-    final languageLabel = locale.languageCode == 'ru' ? l10n.languageRussian : l10n.languageTajik;
+    final languageLabel = switch (locale.languageCode) {
+      'ru' => l10n.languageRussian,
+      'en' => l10n.languageEnglish,
+      _ => l10n.languageTajik,
+    };
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.profileSettings)),

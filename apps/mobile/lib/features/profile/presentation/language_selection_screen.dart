@@ -32,6 +32,11 @@ class LanguageSelectionScreen extends ConsumerWidget {
               title: Text(l10n.languageRussian),
               activeColor: AppColors.emeraldGreen,
             ),
+            RadioListTile<String>(
+              value: 'en',
+              title: Text(l10n.languageEnglish),
+              activeColor: AppColors.emeraldGreen,
+            ),
           ],
         ),
       ),

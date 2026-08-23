@@ -206,6 +206,7 @@
   "languageSelectTitle": "Выберите язык",
   "languageTajik": "Таджикский",
   "languageRussian": "Русский",
+  "languageEnglish": "Английский",
 
   "splashTagline": "Лёгкие покупки, быстрая доставка",
 
@@ -223,5 +224,18 @@
   "barcodeSwitchCamera": "Сменить камеру",
 
   "orderTrackingTitle": "Отслеживание заказа",
-  "orderTrackingLive": "Онлайн"
+  "orderTrackingLive": "Онлайн",
+
+  "storesMapTitle": "Магазины рядом",
+  "storesMapPermissionTitle": "Требуется доступ к геолокации",
+  "storesMapPermissionMessage": "Чтобы показать магазины рядом с вами на карте, разрешите доступ к геолокации",
+  "storesMapPermissionGrant": "Разрешить доступ",
+  "storesMapPermissionOpenSettings": "Открыть настройки",
+  "storesMapChooseManually": "Выбрать адрес вручную",
+  "storesMapEmptyTitle": "Поблизости магазины не найдены",
+  "storeDistanceAway": "{km} км от вас",
+  "storeDeliveryAvailable": "Доступна доставка",
+  "storePickupAvailable": "Доступен самовывоз",
+  "storeSells": "Что продаёт этот магазин",
+  "storeBrowseCatalog": "Смотреть каталог"
 }

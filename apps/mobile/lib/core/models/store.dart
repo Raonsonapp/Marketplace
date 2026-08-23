@@ -12,6 +12,8 @@ abstract class Store with _$Store {
     required String name,
     String? logoUrl,
     String? address,
+    double? lat,
+    double? lng,
     double? distanceKm,
     @Default(true) bool isDeliveryAvailable,
     @Default(true) bool isPickupAvailable,

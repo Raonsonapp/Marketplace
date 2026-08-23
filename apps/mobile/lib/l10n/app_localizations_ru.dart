@@ -593,6 +593,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get languageRussian => 'Русский';
 
   @override
+  String get languageEnglish => 'Английский';
+
+  @override
   String get splashTagline => 'Лёгкие покупки, быстрая доставка';
 
   @override
@@ -639,4 +642,43 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get orderTrackingLive => 'Онлайн';
+
+  @override
+  String get storesMapTitle => 'Магазины рядом';
+
+  @override
+  String get storesMapPermissionTitle => 'Требуется доступ к геолокации';
+
+  @override
+  String get storesMapPermissionMessage =>
+      'Чтобы показать магазины рядом с вами на карте, разрешите доступ к геолокации';
+
+  @override
+  String get storesMapPermissionGrant => 'Разрешить доступ';
+
+  @override
+  String get storesMapPermissionOpenSettings => 'Открыть настройки';
+
+  @override
+  String get storesMapChooseManually => 'Выбрать адрес вручную';
+
+  @override
+  String get storesMapEmptyTitle => 'Поблизости магазины не найдены';
+
+  @override
+  String storeDistanceAway(String km) {
+    return '$km км от вас';
+  }
+
+  @override
+  String get storeDeliveryAvailable => 'Доступна доставка';
+
+  @override
+  String get storePickupAvailable => 'Доступен самовывоз';
+
+  @override
+  String get storeSells => 'Что продаёт этот магазин';
+
+  @override
+  String get storeBrowseCatalog => 'Смотреть каталог';
 }

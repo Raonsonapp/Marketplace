@@ -599,6 +599,9 @@ class AppLocalizationsTg extends AppLocalizations {
   String get languageRussian => 'Русӣ';
 
   @override
+  String get languageEnglish => 'Англисӣ';
+
+  @override
   String get splashTagline => 'Хариди осон, расонидани тез';
 
   @override
@@ -646,4 +649,43 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get orderTrackingLive => 'Зинда';
+
+  @override
+  String get storesMapTitle => 'Мағозаҳои наздик';
+
+  @override
+  String get storesMapPermissionTitle => 'Дастрасӣ ба ҷойгиршавӣ лозим аст';
+
+  @override
+  String get storesMapPermissionMessage =>
+      'Барои нишон додани мағозаҳои наздик дар харита лутфан ба ҷойгиршавии худ дастрасӣ диҳед';
+
+  @override
+  String get storesMapPermissionGrant => 'Додани дастрасӣ';
+
+  @override
+  String get storesMapPermissionOpenSettings => 'Кушодани танзимот';
+
+  @override
+  String get storesMapChooseManually => 'Ба ҷои он суроға интихоб кунед';
+
+  @override
+  String get storesMapEmptyTitle => 'Дар наздикӣ мағоза ёфт нашуд';
+
+  @override
+  String storeDistanceAway(String km) {
+    return '$km км дуртар';
+  }
+
+  @override
+  String get storeDeliveryAvailable => 'Расонидан дастрас аст';
+
+  @override
+  String get storePickupAvailable => 'Гирифтан аз мағоза дастрас аст';
+
+  @override
+  String get storeSells => 'Ин мағоза чӣ мефурӯшад';
+
+  @override
+  String get storeBrowseCatalog => 'Дидани каталог';
 }

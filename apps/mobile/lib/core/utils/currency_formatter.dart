@@ -10,6 +10,7 @@ class CurrencyFormatter {
 
   static const String _currencySuffixTj = 'сомонӣ';
   static const String _currencySuffixRu = 'сомони';
+  static const String _currencySuffixEn = 'TJS';
 
   /// Formats a decimal-string amount (as returned by the API) into a
   /// display string, e.g. `format("1250.5")` -> `"1 250.50 сомонӣ"`.
@@ -23,7 +24,11 @@ class CurrencyFormatter {
     final fixed = amount.toStringAsFixed(2);
     final parts = fixed.split('.');
     final wholePart = _groupThousands(parts[0]);
-    final suffix = languageCode == 'ru' ? _currencySuffixRu : _currencySuffixTj;
+    final suffix = switch (languageCode) {
+      'ru' => _currencySuffixRu,
+      'en' => _currencySuffixEn,
+      _ => _currencySuffixTj,
+    };
     return '$wholePart.${parts[1]} $suffix';
   }
 

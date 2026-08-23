@@ -27,6 +27,6 @@ class AppConstants {
   static const String storageKeyRefreshToken = 'auth_refresh_token';
   static const String storageKeyLanguage = 'app_language';
 
-  static const List<String> supportedLocales = ['tg', 'ru'];
+  static const List<String> supportedLocales = ['tg', 'ru', 'en'];
   static const String defaultLocale = 'tg';
 }

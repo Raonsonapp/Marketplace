@@ -28,6 +28,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>TajikShop-ро барои сканеркунии рамзи маҳсулот ба камера дастрасӣ лозим аст.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>TajikShop-ро барои нишон додани мағозаҳои наздик ба ҷойгиршавии шумо дастрасӣ лозим аст.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

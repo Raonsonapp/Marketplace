@@ -7,10 +7,11 @@ import '../../../../core/widgets/section_header.dart';
 
 /// A horizontal row of nearby store cards on the home feed.
 class NearbyStoresRow extends StatelessWidget {
-  const NearbyStoresRow({super.key, required this.title, required this.stores});
+  const NearbyStoresRow({super.key, required this.title, required this.stores, this.onSeeAll});
 
   final String title;
   final List<Store> stores;
+  final VoidCallback? onSeeAll;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class NearbyStoresRow extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionHeader(title: title),
+        SectionHeader(title: title, onSeeAll: onSeeAll),
         const SizedBox(height: AppSpacing.xs),
         SizedBox(
           height: 108,

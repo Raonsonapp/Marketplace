@@ -34,6 +34,11 @@ class HomeScreen extends ConsumerWidget {
         title: Text(l10n.appTitle),
         actions: [
           IconButton(
+            icon: const Icon(LucideIcons.mapPin),
+            tooltip: l10n.storesMapTitle,
+            onPressed: () => context.push(RoutePaths.storesMap),
+          ),
+          IconButton(
             icon: const Icon(LucideIcons.scanLine),
             tooltip: l10n.barcodeScanTitle,
             onPressed: () => context.push(RoutePaths.barcodeScanner),
@@ -132,6 +137,7 @@ class HomeScreen extends ConsumerWidget {
                         NearbyStoresRow(
                           title: l10n.homeSectionNearbyStores,
                           stores: feed.nearbyStores!,
+                          onSeeAll: () => context.push(RoutePaths.storesMap),
                         ),
                         const SizedBox(height: AppSpacing.lg),
                       ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -21,14 +20,10 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 88,
-                height: 88,
-                decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
-                  borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
-                ),
-                child: const Icon(LucideIcons.store, color: Colors.white, size: 44),
+              Image.asset(
+                'assets/branding/app_icon.png',
+                width: 120,
+                height: 120,
               ),
               const SizedBox(height: AppSpacing.md),
               Text(

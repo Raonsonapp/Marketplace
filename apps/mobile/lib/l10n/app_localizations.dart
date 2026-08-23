@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_en.dart';
 import 'app_localizations_ru.dart';
 import 'app_localizations_tg.dart';
 
@@ -96,6 +97,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('tg'),
     Locale('ru'),
+    Locale('en'),
   ];
 
   /// The application name, shown on splash and in the OS task switcher.
@@ -1220,6 +1222,12 @@ abstract class AppLocalizations {
   /// **'Русӣ'**
   String get languageRussian;
 
+  /// No description provided for @languageEnglish.
+  ///
+  /// In tg, this message translates to:
+  /// **'Англисӣ'**
+  String get languageEnglish;
+
   /// No description provided for @splashTagline.
   ///
   /// In tg, this message translates to:
@@ -1309,6 +1317,78 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Зинда'**
   String get orderTrackingLive;
+
+  /// No description provided for @storesMapTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мағозаҳои наздик'**
+  String get storesMapTitle;
+
+  /// No description provided for @storesMapPermissionTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дастрасӣ ба ҷойгиршавӣ лозим аст'**
+  String get storesMapPermissionTitle;
+
+  /// No description provided for @storesMapPermissionMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Барои нишон додани мағозаҳои наздик дар харита лутфан ба ҷойгиршавии худ дастрасӣ диҳед'**
+  String get storesMapPermissionMessage;
+
+  /// No description provided for @storesMapPermissionGrant.
+  ///
+  /// In tg, this message translates to:
+  /// **'Додани дастрасӣ'**
+  String get storesMapPermissionGrant;
+
+  /// No description provided for @storesMapPermissionOpenSettings.
+  ///
+  /// In tg, this message translates to:
+  /// **'Кушодани танзимот'**
+  String get storesMapPermissionOpenSettings;
+
+  /// No description provided for @storesMapChooseManually.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ба ҷои он суроға интихоб кунед'**
+  String get storesMapChooseManually;
+
+  /// No description provided for @storesMapEmptyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар наздикӣ мағоза ёфт нашуд'**
+  String get storesMapEmptyTitle;
+
+  /// No description provided for @storeDistanceAway.
+  ///
+  /// In tg, this message translates to:
+  /// **'{km} км дуртар'**
+  String storeDistanceAway(String km);
+
+  /// No description provided for @storeDeliveryAvailable.
+  ///
+  /// In tg, this message translates to:
+  /// **'Расонидан дастрас аст'**
+  String get storeDeliveryAvailable;
+
+  /// No description provided for @storePickupAvailable.
+  ///
+  /// In tg, this message translates to:
+  /// **'Гирифтан аз мағоза дастрас аст'**
+  String get storePickupAvailable;
+
+  /// No description provided for @storeSells.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ин мағоза чӣ мефурӯшад'**
+  String get storeSells;
+
+  /// No description provided for @storeBrowseCatalog.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дидани каталог'**
+  String get storeBrowseCatalog;
 }
 
 class _AppLocalizationsDelegate
@@ -1322,7 +1402,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['ru', 'tg'].contains(locale.languageCode);
+      <String>['en', 'ru', 'tg'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1331,6 +1411,8 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
     case 'ru':
       return AppLocalizationsRu();
     case 'tg':

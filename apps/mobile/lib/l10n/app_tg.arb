@@ -225,6 +225,7 @@
   "languageSelectTitle": "Забонро интихоб кунед",
   "languageTajik": "Тоҷикӣ",
   "languageRussian": "Русӣ",
+  "languageEnglish": "Англисӣ",
 
   "splashTagline": "Хариди осон, расонидани тез",
 
@@ -245,5 +246,21 @@
   "barcodeSwitchCamera": "Иваз кардани камера",
 
   "orderTrackingTitle": "Пайгирии фармоиш",
-  "orderTrackingLive": "Зинда"
+  "orderTrackingLive": "Зинда",
+
+  "storesMapTitle": "Мағозаҳои наздик",
+  "storesMapPermissionTitle": "Дастрасӣ ба ҷойгиршавӣ лозим аст",
+  "storesMapPermissionMessage": "Барои нишон додани мағозаҳои наздик дар харита лутфан ба ҷойгиршавии худ дастрасӣ диҳед",
+  "storesMapPermissionGrant": "Додани дастрасӣ",
+  "storesMapPermissionOpenSettings": "Кушодани танзимот",
+  "storesMapChooseManually": "Ба ҷои он суроға интихоб кунед",
+  "storesMapEmptyTitle": "Дар наздикӣ мағоза ёфт нашуд",
+  "storeDistanceAway": "{km} км дуртар",
+  "@storeDistanceAway": {
+    "placeholders": {"km": {"type": "String"}}
+  },
+  "storeDeliveryAvailable": "Расонидан дастрас аст",
+  "storePickupAvailable": "Гирифтан аз мағоза дастрас аст",
+  "storeSells": "Ин мағоза чӣ мефурӯшад",
+  "storeBrowseCatalog": "Дидани каталог"
 }

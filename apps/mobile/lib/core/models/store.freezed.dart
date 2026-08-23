@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Store {
 
- String get id; String get name; String? get logoUrl; String? get address; double? get distanceKm; bool get isDeliveryAvailable; bool get isPickupAvailable; bool get isOpen;
+ String get id; String get name; String? get logoUrl; String? get address; double? get lat; double? get lng; double? get distanceKm; bool get isDeliveryAvailable; bool get isPickupAvailable; bool get isOpen;
 /// Create a copy of Store
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $StoreCopyWith<Store> get copyWith => _$StoreCopyWithImpl<Store>(this as Store, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Store&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.address, address) || other.address == address)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm)&&(identical(other.isDeliveryAvailable, isDeliveryAvailable) || other.isDeliveryAvailable == isDeliveryAvailable)&&(identical(other.isPickupAvailable, isPickupAvailable) || other.isPickupAvailable == isPickupAvailable)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Store&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm)&&(identical(other.isDeliveryAvailable, isDeliveryAvailable) || other.isDeliveryAvailable == isDeliveryAvailable)&&(identical(other.isPickupAvailable, isPickupAvailable) || other.isPickupAvailable == isPickupAvailable)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,logoUrl,address,distanceKm,isDeliveryAvailable,isPickupAvailable,isOpen);
+int get hashCode => Object.hash(runtimeType,id,name,logoUrl,address,lat,lng,distanceKm,isDeliveryAvailable,isPickupAvailable,isOpen);
 
 @override
 String toString() {
-  return 'Store(id: $id, name: $name, logoUrl: $logoUrl, address: $address, distanceKm: $distanceKm, isDeliveryAvailable: $isDeliveryAvailable, isPickupAvailable: $isPickupAvailable, isOpen: $isOpen)';
+  return 'Store(id: $id, name: $name, logoUrl: $logoUrl, address: $address, lat: $lat, lng: $lng, distanceKm: $distanceKm, isDeliveryAvailable: $isDeliveryAvailable, isPickupAvailable: $isPickupAvailable, isOpen: $isOpen)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $StoreCopyWith<$Res>  {
   factory $StoreCopyWith(Store value, $Res Function(Store) _then) = _$StoreCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String? logoUrl, String? address, double? distanceKm, bool isDeliveryAvailable, bool isPickupAvailable, bool isOpen
+ String id, String name, String? logoUrl, String? address, double? lat, double? lng, double? distanceKm, bool isDeliveryAvailable, bool isPickupAvailable, bool isOpen
 });
 
 
@@ -66,13 +66,15 @@ class _$StoreCopyWithImpl<$Res>
 
 /// Create a copy of Store
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? logoUrl = freezed,Object? address = freezed,Object? distanceKm = freezed,Object? isDeliveryAvailable = null,Object? isPickupAvailable = null,Object? isOpen = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? logoUrl = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? distanceKm = freezed,Object? isDeliveryAvailable = null,Object? isPickupAvailable = null,Object? isOpen = null,}) {
   return _then(Store(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String?,distanceKm: freezed == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
+as String?,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
+as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
+as double?,distanceKm: freezed == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
 as double?,isDeliveryAvailable: null == isDeliveryAvailable ? _self.isDeliveryAvailable : isDeliveryAvailable // ignore: cast_nullable_to_non_nullable
 as bool,isPickupAvailable: null == isPickupAvailable ? _self.isPickupAvailable : isPickupAvailable // ignore: cast_nullable_to_non_nullable
 as bool,isOpen: null == isOpen ? _self.isOpen : isOpen // ignore: cast_nullable_to_non_nullable
@@ -161,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? logoUrl,  String? address,  double? distanceKm,  bool isDeliveryAvailable,  bool isPickupAvailable,  bool isOpen)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? logoUrl,  String? address,  double? lat,  double? lng,  double? distanceKm,  bool isDeliveryAvailable,  bool isPickupAvailable,  bool isOpen)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Store() when $default != null:
-return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.distanceKm,_that.isDeliveryAvailable,_that.isPickupAvailable,_that.isOpen);case _:
+return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.lat,_that.lng,_that.distanceKm,_that.isDeliveryAvailable,_that.isPickupAvailable,_that.isOpen);case _:
   return orElse();
 
 }
@@ -182,10 +184,10 @@ return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.distanceKm
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? logoUrl,  String? address,  double? distanceKm,  bool isDeliveryAvailable,  bool isPickupAvailable,  bool isOpen)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? logoUrl,  String? address,  double? lat,  double? lng,  double? distanceKm,  bool isDeliveryAvailable,  bool isPickupAvailable,  bool isOpen)  $default,) {final _that = this;
 switch (_that) {
 case _Store():
-return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.distanceKm,_that.isDeliveryAvailable,_that.isPickupAvailable,_that.isOpen);case _:
+return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.lat,_that.lng,_that.distanceKm,_that.isDeliveryAvailable,_that.isPickupAvailable,_that.isOpen);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +204,10 @@ return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.distanceKm
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? logoUrl,  String? address,  double? distanceKm,  bool isDeliveryAvailable,  bool isPickupAvailable,  bool isOpen)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? logoUrl,  String? address,  double? lat,  double? lng,  double? distanceKm,  bool isDeliveryAvailable,  bool isPickupAvailable,  bool isOpen)?  $default,) {final _that = this;
 switch (_that) {
 case _Store() when $default != null:
-return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.distanceKm,_that.isDeliveryAvailable,_that.isPickupAvailable,_that.isOpen);case _:
+return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.lat,_that.lng,_that.distanceKm,_that.isDeliveryAvailable,_that.isPickupAvailable,_that.isOpen);case _:
   return null;
 
 }
@@ -217,13 +219,15 @@ return $default(_that.id,_that.name,_that.logoUrl,_that.address,_that.distanceKm
 @JsonSerializable()
 
 class _Store implements Store {
-  const _Store({required this.id, required this.name, this.logoUrl, this.address, this.distanceKm, this.isDeliveryAvailable = true, this.isPickupAvailable = true, this.isOpen = true});
+  const _Store({required this.id, required this.name, this.logoUrl, this.address, this.lat, this.lng, this.distanceKm, this.isDeliveryAvailable = true, this.isPickupAvailable = true, this.isOpen = true});
   factory _Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 
 @override final  String id;
 @override final  String name;
 @override final  String? logoUrl;
 @override final  String? address;
+@override final  double? lat;
+@override final  double? lng;
 @override final  double? distanceKm;
 @override@JsonKey() final  bool isDeliveryAvailable;
 @override@JsonKey() final  bool isPickupAvailable;
@@ -242,16 +246,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Store&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.address, address) || other.address == address)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm)&&(identical(other.isDeliveryAvailable, isDeliveryAvailable) || other.isDeliveryAvailable == isDeliveryAvailable)&&(identical(other.isPickupAvailable, isPickupAvailable) || other.isPickupAvailable == isPickupAvailable)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Store&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.address, address) || other.address == address)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm)&&(identical(other.isDeliveryAvailable, isDeliveryAvailable) || other.isDeliveryAvailable == isDeliveryAvailable)&&(identical(other.isPickupAvailable, isPickupAvailable) || other.isPickupAvailable == isPickupAvailable)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,logoUrl,address,distanceKm,isDeliveryAvailable,isPickupAvailable,isOpen);
+int get hashCode => Object.hash(runtimeType,id,name,logoUrl,address,lat,lng,distanceKm,isDeliveryAvailable,isPickupAvailable,isOpen);
 
 @override
 String toString() {
-  return 'Store(id: $id, name: $name, logoUrl: $logoUrl, address: $address, distanceKm: $distanceKm, isDeliveryAvailable: $isDeliveryAvailable, isPickupAvailable: $isPickupAvailable, isOpen: $isOpen)';
+  return 'Store(id: $id, name: $name, logoUrl: $logoUrl, address: $address, lat: $lat, lng: $lng, distanceKm: $distanceKm, isDeliveryAvailable: $isDeliveryAvailable, isPickupAvailable: $isPickupAvailable, isOpen: $isOpen)';
 }
 
 
@@ -262,7 +266,7 @@ abstract mixin class _$StoreCopyWith<$Res> implements $StoreCopyWith<$Res> {
   factory _$StoreCopyWith(_Store value, $Res Function(_Store) _then) = __$StoreCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String? logoUrl, String? address, double? distanceKm, bool isDeliveryAvailable, bool isPickupAvailable, bool isOpen
+ String id, String name, String? logoUrl, String? address, double? lat, double? lng, double? distanceKm, bool isDeliveryAvailable, bool isPickupAvailable, bool isOpen
 });
 
 
@@ -279,13 +283,15 @@ class __$StoreCopyWithImpl<$Res>
 
 /// Create a copy of Store
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? logoUrl = freezed,Object? address = freezed,Object? distanceKm = freezed,Object? isDeliveryAvailable = null,Object? isPickupAvailable = null,Object? isOpen = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? logoUrl = freezed,Object? address = freezed,Object? lat = freezed,Object? lng = freezed,Object? distanceKm = freezed,Object? isDeliveryAvailable = null,Object? isPickupAvailable = null,Object? isOpen = null,}) {
   return _then(_Store(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
 as String?,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
-as String?,distanceKm: freezed == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
+as String?,lat: freezed == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
+as double?,lng: freezed == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
+as double?,distanceKm: freezed == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
 as double?,isDeliveryAvailable: null == isDeliveryAvailable ? _self.isDeliveryAvailable : isDeliveryAvailable // ignore: cast_nullable_to_non_nullable
 as bool,isPickupAvailable: null == isPickupAvailable ? _self.isPickupAvailable : isPickupAvailable // ignore: cast_nullable_to_non_nullable
 as bool,isOpen: null == isOpen ? _self.isOpen : isOpen // ignore: cast_nullable_to_non_nullable

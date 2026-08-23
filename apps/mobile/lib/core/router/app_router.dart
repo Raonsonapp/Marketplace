@@ -21,6 +21,7 @@ import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/settings_screen.dart';
 import '../../features/search/presentation/search_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
+import '../../features/stores/presentation/stores_map_screen.dart';
 import '../session/session_controller.dart';
 import '../storage/preferences_storage.dart';
 import 'app_shell.dart';
@@ -141,6 +142,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.barcodeScanner,
         builder: (context, state) => const BarcodeScannerScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.storesMap,
+        builder: (context, state) => const StoresMapScreen(),
       ),
       GoRoute(
         path: RoutePaths.productDetail,
