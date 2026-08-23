@@ -1,0 +1,114 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/router/route_paths.dart';
+import '../../../core/theme/app_spacing.dart';
+import '../../../core/widgets/empty_state_view.dart';
+import '../../../core/widgets/error_state_view.dart';
+import '../../../core/widgets/skeleton_loader.dart';
+import '../../../l10n/app_localizations.dart';
+import '../application/categories_controller.dart';
+
+/// The Catalog tab — a grid of top-level categories
+/// (`GET /categories` — docs/API_SPEC.md).
+class CatalogScreen extends ConsumerWidget {
+  const CatalogScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final categoriesAsync = ref.watch(categoriesControllerProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.catalogTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => context.push(RoutePaths.search),
+          ),
+        ],
+      ),
+      body: categoriesAsync.when(
+        data: (categories) {
+          if (categories.isEmpty) {
+            return EmptyStateView(
+              title: l10n.catalogEmptyCategories,
+              actionLabel: l10n.commonRetry,
+              onAction: () => ref.read(categoriesControllerProvider.notifier).refresh(),
+            );
+          }
+          return RefreshIndicator(
+            onRefresh: () => ref.read(categoriesControllerProvider.notifier).refresh(),
+            child: GridView.builder(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              itemCount: categories.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: AppSpacing.sm,
+                crossAxisSpacing: AppSpacing.sm,
+                childAspectRatio: 0.85,
+              ),
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return InkWell(
+                  borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
+                  onTap: () => context.push(
+                    '${RoutePaths.categoryProductsPath(category.id)}?name=${Uri.encodeComponent(category.name)}',
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(AppSpacing.cardRadius),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            shape: BoxShape.circle,
+                          ),
+                          child: category.iconUrl == null || category.iconUrl!.isEmpty
+                              ? const Icon(Icons.category_outlined)
+                              : ClipOval(
+                                  child: Image.network(
+                                    category.iconUrl!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) =>
+                                        const Icon(Icons.category_outlined),
+                                  ),
+                                ),
+                        ),
+                        const SizedBox(height: AppSpacing.xs),
+                        Text(
+                          category.name,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+        error: (error, stackTrace) => ErrorStateView(
+          error: error,
+          onRetry: () => ref.read(categoriesControllerProvider.notifier).refresh(),
+        ),
+        loading: () => const Padding(
+          padding: EdgeInsets.all(AppSpacing.md),
+          child: ProductGridSkeleton(itemCount: 9, crossAxisCount: 3),
+        ),
+      ),
+    );
+  }
+}

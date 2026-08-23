@@ -1,0 +1,597 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Russian (`ru`).
+class AppLocalizationsRu extends AppLocalizations {
+  AppLocalizationsRu([String locale = 'ru']) : super(locale);
+
+  @override
+  String get appTitle => 'TajikShop';
+
+  @override
+  String get navHome => 'Главная';
+
+  @override
+  String get navCatalog => 'Каталог';
+
+  @override
+  String get navCart => 'Корзина';
+
+  @override
+  String get navOrders => 'Заказы';
+
+  @override
+  String get navProfile => 'Профиль';
+
+  @override
+  String get commonLoading => 'Загрузка…';
+
+  @override
+  String get commonEmptyTitle => 'Здесь пока пусто';
+
+  @override
+  String get commonEmptyMessage => 'Данные сейчас недоступны.';
+
+  @override
+  String get commonErrorTitle => 'Произошла ошибка';
+
+  @override
+  String get commonErrorGeneric => 'Что-то пошло не так. Попробуйте ещё раз.';
+
+  @override
+  String get commonRetry => 'Повторить';
+
+  @override
+  String get commonCancel => 'Отмена';
+
+  @override
+  String get commonConfirm => 'Подтвердить';
+
+  @override
+  String get commonSave => 'Сохранить';
+
+  @override
+  String get commonEdit => 'Изменить';
+
+  @override
+  String get commonDelete => 'Удалить';
+
+  @override
+  String get commonAdd => 'Добавить';
+
+  @override
+  String get commonDone => 'Готово';
+
+  @override
+  String get commonBack => 'Назад';
+
+  @override
+  String get commonSeeAll => 'Смотреть все';
+
+  @override
+  String get commonContinue => 'Продолжить';
+
+  @override
+  String get commonClose => 'Закрыть';
+
+  @override
+  String get commonYes => 'Да';
+
+  @override
+  String get commonNo => 'Нет';
+
+  @override
+  String get commonSearch => 'Поиск';
+
+  @override
+  String get commonOptional => '(необязательно)';
+
+  @override
+  String get offlineBannerMessage => 'Нет подключения к интернету';
+
+  @override
+  String get networkErrorTimeout =>
+      'Связь с сервером прервана. Проверьте подключение к интернету.';
+
+  @override
+  String get networkErrorNoConnection =>
+      'Интернет недоступен. Проверьте соединение и попробуйте снова.';
+
+  @override
+  String get networkErrorCancelled => 'Запрос отменён.';
+
+  @override
+  String get networkErrorUnknown =>
+      'Неизвестная ошибка сети. Попробуйте ещё раз.';
+
+  @override
+  String get authWelcomeTitle => 'Добро пожаловать в TajikShop';
+
+  @override
+  String get authWelcomeSubtitle => 'Введите номер телефона, чтобы продолжить';
+
+  @override
+  String get authPhoneLabel => 'Номер телефона';
+
+  @override
+  String get authPhoneHint => '90 123 45 67';
+
+  @override
+  String get authPhoneInvalid =>
+      'Неверный номер телефона. Пример: +992 90 123 45 67';
+
+  @override
+  String get authSendCode => 'Получить код';
+
+  @override
+  String get authOtpTitle => 'Введите код подтверждения';
+
+  @override
+  String authOtpSubtitle(String phone) {
+    return 'Мы отправили 6-значный код на номер $phone';
+  }
+
+  @override
+  String get authOtpInvalid => 'Неверный код. Попробуйте ещё раз.';
+
+  @override
+  String get authOtpExpired => 'Срок действия кода истёк. Запросите новый код.';
+
+  @override
+  String get authResendCode => 'Отправить код повторно';
+
+  @override
+  String authResendCodeIn(int seconds) {
+    return 'Повторная отправка через $seconds сек.';
+  }
+
+  @override
+  String get authVerify => 'Подтвердить';
+
+  @override
+  String get authChangeNumber => 'Изменить номер';
+
+  @override
+  String get authLogout => 'Выйти';
+
+  @override
+  String get authLogoutConfirm => 'Вы уверены, что хотите выйти?';
+
+  @override
+  String get authSignInRequiredTitle => 'Требуется вход';
+
+  @override
+  String get authSignInRequiredMessage =>
+      'Пожалуйста, войдите, чтобы продолжить';
+
+  @override
+  String get authSignIn => 'Войти';
+
+  @override
+  String get onboardingTitle1 => 'Покупки не выходя из дома';
+
+  @override
+  String get onboardingBody1 =>
+      'Заказывайте тысячи свежих и повседневных товаров из ближайших магазинов';
+
+  @override
+  String get onboardingTitle2 => 'Быстрая доставка';
+
+  @override
+  String get onboardingBody2 => 'Ваш заказ будет доставлен в кратчайшие сроки';
+
+  @override
+  String get onboardingTitle3 => 'Копите TajBonus';
+
+  @override
+  String get onboardingBody3 =>
+      'Получайте бонусы за каждую покупку и используйте их в будущих заказах';
+
+  @override
+  String get onboardingSkip => 'Пропустить';
+
+  @override
+  String get onboardingNext => 'Далее';
+
+  @override
+  String get onboardingStart => 'Начать';
+
+  @override
+  String get homeGreeting => 'Привет!';
+
+  @override
+  String get homeSectionCategories => 'Категории';
+
+  @override
+  String get homeSectionPopular => 'Популярные товары';
+
+  @override
+  String get homeSectionDiscounted => 'Со скидкой';
+
+  @override
+  String get homeSectionRecommended => 'Рекомендуем';
+
+  @override
+  String get homeSectionRecentlyViewed => 'Недавно просмотренные';
+
+  @override
+  String get homeSectionPersonalOffers => 'Персональные предложения';
+
+  @override
+  String get homeSectionNearbyStores => 'Магазины рядом';
+
+  @override
+  String get homeSectionFeaturedBrands => 'Популярные бренды';
+
+  @override
+  String get homeSectionBuyAgain => 'Купить снова';
+
+  @override
+  String get homeEmptyFeed =>
+      'Главная лента сейчас пуста. Пожалуйста, зайдите позже.';
+
+  @override
+  String get catalogTitle => 'Каталог';
+
+  @override
+  String get catalogEmptyCategories => 'Категории не найдены';
+
+  @override
+  String get categoryProductsEmpty => 'В этой категории нет товаров';
+
+  @override
+  String get searchHint => 'Искать товары';
+
+  @override
+  String get searchRecent => 'Недавние запросы';
+
+  @override
+  String get searchClearRecent => 'Очистить';
+
+  @override
+  String get searchSuggestions => 'Предложения';
+
+  @override
+  String get searchNoResults => 'По вашему запросу ничего не найдено';
+
+  @override
+  String searchResultsCount(int count) {
+    return 'Найдено результатов: $count';
+  }
+
+  @override
+  String get productAddToCart => 'В корзину';
+
+  @override
+  String get productOutOfStock => 'Нет в наличии';
+
+  @override
+  String get productInStock => 'В наличии';
+
+  @override
+  String get productQuantity => 'Количество';
+
+  @override
+  String get productDescription => 'Описание';
+
+  @override
+  String get productRelated => 'Похожие товары';
+
+  @override
+  String get productAddedToCart => 'Добавлено в корзину';
+
+  @override
+  String get productFavoriteAdded => 'Добавлено в избранное';
+
+  @override
+  String get productFavoriteRemoved => 'Удалено из избранного';
+
+  @override
+  String productDiscountBadge(int percent) {
+    return '-$percent%';
+  }
+
+  @override
+  String get productUnavailableTitle => 'Товар недоступен';
+
+  @override
+  String get productUnavailableMessage =>
+      'К сожалению, этот товар сейчас недоступен.';
+
+  @override
+  String get favoritesTitle => 'Избранное';
+
+  @override
+  String get favoritesEmptyTitle => 'В избранном пусто';
+
+  @override
+  String get favoritesEmptyMessage =>
+      'Сохраняйте понравившиеся товары нажатием на сердечко';
+
+  @override
+  String get cartTitle => 'Корзина';
+
+  @override
+  String get cartEmptyTitle => 'Ваша корзина пуста';
+
+  @override
+  String get cartEmptyMessage => 'Добавьте товары, чтобы начать';
+
+  @override
+  String get cartRemoveItem => 'Удалить';
+
+  @override
+  String get cartSaveForLater => 'Отложить';
+
+  @override
+  String get cartMoveToCart => 'Переместить в корзину';
+
+  @override
+  String get cartSavedForLaterTitle => 'Отложенные товары';
+
+  @override
+  String get cartPromoCodeLabel => 'Промокод';
+
+  @override
+  String get cartPromoCodeHint => 'Введите код';
+
+  @override
+  String get cartPromoCodeApply => 'Применить';
+
+  @override
+  String get cartPromoCodeApplied => 'Промокод применён';
+
+  @override
+  String get cartPromoCodeRemove => 'Удалить';
+
+  @override
+  String get cartPromoCodeInvalid => 'Промокод недействителен или истёк';
+
+  @override
+  String get cartSubtotal => 'Сумма товаров';
+
+  @override
+  String get cartDiscount => 'Скидка';
+
+  @override
+  String get cartDeliveryFee => 'Стоимость доставки';
+
+  @override
+  String get cartTotal => 'Итого';
+
+  @override
+  String get cartServerCalculatedNote => 'Цены рассчитываются сервером';
+
+  @override
+  String get cartCheckoutButton => 'Оформить заказ';
+
+  @override
+  String get cartClearConfirm => 'Очистить корзину?';
+
+  @override
+  String get checkoutTitle => 'Оформление заказа';
+
+  @override
+  String get checkoutDeliveryMethod => 'Способ получения';
+
+  @override
+  String get checkoutDeliveryMethodDelivery => 'Доставка';
+
+  @override
+  String get checkoutDeliveryMethodPickup => 'Самовывоз';
+
+  @override
+  String get checkoutAddressTitle => 'Адрес';
+
+  @override
+  String get checkoutAddressSelect => 'Выберите адрес';
+
+  @override
+  String get checkoutAddressAdd => 'Добавить новый адрес';
+
+  @override
+  String get checkoutAddressEmpty => 'Вы ещё не добавили адрес';
+
+  @override
+  String get checkoutTimeTitle => 'Время доставки';
+
+  @override
+  String get checkoutTimeAsap => 'Как можно быстрее';
+
+  @override
+  String get checkoutTimeScheduled => 'Выбрать время';
+
+  @override
+  String get checkoutPaymentTitle => 'Способ оплаты';
+
+  @override
+  String get checkoutPaymentCashOnDelivery => 'Оплата наличными при получении';
+
+  @override
+  String get checkoutQuoteTitle => 'Предпросмотр заказа';
+
+  @override
+  String get checkoutPlaceOrder => 'Оформить заказ';
+
+  @override
+  String get checkoutOrderSuccessTitle => 'Заказ принят!';
+
+  @override
+  String checkoutOrderSuccessMessage(String orderNumber) {
+    return 'Ваш заказ №$orderNumber принят и обрабатывается';
+  }
+
+  @override
+  String get checkoutViewOrder => 'Посмотреть заказ';
+
+  @override
+  String get checkoutBackToHome => 'Вернуться на главную';
+
+  @override
+  String get addressLabelHome => 'Дом';
+
+  @override
+  String get addressLabelWork => 'Работа';
+
+  @override
+  String get addressLabelOther => 'Другое';
+
+  @override
+  String get addressCity => 'Город';
+
+  @override
+  String get addressStreet => 'Улица';
+
+  @override
+  String get addressHouse => 'Дом';
+
+  @override
+  String get addressApartment => 'Квартира';
+
+  @override
+  String get addressEntrance => 'Подъезд';
+
+  @override
+  String get addressFloor => 'Этаж';
+
+  @override
+  String get addressComment => 'Комментарий';
+
+  @override
+  String get addressSetDefault => 'Сделать основным';
+
+  @override
+  String get addressDefault => 'Основной';
+
+  @override
+  String get addressDelete => 'Удалить адрес';
+
+  @override
+  String get ordersTitle => 'Заказы';
+
+  @override
+  String get ordersTabActive => 'Активные';
+
+  @override
+  String get ordersTabCompleted => 'Завершённые';
+
+  @override
+  String get ordersTabCancelled => 'Отменённые';
+
+  @override
+  String get ordersEmptyActive => 'У вас нет активных заказов';
+
+  @override
+  String get ordersEmptyCompleted => 'У вас нет завершённых заказов';
+
+  @override
+  String get ordersEmptyCancelled => 'У вас нет отменённых заказов';
+
+  @override
+  String orderNumber(String number) {
+    return 'Заказ №$number';
+  }
+
+  @override
+  String get orderDetailTitle => 'Детали заказа';
+
+  @override
+  String get orderItemsTitle => 'Товары';
+
+  @override
+  String get orderStatusHistory => 'История статуса';
+
+  @override
+  String get orderCancel => 'Отменить заказ';
+
+  @override
+  String get orderCancelReasonHint => 'Укажите причину отмены';
+
+  @override
+  String get orderReorder => 'Повторить заказ';
+
+  @override
+  String get orderReceipt => 'Чек';
+
+  @override
+  String get orderStatusPending => 'В ожидании';
+
+  @override
+  String get orderStatusConfirmed => 'Подтверждён';
+
+  @override
+  String get orderStatusPreparing => 'Готовится';
+
+  @override
+  String get orderStatusReady => 'Готов';
+
+  @override
+  String get orderStatusCourierAssigned => 'Курьер назначен';
+
+  @override
+  String get orderStatusPickedUp => 'Курьер забрал';
+
+  @override
+  String get orderStatusDelivering => 'В пути';
+
+  @override
+  String get orderStatusDelivered => 'Доставлен';
+
+  @override
+  String get orderStatusCancelled => 'Отменён';
+
+  @override
+  String get profileTitle => 'Профиль';
+
+  @override
+  String get profileEditTitle => 'Редактировать профиль';
+
+  @override
+  String get profileFullName => 'Полное имя';
+
+  @override
+  String get profileEmail => 'Электронная почта';
+
+  @override
+  String get profilePhone => 'Номер телефона';
+
+  @override
+  String get profileLanguage => 'Язык';
+
+  @override
+  String get profileAddresses => 'Мои адреса';
+
+  @override
+  String get profileMyOrders => 'Мои заказы';
+
+  @override
+  String get profileFavorites => 'Избранное';
+
+  @override
+  String get profileSettings => 'Настройки';
+
+  @override
+  String get profileSaved => 'Профиль сохранён';
+
+  @override
+  String get profileGuestTitle => 'Гость';
+
+  @override
+  String get profileGuestMessage => 'Войдите, чтобы увидеть свой профиль';
+
+  @override
+  String get languageSelectTitle => 'Выберите язык';
+
+  @override
+  String get languageTajik => 'Таджикский';
+
+  @override
+  String get languageRussian => 'Русский';
+
+  @override
+  String get splashTagline => 'Лёгкие покупки, быстрая доставка';
+}

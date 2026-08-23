@@ -1,0 +1,603 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations.dart';
+
+// ignore_for_file: type=lint
+
+/// The translations for Tajik (`tg`).
+class AppLocalizationsTg extends AppLocalizations {
+  AppLocalizationsTg([String locale = 'tg']) : super(locale);
+
+  @override
+  String get appTitle => 'TajikShop';
+
+  @override
+  String get navHome => 'Асосӣ';
+
+  @override
+  String get navCatalog => 'Каталог';
+
+  @override
+  String get navCart => 'Сабад';
+
+  @override
+  String get navOrders => 'Фармоишҳо';
+
+  @override
+  String get navProfile => 'Профил';
+
+  @override
+  String get commonLoading => 'Бор карда истодааст…';
+
+  @override
+  String get commonEmptyTitle => 'Ин ҷо ҳанӯз чизе нест';
+
+  @override
+  String get commonEmptyMessage => 'Дар айни замон маълумот дастрас нест.';
+
+  @override
+  String get commonErrorTitle => 'Хатогӣ рӯй дод';
+
+  @override
+  String get commonErrorGeneric =>
+      'Чизе нодуруст шуд. Лутфан аз нав кӯшиш кунед.';
+
+  @override
+  String get commonRetry => 'Аз нав кӯшиш кунед';
+
+  @override
+  String get commonCancel => 'Бекор кардан';
+
+  @override
+  String get commonConfirm => 'Тасдиқ';
+
+  @override
+  String get commonSave => 'Нигоҳ доштан';
+
+  @override
+  String get commonEdit => 'Таҳрир';
+
+  @override
+  String get commonDelete => 'Нест кардан';
+
+  @override
+  String get commonAdd => 'Илова кардан';
+
+  @override
+  String get commonDone => 'Тайёр';
+
+  @override
+  String get commonBack => 'Бозгашт';
+
+  @override
+  String get commonSeeAll => 'Ҳамаашро дидан';
+
+  @override
+  String get commonContinue => 'Идома';
+
+  @override
+  String get commonClose => 'Пӯшидан';
+
+  @override
+  String get commonYes => 'Ҳа';
+
+  @override
+  String get commonNo => 'Не';
+
+  @override
+  String get commonSearch => 'Ҷустуҷӯ';
+
+  @override
+  String get commonOptional => '(ихтиёрӣ)';
+
+  @override
+  String get offlineBannerMessage => 'Пайвасти интернет нест';
+
+  @override
+  String get networkErrorTimeout =>
+      'Пайваст ба сервер қатъ шуд. Лутфан пайвасти интернети худро санҷед.';
+
+  @override
+  String get networkErrorNoConnection =>
+      'Интернет дастрас нест. Лутфан пайвасти худро санҷед ва аз нав кӯшиш кунед.';
+
+  @override
+  String get networkErrorCancelled => 'Дархост бекор карда шуд.';
+
+  @override
+  String get networkErrorUnknown =>
+      'Хатогии номаълуми шабака рӯй дод. Лутфан аз нав кӯшиш кунед.';
+
+  @override
+  String get authWelcomeTitle => 'Хуш омадед ба TajikShop';
+
+  @override
+  String get authWelcomeSubtitle =>
+      'Барои идома додан рақами телефони худро ворид кунед';
+
+  @override
+  String get authPhoneLabel => 'Рақами телефон';
+
+  @override
+  String get authPhoneHint => '90 123 45 67';
+
+  @override
+  String get authPhoneInvalid =>
+      'Рақами телефон нодуруст аст. Намуна: +992 90 123 45 67';
+
+  @override
+  String get authSendCode => 'Гирифтани рамз';
+
+  @override
+  String get authOtpTitle => 'Рамзи тасдиқро ворид кунед';
+
+  @override
+  String authOtpSubtitle(String phone) {
+    return 'Мо рамзи 6-рақамаро ба рақами $phone фиристодем';
+  }
+
+  @override
+  String get authOtpInvalid => 'Рамз нодуруст аст. Лутфан аз нав кӯшиш кунед.';
+
+  @override
+  String get authOtpExpired => 'Мӯҳлати рамз гузашт. Рамзи нав дархост кунед.';
+
+  @override
+  String get authResendCode => 'Фиристодани рамз аз нав';
+
+  @override
+  String authResendCodeIn(int seconds) {
+    return 'Аз нав фиристодан пас аз $seconds сония';
+  }
+
+  @override
+  String get authVerify => 'Тасдиқ кардан';
+
+  @override
+  String get authChangeNumber => 'Тағйир додани рақам';
+
+  @override
+  String get authLogout => 'Баромадан';
+
+  @override
+  String get authLogoutConfirm => 'Шумо мутмаин ҳастед, ки мехоҳед бароед?';
+
+  @override
+  String get authSignInRequiredTitle => 'Бояд ворид шавед';
+
+  @override
+  String get authSignInRequiredMessage =>
+      'Барои идома додан лутфан ворид шавед';
+
+  @override
+  String get authSignIn => 'Ворид шудан';
+
+  @override
+  String get onboardingTitle1 => 'Хариди маҳсулот аз хона';
+
+  @override
+  String get onboardingBody1 =>
+      'Ҳазорон маҳсулоти тару тоза ва рӯзмарраро аз мағозаҳои наздики худ фармоиш диҳед';
+
+  @override
+  String get onboardingTitle2 => 'Расонидани тез';
+
+  @override
+  String get onboardingBody2 =>
+      'Фармоиши шумо дар муддати кӯтоҳтарин ба назди шумо расонида мешавад';
+
+  @override
+  String get onboardingTitle3 => 'TajBonus-ро ҷамъ кунед';
+
+  @override
+  String get onboardingBody3 =>
+      'Бо ҳар харид бонус ҷамъ кунед ва дар фармоишҳои оянда истифода баред';
+
+  @override
+  String get onboardingSkip => 'Гузаштан';
+
+  @override
+  String get onboardingNext => 'Баъдӣ';
+
+  @override
+  String get onboardingStart => 'Оғоз кардан';
+
+  @override
+  String get homeGreeting => 'Салом!';
+
+  @override
+  String get homeSectionCategories => 'Категорияҳо';
+
+  @override
+  String get homeSectionPopular => 'Маҳсулоти маъмул';
+
+  @override
+  String get homeSectionDiscounted => 'Бо тахфиф';
+
+  @override
+  String get homeSectionRecommended => 'Тавсияи мо';
+
+  @override
+  String get homeSectionRecentlyViewed => 'Ба наздикӣ дидаед';
+
+  @override
+  String get homeSectionPersonalOffers => 'Пешниҳодҳои шахсии шумо';
+
+  @override
+  String get homeSectionNearbyStores => 'Мағозаҳои наздик';
+
+  @override
+  String get homeSectionFeaturedBrands => 'Брендҳои маъруф';
+
+  @override
+  String get homeSectionBuyAgain => 'Боз харидорӣ кунед';
+
+  @override
+  String get homeEmptyFeed =>
+      'Хуруҷи асосӣ дар айни замон холӣ аст. Лутфан баъдтар аз нав ворид шавед.';
+
+  @override
+  String get catalogTitle => 'Каталог';
+
+  @override
+  String get catalogEmptyCategories => 'Категорияҳо ёфт нашуданд';
+
+  @override
+  String get categoryProductsEmpty => 'Дар ин категория маҳсулот нест';
+
+  @override
+  String get searchHint => 'Маҳсулотро ҷустуҷӯ кунед';
+
+  @override
+  String get searchRecent => 'Ҷустуҷӯҳои охирин';
+
+  @override
+  String get searchClearRecent => 'Пок кардан';
+
+  @override
+  String get searchSuggestions => 'Пешниҳодҳо';
+
+  @override
+  String get searchNoResults => 'Аз рӯи дархости шумо чизе ёфт нашуд';
+
+  @override
+  String searchResultsCount(int count) {
+    return '$count натиҷа ёфт шуд';
+  }
+
+  @override
+  String get productAddToCart => 'Илова ба сабад';
+
+  @override
+  String get productOutOfStock => 'Дар анбор нест';
+
+  @override
+  String get productInStock => 'Дар анбор ҳаст';
+
+  @override
+  String get productQuantity => 'Миқдор';
+
+  @override
+  String get productDescription => 'Тавсиф';
+
+  @override
+  String get productRelated => 'Маҳсулоти монанд';
+
+  @override
+  String get productAddedToCart => 'Ба сабад илова карда шуд';
+
+  @override
+  String get productFavoriteAdded => 'Ба дӯстдоштаҳо илова карда шуд';
+
+  @override
+  String get productFavoriteRemoved => 'Аз дӯстдоштаҳо нест карда шуд';
+
+  @override
+  String productDiscountBadge(int percent) {
+    return '-$percent%';
+  }
+
+  @override
+  String get productUnavailableTitle => 'Маҳсулот дастрас нест';
+
+  @override
+  String get productUnavailableMessage =>
+      'Мутаассифона, ин маҳсулот дар айни замон дастрас нест.';
+
+  @override
+  String get favoritesTitle => 'Дӯстдоштаҳо';
+
+  @override
+  String get favoritesEmptyTitle => 'Дӯстдоштаҳо холӣ аст';
+
+  @override
+  String get favoritesEmptyMessage =>
+      'Маҳсулотеро, ки маъқул мешаванд, бо аломати дил нигоҳ доред';
+
+  @override
+  String get cartTitle => 'Сабад';
+
+  @override
+  String get cartEmptyTitle => 'Сабади шумо холӣ аст';
+
+  @override
+  String get cartEmptyMessage => 'Барои оғоз маҳсулот илова кунед';
+
+  @override
+  String get cartRemoveItem => 'Нест кардан';
+
+  @override
+  String get cartSaveForLater => 'Барои баъд нигоҳ доштан';
+
+  @override
+  String get cartMoveToCart => 'Ба сабад гузарондан';
+
+  @override
+  String get cartSavedForLaterTitle => 'Барои баъд нигоҳ дошташуда';
+
+  @override
+  String get cartPromoCodeLabel => 'Рамзи промо';
+
+  @override
+  String get cartPromoCodeHint => 'Рамзро ворид кунед';
+
+  @override
+  String get cartPromoCodeApply => 'Татбиқ кардан';
+
+  @override
+  String get cartPromoCodeApplied => 'Рамзи промо татбиқ карда шуд';
+
+  @override
+  String get cartPromoCodeRemove => 'Нест кардан';
+
+  @override
+  String get cartPromoCodeInvalid =>
+      'Рамзи промо нодуруст ё мӯҳлаташ гузаштааст';
+
+  @override
+  String get cartSubtotal => 'Ҷамъи маҳсулот';
+
+  @override
+  String get cartDiscount => 'Тахфиф';
+
+  @override
+  String get cartDeliveryFee => 'Ҳаққи расонидан';
+
+  @override
+  String get cartTotal => 'Ҳамагӣ';
+
+  @override
+  String get cartServerCalculatedNote =>
+      'Нархҳо аз ҷониби сервер ҳисоб карда мешаванд';
+
+  @override
+  String get cartCheckoutButton => 'Ба гузаронидан';
+
+  @override
+  String get cartClearConfirm => 'Сабадро тоза кардан?';
+
+  @override
+  String get checkoutTitle => 'Гузаронидан';
+
+  @override
+  String get checkoutDeliveryMethod => 'Тарзи расонидан';
+
+  @override
+  String get checkoutDeliveryMethodDelivery => 'Расонидан';
+
+  @override
+  String get checkoutDeliveryMethodPickup => 'Аз мағоза гирифтан';
+
+  @override
+  String get checkoutAddressTitle => 'Суроға';
+
+  @override
+  String get checkoutAddressSelect => 'Суроғаро интихоб кунед';
+
+  @override
+  String get checkoutAddressAdd => 'Суроғаи нав илова кунед';
+
+  @override
+  String get checkoutAddressEmpty => 'Шумо ҳанӯз суроға илова накардаед';
+
+  @override
+  String get checkoutTimeTitle => 'Вақти расонидан';
+
+  @override
+  String get checkoutTimeAsap => 'Ҳарчи зудтар';
+
+  @override
+  String get checkoutTimeScheduled => 'Вақти муайян';
+
+  @override
+  String get checkoutPaymentTitle => 'Тарзи пардохт';
+
+  @override
+  String get checkoutPaymentCashOnDelivery =>
+      'Пардохт ҳангоми расонидан (нақд)';
+
+  @override
+  String get checkoutQuoteTitle => 'Пешнамоиши фармоиш';
+
+  @override
+  String get checkoutPlaceOrder => 'Фармоиш додан';
+
+  @override
+  String get checkoutOrderSuccessTitle => 'Фармоиш қабул карда шуд!';
+
+  @override
+  String checkoutOrderSuccessMessage(String orderNumber) {
+    return 'Фармоиши шумо №$orderNumber қабул карда шуд ва дар ҳоли коркард аст';
+  }
+
+  @override
+  String get checkoutViewOrder => 'Дидани фармоиш';
+
+  @override
+  String get checkoutBackToHome => 'Бозгашт ба саҳифаи асосӣ';
+
+  @override
+  String get addressLabelHome => 'Хона';
+
+  @override
+  String get addressLabelWork => 'Кор';
+
+  @override
+  String get addressLabelOther => 'Дигар';
+
+  @override
+  String get addressCity => 'Шаҳр';
+
+  @override
+  String get addressStreet => 'Кӯча';
+
+  @override
+  String get addressHouse => 'Хонаи';
+
+  @override
+  String get addressApartment => 'Утоқи';
+
+  @override
+  String get addressEntrance => 'Даромадгоҳ';
+
+  @override
+  String get addressFloor => 'Ошёна';
+
+  @override
+  String get addressComment => 'Шарҳ';
+
+  @override
+  String get addressSetDefault => 'Ҳамчун асосӣ таъин кардан';
+
+  @override
+  String get addressDefault => 'Асосӣ';
+
+  @override
+  String get addressDelete => 'Суроғаро нест кардан';
+
+  @override
+  String get ordersTitle => 'Фармоишҳо';
+
+  @override
+  String get ordersTabActive => 'Фаъол';
+
+  @override
+  String get ordersTabCompleted => 'Иҷрошуда';
+
+  @override
+  String get ordersTabCancelled => 'Бекоршуда';
+
+  @override
+  String get ordersEmptyActive => 'Фармоиши фаъол надоред';
+
+  @override
+  String get ordersEmptyCompleted => 'Фармоиши иҷрошуда надоред';
+
+  @override
+  String get ordersEmptyCancelled => 'Фармоиши бекоршуда надоред';
+
+  @override
+  String orderNumber(String number) {
+    return 'Фармоиши №$number';
+  }
+
+  @override
+  String get orderDetailTitle => 'Тафсилоти фармоиш';
+
+  @override
+  String get orderItemsTitle => 'Маҳсулот';
+
+  @override
+  String get orderStatusHistory => 'Таърихи ҳолат';
+
+  @override
+  String get orderCancel => 'Бекор кардани фармоиш';
+
+  @override
+  String get orderCancelReasonHint => 'Сабаби бекоркуниро нависед';
+
+  @override
+  String get orderReorder => 'Такрори фармоиш';
+
+  @override
+  String get orderReceipt => 'Чек';
+
+  @override
+  String get orderStatusPending => 'Дар интизорӣ';
+
+  @override
+  String get orderStatusConfirmed => 'Тасдиқшуда';
+
+  @override
+  String get orderStatusPreparing => 'Дар ҳоли омодасозӣ';
+
+  @override
+  String get orderStatusReady => 'Тайёр';
+
+  @override
+  String get orderStatusCourierAssigned => 'Курйер таъин шуд';
+
+  @override
+  String get orderStatusPickedUp => 'Курйер гирифт';
+
+  @override
+  String get orderStatusDelivering => 'Дар роҳи расонидан';
+
+  @override
+  String get orderStatusDelivered => 'Расонида шуд';
+
+  @override
+  String get orderStatusCancelled => 'Бекоршуда';
+
+  @override
+  String get profileTitle => 'Профил';
+
+  @override
+  String get profileEditTitle => 'Таҳрири профил';
+
+  @override
+  String get profileFullName => 'Ному насаб';
+
+  @override
+  String get profileEmail => 'Почтаи электронӣ';
+
+  @override
+  String get profilePhone => 'Рақами телефон';
+
+  @override
+  String get profileLanguage => 'Забон';
+
+  @override
+  String get profileAddresses => 'Суроғаҳои ман';
+
+  @override
+  String get profileMyOrders => 'Фармоишҳои ман';
+
+  @override
+  String get profileFavorites => 'Дӯстдоштаҳо';
+
+  @override
+  String get profileSettings => 'Танзимот';
+
+  @override
+  String get profileSaved => 'Профил нигоҳ дошта шуд';
+
+  @override
+  String get profileGuestTitle => 'Меҳмон';
+
+  @override
+  String get profileGuestMessage => 'Барои дидани профили худ ворид шавед';
+
+  @override
+  String get languageSelectTitle => 'Забонро интихоб кунед';
+
+  @override
+  String get languageTajik => 'Тоҷикӣ';
+
+  @override
+  String get languageRussian => 'Русӣ';
+
+  @override
+  String get splashTagline => 'Хариди осон, расонидани тез';
+}

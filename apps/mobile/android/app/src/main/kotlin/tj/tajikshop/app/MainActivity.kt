@@ -1,4 +1,4 @@
-package tj.tajikshop.tajikshop
+package tj.tajikshop.app
 
 import io.flutter.embedding.android.FlutterActivity
 
