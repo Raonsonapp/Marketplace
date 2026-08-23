@@ -14,6 +14,29 @@ import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Flutter's default ErrorWidget.builder shows full exception details only
+  // in debug mode — a release build (like every APK this project ships to
+  // testers so far) renders a bare gray box with no text at all for any
+  // build-time error, which is indistinguishable from the app being frozen.
+  // Show the real error unconditionally for now (pre-launch internal
+  // testing only) so a screenshot of a "blank screen" actually carries the
+  // information needed to fix it.
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Material(
+      color: Colors.black,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            details.exceptionAsString(),
+            style: const TextStyle(color: Colors.redAccent, fontSize: 12),
+          ),
+        ),
+      ),
+    );
+  };
+
   final sharedPreferences = await SharedPreferences.getInstance();
 
   // Firebase Phone Auth (docs/FIREBASE_SETUP.md) is optional infrastructure:
