@@ -18,24 +18,36 @@ Future<void> main() async {
 
   // Firebase Phone Auth (docs/FIREBASE_SETUP.md) is optional infrastructure:
   // `firebase_options.dart` ships as an obviously-placeholder config until
-  // someone runs the real `flutterfire configure`, so this call is expected
-  // to fail until then. When it does, the app must keep working — the
-  // phone-entry screen falls back to the console-OTP flow
-  // (`send-otp`/`verify-otp`) whenever `Firebase.apps` is empty.
-  try {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  } catch (error, stackTrace) {
-    if (kDebugMode) {
-      debugPrint('Firebase.initializeApp failed (expected until '
-          'docs/FIREBASE_SETUP.md is completed): $error');
+  // someone runs the real `flutterfire configure`. `Firebase.initializeApp`
+  // does NOT validate the API key over the network — it happily "succeeds"
+  // with garbage values, registering the app in `Firebase.apps` — so the
+  // phone-entry screen's "use Firebase only if Firebase.apps is non-empty"
+  // check would wrongly try real Firebase Phone Auth and fail at the actual
+  // SMS-send call with an opaque "API key not valid" error. Guard against
+  // that by never even calling initializeApp while the config is still the
+  // known placeholder; once `flutterfire configure` writes real values,
+  // this check naturally stops matching and Firebase Phone Auth activates
+  // automatically, no other code change required.
+  final isPlaceholderFirebaseConfig =
+      DefaultFirebaseOptions.android.apiKey == 'REPLACE_WITH_FLUTTERFIRE_CONFIGURE';
+  if (!isPlaceholderFirebaseConfig) {
+    try {
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    } catch (error, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('Firebase.initializeApp failed: $error');
+      }
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: error,
+        stack: stackTrace,
+        library: 'main',
+        context: ErrorDescription('while initializing Firebase (optional; falls back to console-OTP)'),
+        silent: true,
+      ));
     }
-    FlutterError.reportError(FlutterErrorDetails(
-      exception: error,
-      stack: stackTrace,
-      library: 'main',
-      context: ErrorDescription('while initializing Firebase (optional; falls back to console-OTP)'),
-      silent: true,
-    ));
+  } else if (kDebugMode) {
+    debugPrint('Firebase not configured yet (see docs/FIREBASE_SETUP.md) — '
+        'using the console-OTP/Telegram Gateway login flow.');
   }
 
   runApp(

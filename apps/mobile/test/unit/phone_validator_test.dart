@@ -40,6 +40,55 @@ void main() {
     });
   });
 
+  group('PhoneValidator.normalize (Russia)', () {
+    test('accepts a full +7 number unchanged', () {
+      expect(PhoneValidator.normalize('+79161234567'), '+79161234567');
+    });
+
+    test('accepts a bare 10-digit national number with region: russia', () {
+      expect(
+        PhoneValidator.normalize('9161234567', region: PhoneRegion.russia),
+        '+79161234567',
+      );
+    });
+
+    test('normalizes the domestic 8-prefixed dialing form', () {
+      expect(PhoneValidator.normalize('89161234567'), '+79161234567');
+    });
+
+    test('a +7 number normalizes correctly even with region: tajikistan selected', () {
+      // The number's own prefix wins over the selector (see normalize's
+      // doc comment) — otherwise switching the selector back could corrupt
+      // an already-typed number from the other region.
+      expect(
+        PhoneValidator.normalize('+79161234567', region: PhoneRegion.tajikistan),
+        '+79161234567',
+      );
+    });
+
+    test('rejects a +7 number with the wrong digit count', () {
+      expect(PhoneValidator.normalize('+7916123456'), isNull);
+    });
+  });
+
+  group('PhoneValidator.detectRegion', () {
+    test('detects Tajikistan from a +992 prefix', () {
+      expect(PhoneValidator.detectRegion('+992501234567'), PhoneRegion.tajikistan);
+    });
+
+    test('detects Russia from a +7 prefix', () {
+      expect(PhoneValidator.detectRegion('+79161234567'), PhoneRegion.russia);
+    });
+
+    test('detects Russia from the domestic 8 prefix', () {
+      expect(PhoneValidator.detectRegion('89161234567'), PhoneRegion.russia);
+    });
+
+    test('returns null when no recognizable prefix is present', () {
+      expect(PhoneValidator.detectRegion('501234567'), isNull);
+    });
+  });
+
   group('PhoneValidator.isValid', () {
     test('true for a valid number', () {
       expect(PhoneValidator.isValid('+992501234567'), isTrue);
@@ -57,6 +106,10 @@ void main() {
 
     test('returns the input unchanged when it is not a canonical number', () {
       expect(PhoneValidator.formatForDisplay('not-a-phone'), 'not-a-phone');
+    });
+
+    test('groups a Russian number for readability', () {
+      expect(PhoneValidator.formatForDisplay('+79161234567'), '+7 916 123 45 67');
     });
   });
 }

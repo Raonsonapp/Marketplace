@@ -15,6 +15,7 @@ part 'phone_entry_controller.freezed.dart';
 abstract class PhoneEntryState with _$PhoneEntryState {
   const factory PhoneEntryState({
     @Default('') String rawInput,
+    @Default(PhoneRegion.tajikistan) PhoneRegion region,
     @Default(false) bool isSubmitting,
     String? normalizedPhone,
     AppException? error,
@@ -33,7 +34,7 @@ abstract class PhoneEntryState with _$PhoneEntryState {
 
   const PhoneEntryState._();
 
-  bool get isValid => PhoneValidator.isValid(rawInput);
+  bool get isValid => PhoneValidator.isValid(rawInput, region: region);
 }
 
 /// Drives the phone-entry screen: validates the +992 number, then either
@@ -48,13 +49,22 @@ class PhoneEntryController extends Notifier<PhoneEntryState> {
   PhoneEntryState build() => const PhoneEntryState();
 
   void updateInput(String value) {
-    state = PhoneEntryState(rawInput: value);
+    // Auto-switch the region if the user pastes/types a number carrying its
+    // own explicit country-code prefix (e.g. pasting a +7 number while the
+    // Tajikistan tab is selected) — the selector then reflects reality
+    // instead of silently disagreeing with what's on screen.
+    final detected = PhoneValidator.detectRegion(value);
+    state = PhoneEntryState(rawInput: value, region: detected ?? state.region);
+  }
+
+  void setRegion(PhoneRegion region) {
+    state = state.copyWith(region: region, showFormatError: false);
   }
 
   bool get _firebaseConfigured => Firebase.apps.isNotEmpty;
 
   Future<void> submit() async {
-    final normalized = PhoneValidator.normalize(state.rawInput);
+    final normalized = PhoneValidator.normalize(state.rawInput, region: state.region);
     if (normalized == null) {
       state = state.copyWith(showFormatError: true);
       return;

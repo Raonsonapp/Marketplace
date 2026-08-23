@@ -69,7 +69,8 @@ Non-negotiable rule, enforced in the service layer, not just documented:
 - All SQL goes through `pgx` parameterized queries — no string
   concatenation of user input into SQL, anywhere.
 - Every DTO is validated (struct tags + explicit checks: phone format
-  `+992XXXXXXXXX`, quantity > 0, enum membership for status/role/discount
+  `+992XXXXXXXXX` (Tajikistan) or `+7XXXXXXXXXX` (Russia) — TajikShop's two
+  served regions — quantity > 0, enum membership for status/role/discount
   type, UUID format) before touching the service layer.
 - File uploads (review images, support attachments) are validated by
   content-type/magic-bytes and size limit, stored under a generated key

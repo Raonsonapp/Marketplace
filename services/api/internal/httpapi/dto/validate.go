@@ -9,11 +9,12 @@ import (
 	"github.com/google/uuid"
 )
 
-// phoneRegex matches the Tajikistan phone format required by
-// docs/SECURITY.md: "+992XXXXXXXXX" (a '+', country code 992, 9 digits).
-var phoneRegex = regexp.MustCompile(`^\+992\d{9}$`)
+// phoneRegex matches the two regions TajikShop serves (docs/SECURITY.md):
+// Tajikistan "+992XXXXXXXXX" (9 national digits) and Russia "+7XXXXXXXXXX"
+// (10 national digits, standard Russian mobile format).
+var phoneRegex = regexp.MustCompile(`^\+992\d{9}$|^\+7\d{10}$`)
 
-// ValidPhone reports whether phone matches the required +992XXXXXXXXX shape.
+// ValidPhone reports whether phone matches a supported region's shape.
 func ValidPhone(phone string) bool {
 	return phoneRegex.MatchString(phone)
 }

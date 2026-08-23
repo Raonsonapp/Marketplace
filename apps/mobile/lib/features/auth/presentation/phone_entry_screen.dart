@@ -84,6 +84,22 @@ class _PhoneEntryScreenState extends ConsumerState<PhoneEntryScreen> {
               const SizedBox(height: AppSpacing.xl),
               Text(l10n.authPhoneLabel, style: Theme.of(context).textTheme.labelLarge),
               const SizedBox(height: AppSpacing.xs),
+              // Region selector: TajikShop serves Tajikistan and Russia
+              // (docs/SECURITY.md), so the country-code prefix is a choice,
+              // not a fixed label.
+              SegmentedButton<PhoneRegion>(
+                segments: [
+                  for (final region in PhoneRegion.values)
+                    ButtonSegment(
+                      value: region,
+                      label: Text('${region.flag} ${region.countryCode}'),
+                    ),
+                ],
+                selected: {state.region},
+                onSelectionChanged: (selection) =>
+                    ref.read(phoneEntryControllerProvider.notifier).setRegion(selection.first),
+              ),
+              const SizedBox(height: AppSpacing.sm),
               TextField(
                 controller: _controller,
                 keyboardType: TextInputType.phone,
@@ -99,7 +115,7 @@ class _PhoneEntryScreenState extends ConsumerState<PhoneEntryScreen> {
                     child: Center(
                       widthFactor: 1,
                       child: Text(
-                        PhoneValidator.countryCode,
+                        state.region.countryCode,
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
