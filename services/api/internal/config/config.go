@@ -57,6 +57,18 @@ type Config struct {
 	// codes are logged via ConsoleSender (local dev) as before.
 	TelegramGatewayToken string
 
+	// TelegramBotToken/TelegramBotUsername switch OTP delivery to a plain
+	// Telegram bot (via @BotFather) instead of Telegram Gateway — see
+	// docs/SMS_PROVIDERS.md. Takes priority over TelegramGatewayToken when
+	// both are set. Requires the user to open the bot and press Start
+	// before their first code can be delivered (internal/pkg/telegrambot
+	// polls for that); TelegramGatewayToken has no such requirement, so
+	// prefer it when applying for real Telegram Gateway access is an
+	// option. Optional: when both are empty, OTP codes are logged via
+	// ConsoleSender (local dev) as before.
+	TelegramBotToken    string
+	TelegramBotUsername string
+
 	// R2Endpoint/R2AccessKey/R2SecretKey/R2Bucket/R2PublicURL configure the
 	// object-storage client (internal/storage) behind
 	// POST /uploads/presign — Cloudflare R2 in production (S3-compatible),
@@ -139,6 +151,8 @@ func Load() (*Config, error) {
 	cfg.MigrationsDir = getOr("MIGRATIONS_DIR", "migrations")
 	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
 	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
+	cfg.TelegramBotToken = os.Getenv("TELEGRAM_BOT_TOKEN")
+	cfg.TelegramBotUsername = strings.TrimPrefix(os.Getenv("TELEGRAM_BOT_USERNAME"), "@")
 
 	if override := os.Getenv("R2_ENDPOINT"); override != "" {
 		// Manual override for non-Cloudflare S3-compatible endpoints, e.g.

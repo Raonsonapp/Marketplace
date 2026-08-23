@@ -44,6 +44,7 @@
   "authPhoneHint": "90 123 45 67",
   "authPhoneInvalid": "Invalid phone number. Example: +992 90 123 45 67",
   "authSendCode": "Send code",
+  "authOpenTelegramBot": "Open Telegram bot",
   "authOtpTitle": "Enter the verification code",
   "authOtpSubtitle": "We sent a 6-digit code to {phone}",
   "authOtpInvalid": "Invalid code. Please try again.",

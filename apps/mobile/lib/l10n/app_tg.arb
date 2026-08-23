@@ -45,6 +45,7 @@
   "authPhoneHint": "90 123 45 67",
   "authPhoneInvalid": "Рақами телефон нодуруст аст. Намуна: +992 90 123 45 67",
   "authSendCode": "Гирифтани рамз",
+  "authOpenTelegramBot": "Кушодани бот дар Telegram",
   "authOtpTitle": "Рамзи тасдиқро ворид кунед",
   "authOtpSubtitle": "Мо рамзи 6-рақамаро ба рақами {phone} фиристодем",
   "@authOtpSubtitle": {

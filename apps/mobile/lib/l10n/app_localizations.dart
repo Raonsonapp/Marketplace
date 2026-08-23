@@ -328,6 +328,12 @@ abstract class AppLocalizations {
   /// **'Гирифтани рамз'**
   String get authSendCode;
 
+  /// No description provided for @authOpenTelegramBot.
+  ///
+  /// In tg, this message translates to:
+  /// **'Кушодани бот дар Telegram'**
+  String get authOpenTelegramBot;
+
   /// No description provided for @authOtpTitle.
   ///
   /// In tg, this message translates to:

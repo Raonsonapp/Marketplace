@@ -49,6 +49,7 @@ const (
 	CodeReviewRequiresPurchase Code = "REVIEW_REQUIRES_PURCHASE"
 	CodeUploadsNotConfigured   Code = "UPLOADS_NOT_CONFIGURED"
 	CodeUploadContentType      Code = "UPLOAD_CONTENT_TYPE_UNSUPPORTED"
+	CodeTelegramNotLinked      Code = "TELEGRAM_NOT_LINKED"
 )
 
 // httpStatus maps each code to its HTTP status.
@@ -89,6 +90,7 @@ var httpStatus = map[Code]int{
 	CodeReviewRequiresPurchase: http.StatusForbidden,
 	CodeUploadsNotConfigured:   http.StatusServiceUnavailable,
 	CodeUploadContentType:      http.StatusBadRequest,
+	CodeTelegramNotLinked:      http.StatusPreconditionRequired,
 }
 
 // messagesTJ / messagesRU hold the localized default messages per code.
@@ -129,6 +131,7 @@ var messagesTJ = map[Code]string{
 	CodeReviewRequiresPurchase: "Шарҳ танҳо пас аз харидани маҳсулот навишта мешавад",
 	CodeUploadsNotConfigured:   "Боргузории акс ҳоло фаъол нест",
 	CodeUploadContentType:      "Танҳо акси JPEG, PNG ё WebP қабул карда мешавад",
+	CodeTelegramNotLinked:      "Барои гирифтани рамз, аввал бот-ро дар Telegram кушоед ва тугмаи Start-ро пахш кунед",
 }
 
 var messagesRU = map[Code]string{
@@ -168,6 +171,7 @@ var messagesRU = map[Code]string{
 	CodeReviewRequiresPurchase: "Отзыв можно оставить только после покупки товара",
 	CodeUploadsNotConfigured:   "Загрузка изображений пока не подключена",
 	CodeUploadContentType:      "Принимаются только изображения JPEG, PNG или WebP",
+	CodeTelegramNotLinked:      "Чтобы получить код, сначала откройте бота в Telegram и нажмите Start",
 }
 
 // Error is the application error type carried through the service layer and

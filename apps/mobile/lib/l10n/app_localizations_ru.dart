@@ -128,6 +128,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authSendCode => 'Получить код';
 
   @override
+  String get authOpenTelegramBot => 'Открыть бота в Telegram';
+
+  @override
   String get authOtpTitle => 'Введите код подтверждения';
 
   @override

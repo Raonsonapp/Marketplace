@@ -127,6 +127,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authSendCode => 'Send code';
 
   @override
+  String get authOpenTelegramBot => 'Open Telegram bot';
+
+  @override
   String get authOtpTitle => 'Enter the verification code';
 
   @override

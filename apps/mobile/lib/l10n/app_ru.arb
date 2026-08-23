@@ -44,6 +44,7 @@
   "authPhoneHint": "90 123 45 67",
   "authPhoneInvalid": "Неверный номер телефона. Пример: +992 90 123 45 67",
   "authSendCode": "Получить код",
+  "authOpenTelegramBot": "Открыть бота в Telegram",
   "authOtpTitle": "Введите код подтверждения",
   "authOtpSubtitle": "Мы отправили 6-значный код на номер {phone}",
   "authOtpInvalid": "Неверный код. Попробуйте ещё раз.",

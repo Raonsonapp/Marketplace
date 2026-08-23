@@ -21,6 +21,7 @@ import (
 	"tajikshop/api/internal/httpserver"
 	"tajikshop/api/internal/jobs"
 	"tajikshop/api/internal/pkg/otp"
+	"tajikshop/api/internal/pkg/telegrambot"
 	"tajikshop/api/internal/repository"
 	"tajikshop/api/internal/service"
 	"tajikshop/api/internal/storage"
@@ -78,16 +79,23 @@ func run() error {
 	reviewRepo := repository.NewReviewRepository()
 	notificationRepo := repository.NewNotificationRepository()
 	supportRepo := repository.NewSupportRepository()
+	telegramLinkRepo := repository.NewTelegramLinkRepository()
 
 	// ---- auth primitives ----
 	tokenMgr := auth.NewTokenManager(cfg.JWTSecret, cfg.AccessTTL)
 	limiter := auth.NewLimiter(rdb)
 	var otpSender otp.Sender = otp.NewConsoleSender()
-	if cfg.TelegramGatewayToken != "" {
+	switch {
+	case cfg.TelegramBotToken != "":
+		telegramLinks := repository.NewTelegramLinkLookupAdapter(telegramLinkRepo, pool)
+		otpSender = otp.NewTelegramBotSender(cfg.TelegramBotToken, cfg.TelegramBotUsername, telegramLinks)
+		go telegrambot.NewPoller(cfg.TelegramBotToken, telegramLinks).Run(ctx)
+		log.Printf("otp: delivering codes via Telegram bot @%s", cfg.TelegramBotUsername)
+	case cfg.TelegramGatewayToken != "":
 		otpSender = otp.NewTelegramGatewaySender(cfg.TelegramGatewayToken)
 		log.Printf("otp: delivering codes via Telegram Gateway")
-	} else {
-		log.Printf("otp: TELEGRAM_GATEWAY_TOKEN not set, logging OTP codes to console (dev mode)")
+	default:
+		log.Printf("otp: no Telegram provider configured, logging OTP codes to console (dev mode)")
 	}
 	otpMgr := auth.NewOTPManager(
 		repository.NewOTPStoreAdapter(otpRepo, pool), otpSender, limiter,

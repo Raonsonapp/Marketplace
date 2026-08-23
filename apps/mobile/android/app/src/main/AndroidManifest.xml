@@ -48,5 +48,14 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- url_launcher (https://pub.dev/packages/url_launcher#configuration):
+             needed to open the Telegram-bot deep link for TELEGRAM_NOT_LINKED
+             (docs/SMS_PROVIDERS.md) on Android 11+, which hides package
+             visibility by default. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+            <data android:scheme="https"/>
+        </intent>
     </queries>
 </manifest>

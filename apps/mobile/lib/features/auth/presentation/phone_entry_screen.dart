@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/network/app_exception.dart';
 import '../../../core/router/route_paths.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -130,6 +132,13 @@ class _PhoneEntryScreenState extends ConsumerState<PhoneEntryScreen> {
                   ErrorStateView.messageFor(context, state.error!),
                   style: const TextStyle(color: AppColors.error),
                 ),
+                if (_telegramDeepLink(state.error) case final link?) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  OutlinedButton(
+                    onPressed: () => launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication),
+                    child: Text(l10n.authOpenTelegramBot),
+                  ),
+                ],
               ],
               const SizedBox(height: AppSpacing.xl),
               PrimaryButton(
@@ -143,4 +152,13 @@ class _PhoneEntryScreenState extends ConsumerState<PhoneEntryScreen> {
       ),
     );
   }
+}
+
+/// Extracts the `deep_link` detail from a TELEGRAM_NOT_LINKED error
+/// (docs/SMS_PROVIDERS.md) so the phone-entry screen can offer to open the
+/// bot, or null for any other error / no error.
+String? _telegramDeepLink(AppException? error) {
+  if (error is! ApiException || error.code != 'TELEGRAM_NOT_LINKED') return null;
+  final link = error.details['deep_link'];
+  return link is String ? link : null;
 }

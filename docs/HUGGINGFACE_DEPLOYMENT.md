@@ -118,8 +118,12 @@ endpoint just returns `UPLOADS_NOT_CONFIGURED` until it's set up.
    - `REDIS_URL` (step 2, optional — omit to use the automatic in-memory
      fallback)
    - `JWT_SECRET` — a long random string (`openssl rand -base64 48`)
-   - `TELEGRAM_GATEWAY_TOKEN` (recommended — see `docs/SMS_PROVIDERS.md`)
-     and/or `FIREBASE_WEB_API_KEY` (see `docs/FIREBASE_SETUP.md`)
+   - `TELEGRAM_BOT_TOKEN` + `TELEGRAM_BOT_USERNAME` if you already have a
+     Telegram bot (fastest to set up), or `TELEGRAM_GATEWAY_TOKEN` if you'd
+     rather apply for Telegram Gateway instead (no bot-linking step for
+     users, but a separate signup) — see `docs/SMS_PROVIDERS.md` for the
+     trade-off. `TELEGRAM_BOT_TOKEN` wins if both are set. Either is
+     optional alongside `FIREBASE_WEB_API_KEY` (see `docs/FIREBASE_SETUP.md`)
    - `CF_ACCOUNT_ID`, `CF_R2_ACCESS_KEY_ID`, `CF_R2_SECRET_ACCESS_KEY`,
      `CF_R2_BUCKET`, `CF_R2_PUBLIC_URL` (step 3, optional)
    - `CORS_ORIGINS` — your admin web origin(s), comma-separated

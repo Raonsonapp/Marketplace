@@ -130,6 +130,9 @@ class AppLocalizationsTg extends AppLocalizations {
   String get authSendCode => 'Гирифтани рамз';
 
   @override
+  String get authOpenTelegramBot => 'Кушодани бот дар Telegram';
+
+  @override
   String get authOtpTitle => 'Рамзи тасдиқро ворид кунед';
 
   @override

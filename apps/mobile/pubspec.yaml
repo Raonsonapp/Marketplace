@@ -44,6 +44,10 @@ dependencies:
   # Realtime order tracking
   web_socket_channel: ^3.0.1
 
+  # Opening the Telegram-bot deep link for TELEGRAM_NOT_LINKED
+  # (docs/SMS_PROVIDERS.md)
+  url_launcher: ^6.3.1
+
   # Firebase Phone Auth (real SMS delivery — see docs/FIREBASE_SETUP.md)
   firebase_core: ^4.13.0
   firebase_auth: ^6.5.7
