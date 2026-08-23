@@ -47,6 +47,8 @@ const (
 	CodeFirebasePhoneMissing   Code = "FIREBASE_PHONE_MISSING"
 	CodeDuplicateReview        Code = "DUPLICATE_REVIEW"
 	CodeReviewRequiresPurchase Code = "REVIEW_REQUIRES_PURCHASE"
+	CodeUploadsNotConfigured   Code = "UPLOADS_NOT_CONFIGURED"
+	CodeUploadContentType      Code = "UPLOAD_CONTENT_TYPE_UNSUPPORTED"
 )
 
 // httpStatus maps each code to its HTTP status.
@@ -85,6 +87,8 @@ var httpStatus = map[Code]int{
 	CodeFirebasePhoneMissing:   http.StatusBadRequest,
 	CodeDuplicateReview:        http.StatusConflict,
 	CodeReviewRequiresPurchase: http.StatusForbidden,
+	CodeUploadsNotConfigured:   http.StatusServiceUnavailable,
+	CodeUploadContentType:      http.StatusBadRequest,
 }
 
 // messagesTJ / messagesRU hold the localized default messages per code.
@@ -123,6 +127,8 @@ var messagesTJ = map[Code]string{
 	CodeFirebasePhoneMissing:   "Рақами телефон тасдиқшуда ёфт нашуд",
 	CodeDuplicateReview:        "Шумо аллакай барои ин маҳсулот аз рӯи ин фармоиш шарҳ навиштаед",
 	CodeReviewRequiresPurchase: "Шарҳ танҳо пас аз харидани маҳсулот навишта мешавад",
+	CodeUploadsNotConfigured:   "Боргузории акс ҳоло фаъол нест",
+	CodeUploadContentType:      "Танҳо акси JPEG, PNG ё WebP қабул карда мешавад",
 }
 
 var messagesRU = map[Code]string{
@@ -160,6 +166,8 @@ var messagesRU = map[Code]string{
 	CodeFirebasePhoneMissing:   "Подтверждённый номер телефона не найден",
 	CodeDuplicateReview:        "Вы уже оставили отзыв на этот товар по этому заказу",
 	CodeReviewRequiresPurchase: "Отзыв можно оставить только после покупки товара",
+	CodeUploadsNotConfigured:   "Загрузка изображений пока не подключена",
+	CodeUploadContentType:      "Принимаются только изображения JPEG, PNG или WebP",
 }
 
 // Error is the application error type carried through the service layer and

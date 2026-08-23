@@ -5,10 +5,12 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -21,6 +23,7 @@ import (
 	"tajikshop/api/internal/pkg/otp"
 	"tajikshop/api/internal/repository"
 	"tajikshop/api/internal/service"
+	"tajikshop/api/internal/storage"
 	"tajikshop/api/internal/ws"
 )
 
@@ -112,6 +115,29 @@ func run() error {
 	notificationSvc := service.NewNotificationService(pool, notificationRepo)
 	supportSvc := service.NewSupportService(pool, supportRepo)
 
+	// Object storage (Cloudflare R2 / any S3-compatible endpoint) is
+	// optional: uploads/presign returns UPLOADS_NOT_CONFIGURED until these
+	// env vars are set, rather than the server failing to start.
+	var storageClient *storage.Client
+	r2Endpoint := strings.TrimPrefix(strings.TrimPrefix(cfg.R2Endpoint, "https://"), "http://")
+	if cfg.R2Endpoint != "" {
+		storageClient, err = storage.NewClient(storage.Config{
+			Endpoint:  r2Endpoint,
+			AccessKey: cfg.R2AccessKey,
+			SecretKey: cfg.R2SecretKey,
+			Bucket:    cfg.R2Bucket,
+			PublicURL: cfg.R2PublicURL,
+			UseSSL:    true,
+		})
+		if err != nil {
+			return fmt.Errorf("storage: %w", err)
+		}
+		log.Printf("storage: R2 object storage configured (bucket=%s)", cfg.R2Bucket)
+	} else {
+		log.Printf("storage: R2_ENDPOINT not set, uploads/presign will return UPLOADS_NOT_CONFIGURED")
+	}
+	uploadSvc := service.NewUploadService(storageClient)
+
 	// ---- handlers ----
 	hub := ws.NewHub()
 	handlers := httpapi.Handlers{
@@ -131,6 +157,7 @@ func run() error {
 		Notification: httpapi.NewNotificationHandler(notificationSvc),
 		Support:      httpapi.NewSupportHandler(supportSvc, hub),
 		SupportWS:    httpapi.NewSupportWSHandler(hub, supportSvc, tokenMgr),
+		Upload:       httpapi.NewUploadHandler(uploadSvc),
 	}
 
 	router := httpserver.NewRouter(handlers, tokenMgr, limiter, cfg.CORSOrigins)

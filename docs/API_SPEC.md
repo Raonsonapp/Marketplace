@@ -128,6 +128,16 @@ WS     /ws/support/:conversationId            -> realtime messages
 WS     /ws/orders/:orderId                     -> realtime status updates
 ```
 
+### Uploads
+```
+POST   /uploads/presign        { content_type, purpose }        -> { upload_url, public_url, expires_in_seconds }
+```
+`purpose` is `review-images` or `support-attachments`. The client PUTs the
+file bytes directly to `upload_url` (an object-storage presigned URL, see
+docs/HUGGINGFACE_DEPLOYMENT.md §3) — the API server never proxies the file
+— then submits `public_url` as e.g. a review's `images` entry. Returns
+`UPLOADS_NOT_CONFIGURED` (503) if the backend has no R2/S3 credentials set.
+
 ### Admin (role: admin/store_manager, separate router group with RBAC middleware)
 ```
 GET/POST/PATCH/DELETE  /admin/products

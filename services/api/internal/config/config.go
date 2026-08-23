@@ -49,6 +49,19 @@ type Config struct {
 	// codes are logged via ConsoleSender (local dev) as before.
 	TelegramGatewayToken string
 
+	// R2Endpoint/R2AccessKey/R2SecretKey/R2Bucket/R2PublicURL configure the
+	// object-storage client (internal/storage) behind
+	// POST /uploads/presign — Cloudflare R2 in production (S3-compatible),
+	// any S3-compatible endpoint (e.g. MinIO) in local dev. Optional: when
+	// unset, that endpoint returns UPLOADS_NOT_CONFIGURED instead of
+	// failing unpredictably. Naming matches the R2_* convention already
+	// used by this account's other Hugging-Face-hosted services.
+	R2Endpoint  string
+	R2AccessKey string
+	R2SecretKey string
+	R2Bucket    string
+	R2PublicURL string
+
 	// LoyaltyEarnRatePercent is the percentage of order total credited back
 	// as TajBonus on delivery/creation (business rule, not schema-enforced).
 	LoyaltyEarnRatePercent float64
@@ -111,6 +124,12 @@ func Load() (*Config, error) {
 	cfg.MigrationsDir = getOr("MIGRATIONS_DIR", "migrations")
 	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
 	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
+
+	cfg.R2Endpoint = os.Getenv("R2_ENDPOINT")
+	cfg.R2AccessKey = os.Getenv("R2_ACCESS_KEY")
+	cfg.R2SecretKey = os.Getenv("R2_SECRET_KEY")
+	cfg.R2Bucket = os.Getenv("R2_BUCKET")
+	cfg.R2PublicURL = strings.TrimRight(os.Getenv("R2_PUBLIC_URL"), "/")
 
 	origins := getOr("CORS_ORIGINS", "http://localhost:3000")
 	for _, o := range strings.Split(origins, ",") {

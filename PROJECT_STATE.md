@@ -37,6 +37,46 @@ Phase 9 (real signing key + Play submission).
       workflow warns about this loudly, as designed) — installable for
       testing right now, but not Play-Store-uploadable until a real
       upload keystore is configured per `docs/DEPLOYMENT.md`.
+- [x] Real device testing surfaced two more bugs, both fixed and shipped in
+      run #9 (https://github.com/Raonsonapp/Marketplace/actions/runs/32637027965):
+      `Firebase.initializeApp` doesn't validate its API key over the
+      network, so it "succeeds" even with the committed placeholder
+      `firebase_options.dart`, leaving `Firebase.apps` non-empty and
+      wrongly triggering a real (and failing) Firebase Phone Auth attempt
+      on login. Fixed by skipping `initializeApp` entirely while the
+      config is still the known placeholder sentinel. Also added Russia
+      (+7) as a second served region alongside Tajikistan (+992) —
+      `PhoneValidator` region-aware, phone-entry screen has a region
+      selector, backend `ValidPhone` regex accepts both shapes.
+
+## Real hosted backend (Hugging Face Spaces + Supabase + R2)
+
+- [x] `POST /api/v1/uploads/presign` — real, working S3-compatible
+      presigned-upload endpoint (`internal/storage`, using `minio-go`
+      against Cloudflare R2 or any S3-compatible endpoint), for review
+      photos and support-chat attachments. The client uploads directly to
+      object storage; the API never proxies file bytes. Returns
+      `UPLOADS_NOT_CONFIGURED` until `R2_ENDPOINT`/`R2_ACCESS_KEY`/
+      `R2_SECRET_KEY`/`R2_BUCKET` are set. Mobile-side wiring (image
+      picker → presign → PUT → attach `public_url`) is not done yet — the
+      write-review/support-chat screens still take a manual `image_url`
+      string; hooking the picker up to this endpoint is a small follow-up.
+- [x] `docs/HUGGINGFACE_DEPLOYMENT.md` + `infrastructure/huggingface/`
+      (Dockerfile + Space README frontmatter) — a complete, ready-to-push
+      recipe for a real, live TajikShop backend on Hugging Face Spaces
+      (Docker SDK), backed by a managed Postgres (Supabase) and Redis
+      (Upstash), mirroring the hosting pattern already used by this
+      account's other projects. This is external setup the user does
+      once in their own accounts — cannot be completed from a sandbox.
+- [x] Fixed two real, previously-undetected config bugs found while
+      writing the above: `.env.example` documented `CORS_ALLOWED_ORIGINS`
+      but `internal/config` actually reads `CORS_ORIGINS` (silently
+      falling back to the default and ignoring whatever was set); and the
+      `OBJECT_STORAGE_*` variables documented for MinIO/R2 were never
+      wired to any code at all. Both fixed — `.env.example` and
+      `docker-compose.yml` now match reality (`R2_*` naming, chosen to
+      match the env-var convention already used by this account's other
+      Hugging-Face-hosted services).
 
 ## Completed
 

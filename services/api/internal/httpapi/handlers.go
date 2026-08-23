@@ -18,4 +18,5 @@ type Handlers struct {
 	Notification *NotificationHandler
 	Support      *SupportHandler
 	SupportWS    *SupportWSHandler
+	Upload       *UploadHandler
 }

@@ -101,6 +101,8 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 			authed.PATCH("/notifications/preferences", h.Notification.UpdatePreferences)
 			authed.POST("/devices", h.Notification.RegisterDevice)
 
+			authed.POST("/uploads/presign", h.Upload.Presign)
+
 			authed.GET("/support/conversations", h.Support.ListConversations)
 			authed.POST("/support/conversations", h.Support.CreateConversation)
 			authed.GET("/support/conversations/:id/messages", h.Support.ListMessages)
