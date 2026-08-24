@@ -4,6 +4,7 @@ import 'package:tajikshop/core/icons/app_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/route_paths.dart';
+import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/error_state_view.dart';
@@ -15,6 +16,22 @@ import '../application/categories_controller.dart';
 /// (`GET /categories` — docs/API_SPEC.md).
 class CatalogScreen extends ConsumerWidget {
   const CatalogScreen({super.key});
+
+  /// Cycled by category index when a category has no `iconUrl` (the seed
+  /// catalog doesn't set one yet) — varied icons on a brand-gradient circle
+  /// read as noticeably more "designed" than one repeated placeholder icon,
+  /// without needing real category photography this session has no way to
+  /// source.
+  static const _categoryIcons = [
+    LucideIcons.shoppingBag,
+    LucideIcons.gift,
+    LucideIcons.package,
+    LucideIcons.store,
+    LucideIcons.badgePercent,
+    LucideIcons.coins,
+    LucideIcons.heart,
+    LucideIcons.star,
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -68,20 +85,27 @@ class CatalogScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surface,
+                          width: 56,
+                          height: 56,
+                          decoration: const BoxDecoration(
+                            gradient: AppColors.primaryGradient,
                             shape: BoxShape.circle,
                           ),
                           child: category.iconUrl == null || category.iconUrl!.isEmpty
-                              ? const Icon(LucideIcons.layoutGrid)
+                              ? Icon(
+                                  _categoryIcons[index % _categoryIcons.length],
+                                  color: Colors.white,
+                                  size: 26,
+                                )
                               : ClipOval(
                                   child: Image.network(
                                     category.iconUrl!,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) =>
-                                        const Icon(LucideIcons.layoutGrid),
+                                    errorBuilder: (context, error, stackTrace) => Icon(
+                                      _categoryIcons[index % _categoryIcons.length],
+                                      color: Colors.white,
+                                      size: 26,
+                                    ),
                                   ),
                                 ),
                         ),
@@ -91,7 +115,9 @@ class CatalogScreen extends ConsumerWidget {
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ],
                     ),
