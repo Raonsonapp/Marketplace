@@ -165,6 +165,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authLogoutConfirm => 'Вы уверены, что хотите выйти?';
 
   @override
+  String get authCompleteRegTitle => 'Введите email';
+
+  @override
+  String get authCompleteRegSubtitle => 'Последний шаг: укажите email для уведомлений и восстановления доступа';
+
+  @override
+  String get authEmailHint => 'example@gmail.com';
+
+  @override
+  String get authEmailInvalid => 'Неверный email';
+
+  @override
   String get authSignInRequiredTitle => 'Требуется вход';
 
   @override
@@ -597,6 +609,18 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get languageEnglish => 'Английский';
+
+  @override
+  String get profileTheme => 'Тема';
+
+  @override
+  String get themeDark => 'Тёмная';
+
+  @override
+  String get themeLight => 'Светлая';
+
+  @override
+  String get themeSystem => 'Как в системе';
 
   @override
   String get splashTagline => 'Лёгкие покупки, быстрая доставка';

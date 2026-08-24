@@ -54,6 +54,10 @@
   "authVerify": "Подтвердить",
   "authChangeNumber": "Изменить номер",
   "authLogout": "Выйти",
+  "authCompleteRegTitle": "Введите email",
+  "authCompleteRegSubtitle": "Последний шаг: укажите email для уведомлений и восстановления доступа",
+  "authEmailHint": "example@gmail.com",
+  "authEmailInvalid": "Неверный email",
   "authLogoutConfirm": "Вы уверены, что хотите выйти?",
   "authSignInRequiredTitle": "Требуется вход",
   "authSignInRequiredMessage": "Пожалуйста, войдите, чтобы продолжить",
@@ -208,6 +212,11 @@
   "languageTajik": "Таджикский",
   "languageRussian": "Русский",
   "languageEnglish": "Английский",
+
+  "profileTheme": "Тема",
+  "themeDark": "Тёмная",
+  "themeLight": "Светлая",
+  "themeSystem": "Как в системе",
 
   "splashTagline": "Лёгкие покупки, быстрая доставка",
 

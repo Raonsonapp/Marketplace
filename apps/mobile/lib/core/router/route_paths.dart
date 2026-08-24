@@ -6,6 +6,7 @@ class RoutePaths {
   static const onboarding = '/onboarding';
   static const login = '/login';
   static const otp = '/login/otp';
+  static const completeRegistration = '/login/email';
 
   static const home = '/home';
   static const catalog = '/catalog';

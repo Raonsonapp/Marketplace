@@ -7,6 +7,7 @@ import '../../../core/localization/locale_controller.dart';
 import '../../../core/router/route_paths.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/theme/theme_controller.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/application/logout_action.dart';
 
@@ -23,6 +24,12 @@ class SettingsScreen extends ConsumerWidget {
       'en' => l10n.languageEnglish,
       _ => l10n.languageTajik,
     };
+    final themeMode = ref.watch(themeModeControllerProvider);
+    final themeLabel = switch (themeMode) {
+      ThemeMode.light => l10n.themeLight,
+      ThemeMode.system => l10n.themeSystem,
+      ThemeMode.dark => l10n.themeDark,
+    };
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.profileSettings)),
@@ -36,6 +43,16 @@ class SettingsScreen extends ConsumerWidget {
               subtitle: Text(languageLabel),
               trailing: const Icon(LucideIcons.chevronRight),
               onTap: () => context.push(RoutePaths.languageSelection),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Card(
+            child: ListTile(
+              leading: const Icon(LucideIcons.settings),
+              title: Text(l10n.profileTheme),
+              subtitle: Text(themeLabel),
+              trailing: const Icon(LucideIcons.chevronRight),
+              onTap: () => _pickThemeMode(context, ref, themeMode),
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -71,5 +88,33 @@ class SettingsScreen extends ConsumerWidget {
     if (confirmed != true) return;
     await performLogout(ref);
     if (context.mounted) context.go(RoutePaths.home);
+  }
+
+  Future<void> _pickThemeMode(BuildContext context, WidgetRef ref, ThemeMode current) async {
+    final l10n = AppLocalizations.of(context)!;
+    final selected = await showModalBottomSheet<ThemeMode>(
+      context: context,
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final mode in ThemeMode.values)
+              RadioListTile<ThemeMode>(
+                value: mode,
+                groupValue: current,
+                title: Text(switch (mode) {
+                  ThemeMode.light => l10n.themeLight,
+                  ThemeMode.system => l10n.themeSystem,
+                  ThemeMode.dark => l10n.themeDark,
+                }),
+                onChanged: (value) => Navigator.of(sheetContext).pop(value),
+              ),
+          ],
+        ),
+      ),
+    );
+    if (selected != null) {
+      await ref.read(themeModeControllerProvider.notifier).setThemeMode(selected);
+    }
   }
 }

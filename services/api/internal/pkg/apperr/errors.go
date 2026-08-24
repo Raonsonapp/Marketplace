@@ -50,6 +50,7 @@ const (
 	CodeUploadsNotConfigured   Code = "UPLOADS_NOT_CONFIGURED"
 	CodeUploadContentType      Code = "UPLOAD_CONTENT_TYPE_UNSUPPORTED"
 	CodeTelegramNotLinked      Code = "TELEGRAM_NOT_LINKED"
+	CodeEmailTaken             Code = "EMAIL_TAKEN"
 )
 
 // httpStatus maps each code to its HTTP status.
@@ -91,6 +92,7 @@ var httpStatus = map[Code]int{
 	CodeUploadsNotConfigured:   http.StatusServiceUnavailable,
 	CodeUploadContentType:      http.StatusBadRequest,
 	CodeTelegramNotLinked:      http.StatusPreconditionRequired,
+	CodeEmailTaken:             http.StatusConflict,
 }
 
 // messagesTJ / messagesRU hold the localized default messages per code.
@@ -132,6 +134,7 @@ var messagesTJ = map[Code]string{
 	CodeUploadsNotConfigured:   "Боргузории акс ҳоло фаъол нест",
 	CodeUploadContentType:      "Танҳо акси JPEG, PNG ё WebP қабул карда мешавад",
 	CodeTelegramNotLinked:      "Барои гирифтани рамз, аввал бот-ро дар Telegram кушоед ва тугмаи Start-ро пахш кунед",
+	CodeEmailTaken:             "Ин почтаи электронӣ аллакай истифода шудааст",
 }
 
 var messagesRU = map[Code]string{
@@ -172,6 +175,7 @@ var messagesRU = map[Code]string{
 	CodeUploadsNotConfigured:   "Загрузка изображений пока не подключена",
 	CodeUploadContentType:      "Принимаются только изображения JPEG, PNG или WebP",
 	CodeTelegramNotLinked:      "Чтобы получить код, сначала откройте бота в Telegram и нажмите Start",
+	CodeEmailTaken:             "Этот email уже используется",
 }
 
 // Error is the application error type carried through the service layer and

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/complete_registration_screen.dart';
 import '../../features/auth/presentation/otp_verification_screen.dart';
 import '../../features/auth/presentation/phone_entry_screen.dart';
 import '../../features/barcode/presentation/barcode_scanner_screen.dart';
@@ -119,6 +120,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           final phone = state.uri.queryParameters['phone'] ?? '';
           return OtpVerificationScreen(phone: phone);
         },
+      ),
+      GoRoute(
+        path: RoutePaths.completeRegistration,
+        builder: (context, state) => const CompleteRegistrationScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) => AppShell(navigationShell: navigationShell),

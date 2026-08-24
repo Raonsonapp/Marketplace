@@ -61,6 +61,10 @@
   "authVerify": "Тасдиқ кардан",
   "authChangeNumber": "Тағйир додани рақам",
   "authLogout": "Баромадан",
+  "authCompleteRegTitle": "Почтаи электрониро ворид кунед",
+  "authCompleteRegSubtitle": "Марҳилаи охирин: барои огоҳиномаҳо ва барқарорсозии дастрасӣ почтаи электрониатонро гузоред",
+  "authEmailHint": "example@gmail.com",
+  "authEmailInvalid": "Почтаи электронӣ нодуруст аст",
   "authLogoutConfirm": "Шумо мутмаин ҳастед, ки мехоҳед бароед?",
   "authSignInRequiredTitle": "Бояд ворид шавед",
   "authSignInRequiredMessage": "Барои идома додан лутфан ворид шавед",
@@ -227,6 +231,11 @@
   "languageTajik": "Тоҷикӣ",
   "languageRussian": "Русӣ",
   "languageEnglish": "Англисӣ",
+
+  "profileTheme": "Мавзӯъ",
+  "themeDark": "Торик",
+  "themeLight": "Равшан",
+  "themeSystem": "Мувофиқи система",
 
   "splashTagline": "Хариди осон, расонидани тез",
 

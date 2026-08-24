@@ -394,6 +394,30 @@ abstract class AppLocalizations {
   /// **'Шумо мутмаин ҳастед, ки мехоҳед бароед?'**
   String get authLogoutConfirm;
 
+  /// No description provided for @authCompleteRegTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Почтаи электрониро ворид кунед'**
+  String get authCompleteRegTitle;
+
+  /// No description provided for @authCompleteRegSubtitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Марҳилаи охирин: барои огоҳиномаҳо ва барқарорсозии дастрасӣ почтаи электрониатонро гузоред'**
+  String get authCompleteRegSubtitle;
+
+  /// No description provided for @authEmailHint.
+  ///
+  /// In tg, this message translates to:
+  /// **'example@gmail.com'**
+  String get authEmailHint;
+
+  /// No description provided for @authEmailInvalid.
+  ///
+  /// In tg, this message translates to:
+  /// **'Почтаи электронӣ нодуруст аст'**
+  String get authEmailInvalid;
+
   /// No description provided for @authSignInRequiredTitle.
   ///
   /// In tg, this message translates to:
@@ -1233,6 +1257,30 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Англисӣ'**
   String get languageEnglish;
+
+  /// No description provided for @profileTheme.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мавзӯъ'**
+  String get profileTheme;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In tg, this message translates to:
+  /// **'Торик'**
+  String get themeDark;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In tg, this message translates to:
+  /// **'Равшан'**
+  String get themeLight;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мувофиқи система'**
+  String get themeSystem;
 
   /// No description provided for @splashTagline.
   ///

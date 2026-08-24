@@ -47,7 +47,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
 
     ref.listen(provider, (previous, next) {
       if (next.verified) {
-        context.go(RoutePaths.home);
+        context.go(next.isNewUser ? RoutePaths.completeRegistration : RoutePaths.home);
       }
     });
 

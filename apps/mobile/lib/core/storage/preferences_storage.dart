@@ -13,11 +13,17 @@ class PreferencesStorage {
   static const String _recentSearchesKey = 'recent_searches';
   static const int _maxRecentSearches = 10;
   static const String _onboardingSeenKey = 'onboarding_seen';
+  static const String _themeModeKey = 'theme_mode';
 
   String? readLanguage() => _prefs.getString(AppConstants.storageKeyLanguage);
 
   Future<void> saveLanguage(String languageCode) =>
       _prefs.setString(AppConstants.storageKeyLanguage, languageCode);
+
+  /// 'light', 'dark', or 'system' — null if never explicitly chosen.
+  String? readThemeMode() => _prefs.getString(_themeModeKey);
+
+  Future<void> saveThemeMode(String mode) => _prefs.setString(_themeModeKey, mode);
 
   List<String> readRecentSearches() =>
       _prefs.getStringList(_recentSearchesKey) ?? const [];

@@ -54,6 +54,10 @@
   "authVerify": "Verify",
   "authChangeNumber": "Change number",
   "authLogout": "Log out",
+  "authCompleteRegTitle": "Enter your email",
+  "authCompleteRegSubtitle": "Last step: add your email for notifications and account recovery",
+  "authEmailHint": "example@gmail.com",
+  "authEmailInvalid": "Invalid email address",
   "authLogoutConfirm": "Are you sure you want to log out?",
   "authSignInRequiredTitle": "Sign-in required",
   "authSignInRequiredMessage": "Please sign in to continue",
@@ -208,6 +212,11 @@
   "languageTajik": "Tajik",
   "languageRussian": "Russian",
   "languageEnglish": "English",
+
+  "profileTheme": "Theme",
+  "themeDark": "Dark",
+  "themeLight": "Light",
+  "themeSystem": "Follow system",
 
   "splashTagline": "Easy shopping, fast delivery",
 

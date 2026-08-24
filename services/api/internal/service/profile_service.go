@@ -42,6 +42,9 @@ func (s *ProfileService) Update(ctx context.Context, userID uuid.UUID, fullName,
 		if err == repository.ErrNotFound {
 			return nil, apperr.New(apperr.CodeNotFound, nil)
 		}
+		if err == repository.ErrConflict {
+			return nil, apperr.New(apperr.CodeEmailTaken, map[string]any{"field": "email"})
+		}
 		return nil, fmt.Errorf("service: update profile: %w", err)
 	}
 	return u, nil

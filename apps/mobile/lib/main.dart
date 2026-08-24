@@ -9,6 +9,7 @@ import 'core/localization/locale_controller.dart';
 import 'core/router/app_router.dart';
 import 'core/storage/preferences_storage.dart';
 import 'core/theme/app_theme.dart';
+import 'core/theme/theme_controller.dart';
 import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 
@@ -90,16 +91,17 @@ class YouShopApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
     final locale = ref.watch(localeControllerProvider);
+    final themeMode = ref.watch(themeModeControllerProvider);
 
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      // Dark is the brand's primary/default look (docs/ARCHITECTURE.md); a
-      // light variant exists and is ready to be exposed via a settings
-      // toggle in a later phase.
-      themeMode: ThemeMode.dark,
+      // Dark is the brand's primary/default look (docs/ARCHITECTURE.md);
+      // the user can switch to light or "follow system" in Settings
+      // (core/theme/theme_controller.dart).
+      themeMode: themeMode,
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: const [

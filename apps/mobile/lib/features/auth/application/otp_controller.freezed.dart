@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OtpState {
 
- String get phone; String get code; bool get isVerifying; bool get isResending; int get cooldownSeconds; AppException? get error; bool get verified;
+ String get phone; String get code; bool get isVerifying; bool get isResending; int get cooldownSeconds; AppException? get error; bool get verified; bool get isNewUser;
 /// Create a copy of OtpState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $OtpStateCopyWith<OtpState> get copyWith => _$OtpStateCopyWithImpl<OtpState>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OtpState&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.code, code) || other.code == code)&&(identical(other.isVerifying, isVerifying) || other.isVerifying == isVerifying)&&(identical(other.isResending, isResending) || other.isResending == isResending)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.error, error) || other.error == error)&&(identical(other.verified, verified) || other.verified == verified));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OtpState&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.code, code) || other.code == code)&&(identical(other.isVerifying, isVerifying) || other.isVerifying == isVerifying)&&(identical(other.isResending, isResending) || other.isResending == isResending)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.error, error) || other.error == error)&&(identical(other.verified, verified) || other.verified == verified)&&(identical(other.isNewUser, isNewUser) || other.isNewUser == isNewUser));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,phone,code,isVerifying,isResending,cooldownSeconds,error,verified);
+int get hashCode => Object.hash(runtimeType,phone,code,isVerifying,isResending,cooldownSeconds,error,verified,isNewUser);
 
 @override
 String toString() {
-  return 'OtpState(phone: $phone, code: $code, isVerifying: $isVerifying, isResending: $isResending, cooldownSeconds: $cooldownSeconds, error: $error, verified: $verified)';
+  return 'OtpState(phone: $phone, code: $code, isVerifying: $isVerifying, isResending: $isResending, cooldownSeconds: $cooldownSeconds, error: $error, verified: $verified, isNewUser: $isNewUser)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $OtpStateCopyWith<$Res>  {
   factory $OtpStateCopyWith(OtpState value, $Res Function(OtpState) _then) = _$OtpStateCopyWithImpl;
 @useResult
 $Res call({
- String phone, String code, bool isVerifying, bool isResending, int cooldownSeconds, AppException? error, bool verified
+ String phone, String code, bool isVerifying, bool isResending, int cooldownSeconds, AppException? error, bool verified, bool isNewUser
 });
 
 
@@ -63,7 +63,7 @@ class _$OtpStateCopyWithImpl<$Res>
 
 /// Create a copy of OtpState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? phone = null,Object? code = null,Object? isVerifying = null,Object? isResending = null,Object? cooldownSeconds = null,Object? error = freezed,Object? verified = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? phone = null,Object? code = null,Object? isVerifying = null,Object? isResending = null,Object? cooldownSeconds = null,Object? error = freezed,Object? verified = null,Object? isNewUser = null,}) {
   return _then(OtpState(
 phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
@@ -72,6 +72,7 @@ as bool,isResending: null == isResending ? _self.isResending : isResending // ig
 as bool,cooldownSeconds: null == cooldownSeconds ? _self.cooldownSeconds : cooldownSeconds // ignore: cast_nullable_to_non_nullable
 as int,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as AppException?,verified: null == verified ? _self.verified : verified // ignore: cast_nullable_to_non_nullable
+as bool,isNewUser: null == isNewUser ? _self.isNewUser : isNewUser // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String phone,  String code,  bool isVerifying,  bool isResending,  int cooldownSeconds,  AppException? error,  bool verified)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String phone,  String code,  bool isVerifying,  bool isResending,  int cooldownSeconds,  AppException? error,  bool verified,  bool isNewUser)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OtpState() when $default != null:
-return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that.cooldownSeconds,_that.error,_that.verified);case _:
+return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that.cooldownSeconds,_that.error,_that.verified,_that.isNewUser);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String phone,  String code,  bool isVerifying,  bool isResending,  int cooldownSeconds,  AppException? error,  bool verified)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String phone,  String code,  bool isVerifying,  bool isResending,  int cooldownSeconds,  AppException? error,  bool verified,  bool isNewUser)  $default,) {final _that = this;
 switch (_that) {
 case _OtpState():
-return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that.cooldownSeconds,_that.error,_that.verified);case _:
+return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that.cooldownSeconds,_that.error,_that.verified,_that.isNewUser);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String phone,  String code,  bool isVerifying,  bool isResending,  int cooldownSeconds,  AppException? error,  bool verified)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String phone,  String code,  bool isVerifying,  bool isResending,  int cooldownSeconds,  AppException? error,  bool verified,  bool isNewUser)?  $default,) {final _that = this;
 switch (_that) {
 case _OtpState() when $default != null:
-return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that.cooldownSeconds,_that.error,_that.verified);case _:
+return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that.cooldownSeconds,_that.error,_that.verified,_that.isNewUser);case _:
   return null;
 
 }
@@ -213,8 +214,8 @@ return $default(_that.phone,_that.code,_that.isVerifying,_that.isResending,_that
 
 
 class _OtpState implements OtpState {
-  const _OtpState({required this.phone, this.code = '', this.isVerifying = false, this.isResending = false, this.cooldownSeconds = 0, this.error, this.verified = false});
-  
+  const _OtpState({required this.phone, this.code = '', this.isVerifying = false, this.isResending = false, this.cooldownSeconds = 0, this.error, this.verified = false, this.isNewUser = false});
+
 
 @override final  String phone;
 @override@JsonKey() final  String code;
@@ -223,6 +224,7 @@ class _OtpState implements OtpState {
 @override@JsonKey() final  int cooldownSeconds;
 @override final  AppException? error;
 @override@JsonKey() final  bool verified;
+@override@JsonKey() final  bool isNewUser;
 
 /// Create a copy of OtpState
 /// with the given fields replaced by the non-null parameter values.
@@ -234,16 +236,16 @@ _$OtpStateCopyWith<_OtpState> get copyWith => __$OtpStateCopyWithImpl<_OtpState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpState&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.code, code) || other.code == code)&&(identical(other.isVerifying, isVerifying) || other.isVerifying == isVerifying)&&(identical(other.isResending, isResending) || other.isResending == isResending)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.error, error) || other.error == error)&&(identical(other.verified, verified) || other.verified == verified));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpState&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.code, code) || other.code == code)&&(identical(other.isVerifying, isVerifying) || other.isVerifying == isVerifying)&&(identical(other.isResending, isResending) || other.isResending == isResending)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.error, error) || other.error == error)&&(identical(other.verified, verified) || other.verified == verified)&&(identical(other.isNewUser, isNewUser) || other.isNewUser == isNewUser));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,phone,code,isVerifying,isResending,cooldownSeconds,error,verified);
+int get hashCode => Object.hash(runtimeType,phone,code,isVerifying,isResending,cooldownSeconds,error,verified,isNewUser);
 
 @override
 String toString() {
-  return 'OtpState(phone: $phone, code: $code, isVerifying: $isVerifying, isResending: $isResending, cooldownSeconds: $cooldownSeconds, error: $error, verified: $verified)';
+  return 'OtpState(phone: $phone, code: $code, isVerifying: $isVerifying, isResending: $isResending, cooldownSeconds: $cooldownSeconds, error: $error, verified: $verified, isNewUser: $isNewUser)';
 }
 
 
@@ -254,7 +256,7 @@ abstract mixin class _$OtpStateCopyWith<$Res> implements $OtpStateCopyWith<$Res>
   factory _$OtpStateCopyWith(_OtpState value, $Res Function(_OtpState) _then) = __$OtpStateCopyWithImpl;
 @override @useResult
 $Res call({
- String phone, String code, bool isVerifying, bool isResending, int cooldownSeconds, AppException? error, bool verified
+ String phone, String code, bool isVerifying, bool isResending, int cooldownSeconds, AppException? error, bool verified, bool isNewUser
 });
 
 
@@ -271,7 +273,7 @@ class __$OtpStateCopyWithImpl<$Res>
 
 /// Create a copy of OtpState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? phone = null,Object? code = null,Object? isVerifying = null,Object? isResending = null,Object? cooldownSeconds = null,Object? error = freezed,Object? verified = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? phone = null,Object? code = null,Object? isVerifying = null,Object? isResending = null,Object? cooldownSeconds = null,Object? error = freezed,Object? verified = null,Object? isNewUser = null,}) {
   return _then(_OtpState(
 phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String,code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
@@ -280,6 +282,7 @@ as bool,isResending: null == isResending ? _self.isResending : isResending // ig
 as bool,cooldownSeconds: null == cooldownSeconds ? _self.cooldownSeconds : cooldownSeconds // ignore: cast_nullable_to_non_nullable
 as int,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
 as AppException?,verified: null == verified ? _self.verified : verified // ignore: cast_nullable_to_non_nullable
+as bool,isNewUser: null == isNewUser ? _self.isNewUser : isNewUser // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

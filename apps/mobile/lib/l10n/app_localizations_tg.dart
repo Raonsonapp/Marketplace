@@ -167,6 +167,19 @@ class AppLocalizationsTg extends AppLocalizations {
   String get authLogoutConfirm => 'Шумо мутмаин ҳастед, ки мехоҳед бароед?';
 
   @override
+  String get authCompleteRegTitle => 'Почтаи электрониро ворид кунед';
+
+  @override
+  String get authCompleteRegSubtitle =>
+      'Марҳилаи охирин: барои огоҳиномаҳо ва барқарорсозии дастрасӣ почтаи электрониатонро гузоред';
+
+  @override
+  String get authEmailHint => 'example@gmail.com';
+
+  @override
+  String get authEmailInvalid => 'Почтаи электронӣ нодуруст аст';
+
+  @override
   String get authSignInRequiredTitle => 'Бояд ворид шавед';
 
   @override
@@ -603,6 +616,18 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get languageEnglish => 'Англисӣ';
+
+  @override
+  String get profileTheme => 'Мавзӯъ';
+
+  @override
+  String get themeDark => 'Торик';
+
+  @override
+  String get themeLight => 'Равшан';
+
+  @override
+  String get themeSystem => 'Мувофиқи система';
 
   @override
   String get splashTagline => 'Хариди осон, расонидани тез';

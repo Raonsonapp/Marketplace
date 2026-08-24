@@ -83,6 +83,9 @@ func (r *UserRepository) UpdateProfile(ctx context.Context, q Querier, id uuid.U
 		return nil, ErrNotFound
 	}
 	if err != nil {
+		if isUniqueViolation(err) {
+			return nil, ErrConflict
+		}
 		return nil, fmt.Errorf("repository: update profile: %w", err)
 	}
 	return u, nil

@@ -29,6 +29,7 @@ abstract class OtpState with _$OtpState {
     @Default(0) int cooldownSeconds,
     AppException? error,
     @Default(false) bool verified,
+    @Default(false) bool isNewUser,
   }) = _OtpState;
 }
 
@@ -101,12 +102,8 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
     if (state.code.length != AppConstants.otpLength) return;
     state = state.copyWith(isVerifying: true, error: null);
     try {
-      if (_isFirebaseFlow) {
-        await _verifyViaFirebase();
-      } else {
-        await _verifyViaConsoleOtp();
-      }
-      state = state.copyWith(isVerifying: false, verified: true);
+      final isNewUser = _isFirebaseFlow ? await _verifyViaFirebase() : await _verifyViaConsoleOtp();
+      state = state.copyWith(isVerifying: false, verified: true, isNewUser: isNewUser);
     } on FirebaseAuthException catch (e) {
       state = state.copyWith(
         isVerifying: false,
@@ -117,7 +114,11 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
     }
   }
 
-  Future<void> _verifyViaConsoleOtp() async {
+  /// Returns whether the verified account was just created (see
+  /// AuthTokens.isNewUser) — otp_verification_screen.dart uses this to send
+  /// a brand-new user through the one-time email step
+  /// (complete_registration_screen.dart) instead of straight home.
+  Future<bool> _verifyViaConsoleOtp() async {
     final tokens = await ref.read(authRepositoryProvider).verifyOtp(
           phone: state.phone,
           code: state.code,
@@ -128,9 +129,10 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
           refreshToken: tokens.refreshToken,
           user: user,
         );
+    return tokens.isNewUser;
   }
 
-  Future<void> _verifyViaFirebase() async {
+  Future<bool> _verifyViaFirebase() async {
     final credential = PhoneAuthProvider.credential(
       verificationId: arg.firebaseVerificationId!,
       smsCode: state.code,
@@ -147,6 +149,7 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
           refreshToken: tokens.refreshToken,
           user: user,
         );
+    return tokens.isNewUser;
   }
 }
 

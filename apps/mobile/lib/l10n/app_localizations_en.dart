@@ -164,6 +164,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authLogoutConfirm => 'Are you sure you want to log out?';
 
   @override
+  String get authCompleteRegTitle => 'Enter your email';
+
+  @override
+  String get authCompleteRegSubtitle => 'Last step: add your email for notifications and account recovery';
+
+  @override
+  String get authEmailHint => 'example@gmail.com';
+
+  @override
+  String get authEmailInvalid => 'Invalid email address';
+
+  @override
   String get authSignInRequiredTitle => 'Sign-in required';
 
   @override
@@ -596,6 +608,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageEnglish => 'English';
+
+  @override
+  String get profileTheme => 'Theme';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeSystem => 'Follow system';
 
   @override
   String get splashTagline => 'Easy shopping, fast delivery';
