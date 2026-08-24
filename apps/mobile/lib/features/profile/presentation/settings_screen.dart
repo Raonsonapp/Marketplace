@@ -95,21 +95,23 @@ class SettingsScreen extends ConsumerWidget {
     final selected = await showModalBottomSheet<ThemeMode>(
       context: context,
       builder: (sheetContext) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (final mode in ThemeMode.values)
-              RadioListTile<ThemeMode>(
-                value: mode,
-                groupValue: current,
-                title: Text(switch (mode) {
-                  ThemeMode.light => l10n.themeLight,
-                  ThemeMode.system => l10n.themeSystem,
-                  ThemeMode.dark => l10n.themeDark,
-                }),
-                onChanged: (value) => Navigator.of(sheetContext).pop(value),
-              ),
-          ],
+        child: RadioGroup<ThemeMode>(
+          groupValue: current,
+          onChanged: (value) => Navigator.of(sheetContext).pop(value),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (final mode in ThemeMode.values)
+                RadioListTile<ThemeMode>(
+                  value: mode,
+                  title: Text(switch (mode) {
+                    ThemeMode.light => l10n.themeLight,
+                    ThemeMode.system => l10n.themeSystem,
+                    ThemeMode.dark => l10n.themeDark,
+                  }),
+                ),
+            ],
+          ),
         ),
       ),
     );
