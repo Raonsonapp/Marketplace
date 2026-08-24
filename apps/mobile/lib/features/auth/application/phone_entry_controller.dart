@@ -54,7 +54,12 @@ class PhoneEntryController extends Notifier<PhoneEntryState> {
     // Tajikistan tab is selected) — the selector then reflects reality
     // instead of silently disagreeing with what's on screen.
     final detected = PhoneValidator.detectRegion(value);
-    state = PhoneEntryState(rawInput: value, region: detected ?? state.region);
+    state = state.copyWith(
+      rawInput: value,
+      region: detected ?? state.region,
+      showFormatError: false,
+      error: null,
+    );
   }
 
   void setRegion(PhoneRegion region) {

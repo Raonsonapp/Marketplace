@@ -29,8 +29,8 @@ Future<void> main() async {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Text(
-            details.exceptionAsString(),
-            style: const TextStyle(color: Colors.redAccent, fontSize: 12),
+            '${details.exceptionAsString()}\n\n${details.stack}',
+            style: const TextStyle(color: Colors.redAccent, fontSize: 11, fontFamily: 'monospace'),
           ),
         ),
       ),
