@@ -24,9 +24,13 @@ class AppConstants {
   /// from a TELEGRAM_NOT_LINKED error's details.
   static const String otpTelegramBotUsername = 'VerificationYouShopBot';
 
-  /// Connect/receive timeouts for the HTTP client.
+  /// Connect/receive timeouts for the HTTP client. receiveTimeout is kept
+  /// above the backend's own worst-case Telegram Gateway call budget
+  /// (TelegramGatewaySender's 25s Client.Timeout, see
+  /// internal/pkg/otp/telegram.go) so a slow-but-successful send-otp call
+  /// still reaches the app instead of the app giving up first.
   static const Duration connectTimeout = Duration(seconds: 15);
-  static const Duration receiveTimeout = Duration(seconds: 20);
+  static const Duration receiveTimeout = Duration(seconds: 35);
 
   /// Secure-storage keys.
   static const String storageKeyAccessToken = 'auth_access_token';

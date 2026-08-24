@@ -35,17 +35,25 @@ type TelegramGatewaySender struct {
 func NewTelegramGatewaySender(token string) *TelegramGatewaySender {
 	return &TelegramGatewaySender{
 		token: token,
-		// Observed in production (a Hugging Face Space host): the request
-		// to gatewayapi.telegram.org doesn't fail fast like a blocked host
-		// would (contrast api.telegram.org's immediate TLS handshake
-		// failure, see TelegramBotReachable) — it just responds slowly, and
-		// 8s wasn't enough ("Client.Timeout exceeded while awaiting
-		// headers"). 18s keeps this under the mobile app's own 20s
-		// receiveTimeout (AppConstants.receiveTimeout) for send-otp, so a
-		// slow-but-successful Gateway call still reaches the client instead
-		// of both sides timing out independently.
-		httpClient: &http.Client{Timeout: 18 * time.Second},
-		baseURL:    "https://gatewayapi.telegram.org",
+		// Observed in production (a Hugging Face Space host): the TCP
+		// connection to gatewayapi.telegram.org succeeds but the TLS
+		// handshake itself is slow — a longer overall http.Client.Timeout
+		// alone didn't help, because http.DefaultTransport's own
+		// TLSHandshakeTimeout defaults to 10s and aborts first ("net/http:
+		// TLS handshake timeout"), well before any larger Client.Timeout
+		// gets a chance to matter. Using an explicit Transport with a
+		// generous TLSHandshakeTimeout fixes that; the outer Client.Timeout
+		// still bounds the whole request. Both are kept under the mobile
+		// app's receiveTimeout (AppConstants.receiveTimeout, raised
+		// alongside this change) so a slow-but-successful call still
+		// reaches the client instead of both sides timing out independently.
+		httpClient: &http.Client{
+			Timeout: 25 * time.Second,
+			Transport: &http.Transport{
+				TLSHandshakeTimeout: 20 * time.Second,
+			},
+		},
+		baseURL: "https://gatewayapi.telegram.org",
 	}
 }
 
