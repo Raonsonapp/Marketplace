@@ -1767,6 +1767,108 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Паём нависед…'**
   String get supportChatInputHint;
+
+  /// No description provided for @sellerMenuTitle.
+  String get sellerMenuTitle;
+
+  /// No description provided for @sellerIntroBody.
+  String get sellerIntroBody;
+
+  /// No description provided for @sellerIntroStart.
+  String get sellerIntroStart;
+
+  /// No description provided for @sellerStoreInfoTitle.
+  String get sellerStoreInfoTitle;
+
+  /// No description provided for @sellerStoreInfoSubtitle.
+  String get sellerStoreInfoSubtitle;
+
+  /// No description provided for @sellerUseMyLocation.
+  String get sellerUseMyLocation;
+
+  /// No description provided for @sellerLocationCaptured.
+  String get sellerLocationCaptured;
+
+  /// No description provided for @sellerWebsiteLabel.
+  String get sellerWebsiteLabel;
+
+  /// No description provided for @sellerInstagramLabel.
+  String get sellerInstagramLabel;
+
+  /// No description provided for @sellerTelegramLabel.
+  String get sellerTelegramLabel;
+
+  /// No description provided for @sellerWhatsappLabel.
+  String get sellerWhatsappLabel;
+
+  /// No description provided for @sellerStoreInfoRequiredError.
+  String get sellerStoreInfoRequiredError;
+
+  /// No description provided for @sellerDocumentsTitle.
+  String get sellerDocumentsTitle;
+
+  /// No description provided for @sellerBirthDateLabel.
+  String get sellerBirthDateLabel;
+
+  /// No description provided for @sellerBirthDateNotSet.
+  String get sellerBirthDateNotSet;
+
+  /// No description provided for @sellerPassportFrontLabel.
+  String get sellerPassportFrontLabel;
+
+  /// No description provided for @sellerPassportBackLabel.
+  String get sellerPassportBackLabel;
+
+  /// No description provided for @sellerSelfieWithPassportLabel.
+  String get sellerSelfieWithPassportLabel;
+
+  /// No description provided for @sellerCapturePhoto.
+  String get sellerCapturePhoto;
+
+  /// No description provided for @sellerRetakePhoto.
+  String get sellerRetakePhoto;
+
+  /// No description provided for @sellerDocumentsIncompleteError.
+  String get sellerDocumentsIncompleteError;
+
+  /// No description provided for @sellerFaceTitle.
+  String get sellerFaceTitle;
+
+  /// No description provided for @sellerFaceInstructionLookNormal.
+  String get sellerFaceInstructionLookNormal;
+
+  /// No description provided for @sellerFaceInstructionBlink.
+  String get sellerFaceInstructionBlink;
+
+  /// No description provided for @sellerFaceCapture.
+  String get sellerFaceCapture;
+
+  /// No description provided for @sellerFaceProcessing.
+  String get sellerFaceProcessing;
+
+  /// No description provided for @sellerFaceFailed.
+  String get sellerFaceFailed;
+
+  /// No description provided for @sellerSubmitApplication.
+  String get sellerSubmitApplication;
+
+  /// No description provided for @sellerUnderageError.
+  String get sellerUnderageError;
+
+  /// No description provided for @sellerApplicationExistsError.
+  String get sellerApplicationExistsError;
+
+  /// No description provided for @sellerStatusTitle.
+  String get sellerStatusTitle;
+
+  /// No description provided for @sellerStatusPending.
+  String get sellerStatusPending;
+
+  /// No description provided for @sellerStatusApproved.
+  String get sellerStatusApproved;
+
+  /// No description provided for @sellerStatusRejected.
+  String get sellerStatusRejected;
 }
 
 class _AppLocalizationsDelegate

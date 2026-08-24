@@ -891,4 +891,106 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get supportChatInputHint => 'Паём нависед…';
+
+  @override
+  String get sellerMenuTitle => 'Шудан ба фурӯшанда';
+
+  @override
+  String get sellerIntroBody => 'Дар YouShop фурӯш кунед: ҷойгиршавии GPS-и мағозаатонро ё истиноде, ки харидорон шуморо ёбанд, гузоред, шиносномаатонро тасдиқ кунед ва бо санҷиши зуди чеҳра шахсияти худро исбот кунед — ҳама ройгон, дар дохили барнома.';
+
+  @override
+  String get sellerIntroStart => 'Оғоз кардан';
+
+  @override
+  String get sellerStoreInfoTitle => 'Мағозаи шумо';
+
+  @override
+  String get sellerStoreInfoSubtitle => 'Ҷойгиршавии GPS-и мағозаатонро гузоред ё — агар мағозаи воқеӣ надошта бошед — истиноди вебсайт, Instagram, Telegram ё WhatsApp-и худро.';
+
+  @override
+  String get sellerUseMyLocation => 'Ҷойгиршавии ҳозираи худро истифода баред';
+
+  @override
+  String get sellerLocationCaptured => 'Ҷойгиршавӣ нигоҳ дошта шуд';
+
+  @override
+  String get sellerWebsiteLabel => 'Вебсайт';
+
+  @override
+  String get sellerInstagramLabel => 'Instagram';
+
+  @override
+  String get sellerTelegramLabel => 'Telegram';
+
+  @override
+  String get sellerWhatsappLabel => 'WhatsApp';
+
+  @override
+  String get sellerStoreInfoRequiredError => 'Ҷойгиршавии мағоза ё ҳадди ақал як истиноди тамос гузоред';
+
+  @override
+  String get sellerDocumentsTitle => 'Ҳуҷҷатҳо';
+
+  @override
+  String get sellerBirthDateLabel => 'Санаи таваллуд';
+
+  @override
+  String get sellerBirthDateNotSet => 'Гузошта нашудааст';
+
+  @override
+  String get sellerPassportFrontLabel => 'Шиноснома — саҳифаи пеш';
+
+  @override
+  String get sellerPassportBackLabel => 'Шиноснома — саҳифаи пас';
+
+  @override
+  String get sellerSelfieWithPassportLabel => 'Селфӣ бо шиноснома дар даст';
+
+  @override
+  String get sellerCapturePhoto => 'Акс гирифтан';
+
+  @override
+  String get sellerRetakePhoto => 'Аз нав гирифтан';
+
+  @override
+  String get sellerDocumentsIncompleteError => 'Лутфан ҳар се аксро ва санаи таваллудро гузоред';
+
+  @override
+  String get sellerFaceTitle => 'Санҷиши чеҳра';
+
+  @override
+  String get sellerFaceInstructionLookNormal => 'Ба камера оромона нигоҳ кунед, баъд тугмаи аксбардориро пахш кунед';
+
+  @override
+  String get sellerFaceInstructionBlink => 'Акнун чашмакашед ва боз тугмаро пахш кунед';
+
+  @override
+  String get sellerFaceCapture => 'Аксбардорӣ';
+
+  @override
+  String get sellerFaceProcessing => 'Тафтиш шуда истодааст…';
+
+  @override
+  String get sellerFaceFailed => 'Тасдиқ карда натавонистем, ки ин шумоед. Мутмаин шавед, ки чеҳраатон хуб равшан ва пурра дида мешавад, ва аз нав кӯшиш кунед.';
+
+  @override
+  String get sellerSubmitApplication => 'Дархостро фиристодан';
+
+  @override
+  String get sellerUnderageError => 'Синну соли фурушанда бояд на камтар аз 18 сол бошад';
+
+  @override
+  String get sellerApplicationExistsError => 'Шумо аллакай дархости фурушандашавӣ фиристодаед';
+
+  @override
+  String get sellerStatusTitle => 'Дархости фурушандашавӣ';
+
+  @override
+  String get sellerStatusPending => 'Дархости шумо дар ҳоли баррасӣ аст. Пас аз тасдиқ ба шумо хабар медиҳем.';
+
+  @override
+  String get sellerStatusApproved => 'Табрик! Шумо ҳоло фурӯшанда дар YouShop ҳастед.';
+
+  @override
+  String get sellerStatusRejected => 'Дархости шумо тасдиқ карда нашуд.';
 }

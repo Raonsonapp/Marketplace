@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>YouShop-ро барои сканеркунии рамзи маҳсулот ба камера дастрасӣ лозим аст.</string>
+	<string>YouShop-ро барои сканеркунии рамзи маҳсулот, аксбардории ҳуҷҷатҳо ва тасдиқи чеҳра ҳангоми регистратсияи фурушанда ба камера дастрасӣ лозим аст.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>YouShop-ро барои нишон додани мағозаҳои наздик ба ҷойгиршавии шумо дастрасӣ лозим аст.</string>
 	<key>UIApplicationSceneManifest</key>

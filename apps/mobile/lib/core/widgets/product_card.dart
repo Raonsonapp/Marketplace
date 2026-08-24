@@ -5,6 +5,7 @@ import '../models/product.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../utils/currency_formatter.dart';
+import 'rating_stars.dart';
 
 /// The single product-card component used by every product grid/row in the
 /// app (home sections, catalog, search results, favorites, "buy again").
@@ -98,6 +99,20 @@ class ProductCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: theme.textTheme.bodyMedium,
           ),
+          if (product.ratingCount > 0) ...[
+            const SizedBox(height: AppSpacing.xxs),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RatingStars(rating: product.ratingAvg, size: 12),
+                const SizedBox(width: AppSpacing.xxs),
+                Text(
+                  '${product.ratingAvg.toStringAsFixed(1)} (${product.ratingCount})',
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: AppSpacing.xxs),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,

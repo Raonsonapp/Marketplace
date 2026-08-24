@@ -26,6 +26,10 @@ import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/settings_screen.dart';
 import '../../features/promotions/presentation/promotions_screen.dart';
 import '../../features/reviews/presentation/write_review_screen.dart';
+import '../../features/seller/presentation/become_seller_screen.dart';
+import '../../features/seller/presentation/seller_documents_screen.dart';
+import '../../features/seller/presentation/seller_face_liveness_screen.dart';
+import '../../features/seller/presentation/seller_store_info_screen.dart';
 import '../../features/search/presentation/search_screen.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 import '../../features/stores/presentation/stores_map_screen.dart';
@@ -202,6 +206,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.profileSettings,
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.becomeSeller,
+        builder: (context, state) => const BecomeSellerScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.becomeSellerStoreInfo,
+        builder: (context, state) => const SellerStoreInfoScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.becomeSellerDocuments,
+        builder: (context, state) => const SellerDocumentsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.becomeSellerFace,
+        builder: (context, state) => const SellerFaceLivenessScreen(),
       ),
       GoRoute(
         path: RoutePaths.loyalty,

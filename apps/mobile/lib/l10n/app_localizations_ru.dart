@@ -881,4 +881,106 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get supportChatInputHint => 'Напишите сообщение…';
+
+  @override
+  String get sellerMenuTitle => 'Стать продавцом';
+
+  @override
+  String get sellerIntroBody => 'Продавайте на YouShop: укажите местоположение магазина или ссылку, по которой вас найдут покупатели, подтвердите паспорт и личность через быструю проверку лица — всё бесплатно, прямо в приложении.';
+
+  @override
+  String get sellerIntroStart => 'Начать';
+
+  @override
+  String get sellerStoreInfoTitle => 'Ваш магазин';
+
+  @override
+  String get sellerStoreInfoSubtitle => 'Укажите GPS-координаты вашего магазина или — если у вас нет физического магазина — ссылку на сайт, Instagram, Telegram или WhatsApp.';
+
+  @override
+  String get sellerUseMyLocation => 'Использовать текущее местоположение';
+
+  @override
+  String get sellerLocationCaptured => 'Местоположение сохранено';
+
+  @override
+  String get sellerWebsiteLabel => 'Веб-сайт';
+
+  @override
+  String get sellerInstagramLabel => 'Instagram';
+
+  @override
+  String get sellerTelegramLabel => 'Telegram';
+
+  @override
+  String get sellerWhatsappLabel => 'WhatsApp';
+
+  @override
+  String get sellerStoreInfoRequiredError => 'Укажите местоположение магазина или хотя бы одну контактную ссылку';
+
+  @override
+  String get sellerDocumentsTitle => 'Документы';
+
+  @override
+  String get sellerBirthDateLabel => 'Дата рождения';
+
+  @override
+  String get sellerBirthDateNotSet => 'Не указана';
+
+  @override
+  String get sellerPassportFrontLabel => 'Паспорт — лицевая страница';
+
+  @override
+  String get sellerPassportBackLabel => 'Паспорт — обратная страница';
+
+  @override
+  String get sellerSelfieWithPassportLabel => 'Селфи с паспортом в руках';
+
+  @override
+  String get sellerCapturePhoto => 'Сделать фото';
+
+  @override
+  String get sellerRetakePhoto => 'Переснять';
+
+  @override
+  String get sellerDocumentsIncompleteError => 'Добавьте все три фото и дату рождения';
+
+  @override
+  String get sellerFaceTitle => 'Проверка лица';
+
+  @override
+  String get sellerFaceInstructionLookNormal => 'Смотрите в камеру спокойно, затем нажмите «Снять»';
+
+  @override
+  String get sellerFaceInstructionBlink => 'Теперь моргните и снова нажмите «Снять»';
+
+  @override
+  String get sellerFaceCapture => 'Снять';
+
+  @override
+  String get sellerFaceProcessing => 'Проверяем…';
+
+  @override
+  String get sellerFaceFailed => 'Не удалось подтвердить, что это вы. Убедитесь, что лицо хорошо освещено и полностью видно, и попробуйте снова.';
+
+  @override
+  String get sellerSubmitApplication => 'Отправить заявку';
+
+  @override
+  String get sellerUnderageError => 'Продавцу должно быть не менее 18 лет';
+
+  @override
+  String get sellerApplicationExistsError => 'Вы уже подали заявку на статус продавца';
+
+  @override
+  String get sellerStatusTitle => 'Заявка продавца';
+
+  @override
+  String get sellerStatusPending => 'Ваша заявка на рассмотрении. Мы сообщим вам, когда она будет одобрена.';
+
+  @override
+  String get sellerStatusApproved => 'Поздравляем! Теперь вы продавец на YouShop.';
+
+  @override
+  String get sellerStatusRejected => 'Ваша заявка не была одобрена.';
 }

@@ -94,6 +94,11 @@ class ProfileScreen extends ConsumerWidget {
               ),
               const _LoyaltyMenuTile(),
               _MenuTile(
+                icon: LucideIcons.store,
+                label: l10n.sellerMenuTitle,
+                onTap: () => context.push(RoutePaths.becomeSeller),
+              ),
+              _MenuTile(
                 icon: LucideIcons.badgePercent,
                 label: l10n.promotionsTitle,
                 onTap: () => context.push(RoutePaths.promotions),

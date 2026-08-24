@@ -13,6 +13,7 @@ import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/error_state_view.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/product_card.dart';
+import '../../../core/widgets/rating_stars.dart';
 import '../../../core/widgets/skeleton_loader.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../cart/application/cart_controller.dart';
@@ -76,6 +77,20 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Text(product.name, style: Theme.of(context).textTheme.headlineSmall),
+                      if (product.ratingCount > 0) ...[
+                        const SizedBox(height: AppSpacing.xxs),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            RatingStars(rating: product.ratingAvg, size: 16),
+                            const SizedBox(width: AppSpacing.xs),
+                            Text(
+                              '${product.ratingAvg.toStringAsFixed(1)} (${product.ratingCount})',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
                       const SizedBox(height: AppSpacing.xs),
                       Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,

@@ -882,4 +882,106 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get supportChatInputHint => 'Write a message…';
+
+  @override
+  String get sellerMenuTitle => 'Become a seller';
+
+  @override
+  String get sellerIntroBody => 'Sell on YouShop: add your store location or a link where customers can find you, verify your passport, and confirm it\'s really you with a quick face check — all free, right in the app.';
+
+  @override
+  String get sellerIntroStart => 'Get started';
+
+  @override
+  String get sellerStoreInfoTitle => 'Your store';
+
+  @override
+  String get sellerStoreInfoSubtitle => 'Add your store\'s GPS location, or — if you don\'t have a physical store — a website, Instagram, Telegram, or WhatsApp link.';
+
+  @override
+  String get sellerUseMyLocation => 'Use my current location';
+
+  @override
+  String get sellerLocationCaptured => 'Location saved';
+
+  @override
+  String get sellerWebsiteLabel => 'Website';
+
+  @override
+  String get sellerInstagramLabel => 'Instagram';
+
+  @override
+  String get sellerTelegramLabel => 'Telegram';
+
+  @override
+  String get sellerWhatsappLabel => 'WhatsApp';
+
+  @override
+  String get sellerStoreInfoRequiredError => 'Add your store\'s location or at least one contact link';
+
+  @override
+  String get sellerDocumentsTitle => 'Documents';
+
+  @override
+  String get sellerBirthDateLabel => 'Date of birth';
+
+  @override
+  String get sellerBirthDateNotSet => 'Not set';
+
+  @override
+  String get sellerPassportFrontLabel => 'Passport — front page';
+
+  @override
+  String get sellerPassportBackLabel => 'Passport — back page';
+
+  @override
+  String get sellerSelfieWithPassportLabel => 'Selfie holding your passport';
+
+  @override
+  String get sellerCapturePhoto => 'Take photo';
+
+  @override
+  String get sellerRetakePhoto => 'Retake';
+
+  @override
+  String get sellerDocumentsIncompleteError => 'Please add all three photos and your date of birth';
+
+  @override
+  String get sellerFaceTitle => 'Face check';
+
+  @override
+  String get sellerFaceInstructionLookNormal => 'Look at the camera normally, then tap capture';
+
+  @override
+  String get sellerFaceInstructionBlink => 'Now blink, then tap capture again';
+
+  @override
+  String get sellerFaceCapture => 'Capture';
+
+  @override
+  String get sellerFaceProcessing => 'Checking…';
+
+  @override
+  String get sellerFaceFailed => 'We couldn\'t confirm it\'s you. Make sure your face is well-lit and fully visible, then try again.';
+
+  @override
+  String get sellerSubmitApplication => 'Submit application';
+
+  @override
+  String get sellerUnderageError => 'You must be at least 18 years old to become a seller';
+
+  @override
+  String get sellerApplicationExistsError => 'You\'ve already submitted a seller application';
+
+  @override
+  String get sellerStatusTitle => 'Seller application';
+
+  @override
+  String get sellerStatusPending => 'Your application is being reviewed. We\'ll notify you once it\'s approved.';
+
+  @override
+  String get sellerStatusApproved => 'Congratulations! You\'re now a seller on YouShop.';
+
+  @override
+  String get sellerStatusRejected => 'Your application was not approved.';
 }

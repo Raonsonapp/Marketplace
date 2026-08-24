@@ -58,6 +58,13 @@ dependencies:
   flutter_map: ^8.3.1
   latlong2: ^0.10.1
 
+  # Seller-application KYC step (become-a-seller wizard): passport photo
+  # capture, live selfie capture, and on-device face detection/liveness —
+  # all free/offline, no paid identity-verification vendor.
+  image_picker: ^1.1.2
+  camera: ^0.11.0+2
+  google_mlkit_face_detection: ^0.13.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

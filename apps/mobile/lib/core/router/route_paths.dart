@@ -35,6 +35,11 @@ class RoutePaths {
   static const supportChat = '/support/:conversationId';
   static const writeReview = '/reviews/write';
 
+  static const becomeSeller = '/profile/become-seller';
+  static const becomeSellerStoreInfo = '/profile/become-seller/store';
+  static const becomeSellerDocuments = '/profile/become-seller/documents';
+  static const becomeSellerFace = '/profile/become-seller/face';
+
   static String categoryProductsPath(String categoryId) => '/catalog/category/$categoryId';
   static String productDetailPath(String productId) => '/product/$productId';
   static String orderDetailPath(String orderId) => '/orders/$orderId';
