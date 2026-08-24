@@ -46,7 +46,14 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
   @override
   OtpState build(OtpSessionKey arg) {
     ref.onDispose(() => _timer?.cancel());
-    _startCooldown(AppConstants.defaultOtpCooldownSeconds);
+    // Must not call _startCooldown here: it reads `state` (via copyWith) to
+    // arm the timer, but Riverpod's `state` getter throws "Tried to read
+    // the state of an uninitialized provider" until build() has actually
+    // returned a value — this was a 100%-reproducible crash on every visit
+    // to the OTP screen. Set the initial cooldown directly in the returned
+    // OtpState instead; _timer only ever reads `state` from its callback,
+    // which never fires until after build() has returned.
+    _timer = Timer.periodic(const Duration(seconds: 1), _onCooldownTick);
     return OtpState(phone: arg.phone, cooldownSeconds: AppConstants.defaultOtpCooldownSeconds);
   }
 
@@ -54,18 +61,20 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
     state = state.copyWith(code: value, error: null);
   }
 
+  void _onCooldownTick(Timer timer) {
+    final remaining = state.cooldownSeconds - 1;
+    if (remaining <= 0) {
+      timer.cancel();
+      state = state.copyWith(cooldownSeconds: 0);
+    } else {
+      state = state.copyWith(cooldownSeconds: remaining);
+    }
+  }
+
   void _startCooldown(int seconds) {
     _timer?.cancel();
     state = state.copyWith(cooldownSeconds: seconds);
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final remaining = state.cooldownSeconds - 1;
-      if (remaining <= 0) {
-        timer.cancel();
-        state = state.copyWith(cooldownSeconds: 0);
-      } else {
-        state = state.copyWith(cooldownSeconds: remaining);
-      }
-    });
+    _timer = Timer.periodic(const Duration(seconds: 1), _onCooldownTick);
   }
 
   Future<void> resend() async {
