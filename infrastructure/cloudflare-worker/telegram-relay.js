@@ -28,6 +28,32 @@ const TELEGRAM_GATEWAY_HOST = "https://gatewayapi.telegram.org";
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+
+    // No secret needed — a read-only connectivity probe you can open
+    // directly in a phone browser (no app, no backend, no OTP rate limit)
+    // to see whether *Cloudflare itself* can reach Telegram, independent of
+    // whether the relay call from the backend is set up correctly.
+    if (url.pathname === "/__debug") {
+      const start = Date.now();
+      const controller = new AbortController();
+      const timeoutID = setTimeout(() => controller.abort(), 8000);
+      try {
+        const r = await fetch(TELEGRAM_GATEWAY_HOST + "/", { signal: controller.signal });
+        clearTimeout(timeoutID);
+        return new Response(
+          JSON.stringify({ ok: true, status: r.status, ms: Date.now() - start }),
+          { headers: { "Content-Type": "application/json" } },
+        );
+      } catch (err) {
+        clearTimeout(timeoutID);
+        return new Response(
+          JSON.stringify({ ok: false, error: String(err), ms: Date.now() - start }),
+          { status: 502, headers: { "Content-Type": "application/json" } },
+        );
+      }
+    }
+
     if (!env.RELAY_SECRET) {
       return new Response("relay misconfigured: RELAY_SECRET not set", { status: 500 });
     }
@@ -35,7 +61,6 @@ export default {
       return new Response("unauthorized", { status: 401 });
     }
 
-    const url = new URL(request.url);
     const target = TELEGRAM_GATEWAY_HOST + url.pathname + url.search;
 
     // A bounded timeout turns a hang into a clean JSON error instead of the
