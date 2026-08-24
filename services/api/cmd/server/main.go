@@ -179,6 +179,7 @@ func run() error {
 		SupportWS:    httpapi.NewSupportWSHandler(hub, supportSvc, tokenMgr),
 		Upload:       httpapi.NewUploadHandler(uploadSvc),
 		SellerApp:    httpapi.NewSellerApplicationHandler(sellerAppSvc),
+		NetCheck:     httpapi.NewNetCheckHandler(),
 	}
 
 	router := httpserver.NewRouter(handlers, tokenMgr, limiter, cfg.CORSOrigins)

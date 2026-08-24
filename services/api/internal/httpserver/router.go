@@ -26,6 +26,9 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 	r.Use(middleware.Language())
 
 	r.GET("/healthz", h.Health.Check)
+	if h.NetCheck != nil {
+		r.GET("/debug/netcheck", h.NetCheck.Check)
+	}
 	if h.OrderWS != nil {
 		r.GET("/ws/orders/:id", h.OrderWS.Serve)
 	}
