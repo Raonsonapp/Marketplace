@@ -46,8 +46,11 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     final state = ref.watch(provider);
 
     ref.listen(provider, (previous, next) {
+      // Account registration only ever needs the phone number — no forced
+      // follow-up step. Email is collected separately, only from users who
+      // choose to become a seller (see features/seller/presentation).
       if (next.verified) {
-        context.go(next.isNewUser ? RoutePaths.completeRegistration : RoutePaths.home);
+        context.go(RoutePaths.home);
       }
     });
 

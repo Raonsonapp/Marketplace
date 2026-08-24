@@ -9,12 +9,15 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/error_state_view.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../profile/application/profile_controller.dart';
 import '../application/seller_onboarding_controller.dart';
 
-/// Step 1 of the become-a-seller wizard: store GPS location, or — when
-/// there's no physical store — at least one contact link. Neither is
-/// individually required; the user just needs one of the two (enforced
-/// both here and, again, by the backend).
+/// Step 1 of the become-a-seller wizard: an email address — sellers need
+/// one on file in addition to their phone number, unlike regular account
+/// registration, which stays phone-only — plus store GPS location, or,
+/// when there's no physical store, at least one contact link. Neither the
+/// GPS nor the contact links are individually required; the user just
+/// needs one of the two (enforced both here and, again, by the backend).
 class SellerStoreInfoScreen extends ConsumerStatefulWidget {
   const SellerStoreInfoScreen({super.key});
 
@@ -23,14 +26,25 @@ class SellerStoreInfoScreen extends ConsumerStatefulWidget {
 }
 
 class _SellerStoreInfoScreenState extends ConsumerState<SellerStoreInfoScreen> {
+  final _email = TextEditingController();
   final _website = TextEditingController();
   final _instagram = TextEditingController();
   final _telegram = TextEditingController();
   final _whatsapp = TextEditingController();
-  bool _showError = false;
+  bool _showStoreInfoError = false;
+  bool _showEmailError = false;
+
+  static final _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+
+  @override
+  void initState() {
+    super.initState();
+    _email.text = ref.read(profileControllerProvider).valueOrNull?.email ?? '';
+  }
 
   @override
   void dispose() {
+    _email.dispose();
     _website.dispose();
     _instagram.dispose();
     _telegram.dispose();
@@ -38,7 +52,14 @@ class _SellerStoreInfoScreenState extends ConsumerState<SellerStoreInfoScreen> {
     super.dispose();
   }
 
-  void _next() {
+  Future<void> _next() async {
+    final email = _email.text.trim();
+    if (!_emailPattern.hasMatch(email)) {
+      setState(() => _showEmailError = true);
+      return;
+    }
+    setState(() => _showEmailError = false);
+
     final controller = ref.read(sellerOnboardingControllerProvider.notifier);
     controller.setSocialLinks(
       website: _website.text.trim().isEmpty ? null : _website.text.trim(),
@@ -47,10 +68,14 @@ class _SellerStoreInfoScreenState extends ConsumerState<SellerStoreInfoScreen> {
       whatsapp: _whatsapp.text.trim().isEmpty ? null : _whatsapp.text.trim(),
     );
     if (!ref.read(sellerOnboardingControllerProvider).hasStoreInfo) {
-      setState(() => _showError = true);
+      setState(() => _showStoreInfoError = true);
       return;
     }
-    setState(() => _showError = false);
+    setState(() => _showStoreInfoError = false);
+
+    await ref.read(profileControllerProvider.notifier).updateProfile(email: email);
+    if (!mounted) return;
+    if (ref.read(profileControllerProvider).hasError) return;
     context.push(RoutePaths.becomeSellerDocuments);
   }
 
@@ -58,6 +83,7 @@ class _SellerStoreInfoScreenState extends ConsumerState<SellerStoreInfoScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(sellerOnboardingControllerProvider);
+    final profileState = ref.watch(profileControllerProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.sellerStoreInfoTitle)),
@@ -67,6 +93,22 @@ class _SellerStoreInfoScreenState extends ConsumerState<SellerStoreInfoScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              TextField(
+                controller: _email,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: l10n.authEmailHint,
+                  errorText: _showEmailError ? l10n.authEmailInvalid : null,
+                ),
+              ),
+              if (profileState.hasError) ...[
+                const SizedBox(height: AppSpacing.sm),
+                Text(
+                  ErrorStateView.messageFor(context, profileState.error!),
+                  style: const TextStyle(color: AppColors.error),
+                ),
+              ],
+              const SizedBox(height: AppSpacing.lg),
               Text(l10n.sellerStoreInfoSubtitle, style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: AppSpacing.lg),
               OutlinedButton.icon(
@@ -115,7 +157,7 @@ class _SellerStoreInfoScreenState extends ConsumerState<SellerStoreInfoScreen> {
                 decoration: InputDecoration(labelText: l10n.sellerWhatsappLabel),
                 keyboardType: TextInputType.phone,
               ),
-              if (_showError) ...[
+              if (_showStoreInfoError) ...[
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   l10n.sellerStoreInfoRequiredError,
@@ -123,7 +165,11 @@ class _SellerStoreInfoScreenState extends ConsumerState<SellerStoreInfoScreen> {
                 ),
               ],
               const SizedBox(height: AppSpacing.xl),
-              PrimaryButton(label: l10n.commonContinue, onPressed: _next),
+              PrimaryButton(
+                label: l10n.commonContinue,
+                isLoading: profileState.isLoading,
+                onPressed: _next,
+              ),
             ],
           ),
         ),
