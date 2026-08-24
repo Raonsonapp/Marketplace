@@ -10,6 +10,13 @@ import (
 	"time"
 )
 
+// defaultGatewayBaseURL is the real Telegram Gateway API. Some hosts
+// (observed: Hugging Face Spaces) cannot complete a TLS handshake to it at
+// all, in which case NewTelegramGatewaySender should be given a Cloudflare
+// Worker relay URL instead (see docs/TELEGRAM_RELAY_SETUP.md) — the request
+// path/method/body are unchanged, only the host differs.
+const defaultGatewayBaseURL = "https://gatewayapi.telegram.org"
+
 // TelegramGatewaySender delivers OTP codes via Telegram Gateway
 // (https://gateway.telegram.org), Telegram's official verification-message
 // API. It is the recommended free SMS provider for TajikShop: delivery to a
@@ -24,36 +31,51 @@ import (
 // a delivery channel here, just like an SMS gateway would be, which is why
 // this implements the same Sender interface as ConsoleSender.
 type TelegramGatewaySender struct {
-	token      string
-	httpClient *http.Client
-	baseURL    string // overridable in tests; defaults to the real Gateway API
+	token       string
+	proxySecret string // sent as X-Relay-Secret when relaying through a Worker; empty when calling Telegram directly
+	httpClient  *http.Client
+	baseURL     string // overridable in tests; defaults to the real Gateway API
 }
 
 // NewTelegramGatewaySender builds a sender using an API token from
 // https://gateway.telegram.org (Account -> API access). Keep it out of
 // version control; it belongs in TELEGRAM_GATEWAY_TOKEN.
-func NewTelegramGatewaySender(token string) *TelegramGatewaySender {
+//
+// proxyURL, when non-empty, is a Cloudflare Worker relay URL
+// (docs/TELEGRAM_RELAY_SETUP.md) to send requests to instead of Telegram
+// directly — some hosts (observed: Hugging Face Spaces) cannot complete a
+// TLS handshake to Telegram's own servers at all, on every attempt, which no
+// amount of client-side timeout tuning fixes since the network path itself
+// is blocked; Cloudflare's edge network reaches Telegram fine. proxySecret
+// is sent as X-Relay-Secret so the relay only accepts requests from this
+// backend. Both empty means "call Telegram directly", i.e. previous
+// behavior.
+func NewTelegramGatewaySender(token, proxyURL, proxySecret string) *TelegramGatewaySender {
+	baseURL := defaultGatewayBaseURL
+	if proxyURL != "" {
+		baseURL = proxyURL
+	}
 	return &TelegramGatewaySender{
-		token: token,
+		token:       token,
+		proxySecret: proxySecret,
 		// Observed in production (a Hugging Face Space host): the TCP
 		// connection to gatewayapi.telegram.org succeeds but the TLS
-		// handshake itself is slow — a longer overall http.Client.Timeout
-		// alone didn't help, because http.DefaultTransport's own
-		// TLSHandshakeTimeout defaults to 10s and aborts first ("net/http:
-		// TLS handshake timeout"), well before any larger Client.Timeout
-		// gets a chance to matter. Using an explicit Transport with a
-		// generous TLSHandshakeTimeout fixes that; the outer Client.Timeout
-		// still bounds the whole request. Both are kept under the mobile
-		// app's receiveTimeout (AppConstants.receiveTimeout, raised
-		// alongside this change) so a slow-but-successful call still
-		// reaches the client instead of both sides timing out independently.
+		// handshake itself never completes — a longer overall
+		// http.Client.Timeout alone didn't help, because
+		// http.DefaultTransport's own TLSHandshakeTimeout defaults to 10s
+		// and aborts first ("net/http: TLS handshake timeout"), and raising
+		// that ceiling to 20s didn't help either (still times out at the
+		// new ceiling, every attempt, on a fresh unthrottled number — a
+		// network-level block, not slowness). These generous values are
+		// kept as a safety margin for the proxy path too, and stay under
+		// the mobile app's receiveTimeout (AppConstants.receiveTimeout).
 		httpClient: &http.Client{
 			Timeout: 25 * time.Second,
 			Transport: &http.Transport{
 				TLSHandshakeTimeout: 20 * time.Second,
 			},
 		},
-		baseURL: "https://gatewayapi.telegram.org",
+		baseURL: baseURL,
 	}
 }
 
@@ -91,6 +113,9 @@ func (t *TelegramGatewaySender) Send(ctx context.Context, phone, code string) er
 	}
 	req.Header.Set("Authorization", "Bearer "+t.token)
 	req.Header.Set("Content-Type", "application/json")
+	if t.proxySecret != "" {
+		req.Header.Set("X-Relay-Secret", t.proxySecret)
+	}
 
 	resp, err := t.httpClient.Do(req)
 	if err != nil {

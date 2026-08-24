@@ -24,7 +24,7 @@ func TestTelegramGatewaySender_Success(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	sender := NewTelegramGatewaySender("test-token")
+	sender := NewTelegramGatewaySender("test-token", "", "")
 	sender.baseURL = srv.URL
 
 	if err := sender.Send(context.Background(), "+992901234567", "042817"); err != nil {
@@ -38,7 +38,7 @@ func TestTelegramGatewaySender_Declined(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	sender := NewTelegramGatewaySender("test-token")
+	sender := NewTelegramGatewaySender("test-token", "", "")
 	sender.baseURL = srv.URL
 
 	if err := sender.Send(context.Background(), "not-a-phone", "042817"); err == nil {

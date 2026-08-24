@@ -67,6 +67,16 @@ generated, bcrypt-hashed, and verified entirely by TajikShop's own
 `OTPManager` (see `docs/SECURITY.md`); Telegram is purely the delivery
 channel, exactly like an SMS gateway would be.
 
+**If the backend host can't reach Telegram at all:** some hosts (observed:
+Hugging Face Spaces) fail every single request to
+`gatewayapi.telegram.org`/`api.telegram.org` with a TLS handshake timeout —
+a network-level block on that host, not something fixable by raising
+timeouts. If the server log shows `net/http: TLS handshake timeout` (or
+`TLS handshake failure`) no matter how long the configured timeout is, see
+`docs/TELEGRAM_RELAY_SETUP.md` — a free Cloudflare Worker relay that routes
+around it in about five minutes, no code changes needed on top of what's
+already here.
+
 ## 4. Firebase Phone Auth — alternative, client-driven
 
 A different shape of integration: instead of TajikShop generating the code,

@@ -99,8 +99,12 @@ func run() error {
 		go telegrambot.NewPoller(cfg.TelegramBotToken, telegramLinks).Run(ctx)
 		log.Printf("otp: delivering codes via Telegram bot @%s", cfg.TelegramBotUsername)
 	case cfg.TelegramGatewayToken != "":
-		otpSender = otp.NewTelegramGatewaySender(cfg.TelegramGatewayToken)
-		log.Printf("otp: delivering codes via Telegram Gateway")
+		otpSender = otp.NewTelegramGatewaySender(cfg.TelegramGatewayToken, cfg.TelegramGatewayProxyURL, cfg.TelegramGatewayProxySecret)
+		if cfg.TelegramGatewayProxyURL != "" {
+			log.Printf("otp: delivering codes via Telegram Gateway (relayed through %s)", cfg.TelegramGatewayProxyURL)
+		} else {
+			log.Printf("otp: delivering codes via Telegram Gateway")
+		}
 	default:
 		log.Printf("otp: no Telegram provider configured, logging OTP codes to console (dev mode)")
 	}

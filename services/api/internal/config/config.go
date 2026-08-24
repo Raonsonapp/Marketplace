@@ -57,6 +57,20 @@ type Config struct {
 	// codes are logged via ConsoleSender (local dev) as before.
 	TelegramGatewayToken string
 
+	// TelegramGatewayProxyURL/TelegramGatewayProxySecret route Telegram
+	// Gateway calls through a Cloudflare Worker relay instead of hitting
+	// gatewayapi.telegram.org directly — see docs/TELEGRAM_RELAY_SETUP.md.
+	// Some hosts (observed: Hugging Face Spaces) cannot complete a TLS
+	// handshake to Telegram's own servers at all (times out well past any
+	// reasonable client timeout, on every attempt), which no amount of
+	// http.Client tuning fixes since the network path itself is the
+	// problem; Cloudflare's edge network reaches Telegram fine, so relaying
+	// through a Worker there sidesteps it without moving the whole backend.
+	// Optional: when TelegramGatewayProxyURL is empty, requests go straight
+	// to gatewayapi.telegram.org as before.
+	TelegramGatewayProxyURL    string
+	TelegramGatewayProxySecret string
+
 	// TelegramBotToken/TelegramBotUsername switch OTP delivery to a plain
 	// Telegram bot (via @BotFather) instead of Telegram Gateway — see
 	// docs/SMS_PROVIDERS.md. Takes priority over TelegramGatewayToken when
@@ -160,6 +174,8 @@ func Load() (*Config, error) {
 	cfg.MigrationsDir = getOr("MIGRATIONS_DIR", "migrations")
 	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
 	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
+	cfg.TelegramGatewayProxyURL = strings.TrimSuffix(os.Getenv("TELEGRAM_GATEWAY_PROXY_URL"), "/")
+	cfg.TelegramGatewayProxySecret = os.Getenv("TELEGRAM_GATEWAY_PROXY_SECRET")
 	cfg.TelegramBotToken = os.Getenv("TELEGRAM_BOT_TOKEN")
 	cfg.TelegramBotUsername = strings.TrimPrefix(os.Getenv("TELEGRAM_BOT_USERNAME"), "@")
 	if v := os.Getenv("TELEGRAM_ADMIN_CHAT_ID"); v != "" {
