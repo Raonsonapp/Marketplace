@@ -35,23 +35,36 @@ export default {
     // to see whether *Cloudflare itself* can reach Telegram, independent of
     // whether the relay call from the backend is set up correctly.
     if (url.pathname === "/__debug") {
-      const start = Date.now();
-      const controller = new AbortController();
-      const timeoutID = setTimeout(() => controller.abort(), 8000);
-      try {
-        const r = await fetch(TELEGRAM_GATEWAY_HOST + "/", { signal: controller.signal });
-        clearTimeout(timeoutID);
-        return new Response(
-          JSON.stringify({ ok: true, status: r.status, ms: Date.now() - start }),
-          { headers: { "Content-Type": "application/json" } },
-        );
-      } catch (err) {
-        clearTimeout(timeoutID);
-        return new Response(
-          JSON.stringify({ ok: false, error: String(err), ms: Date.now() - start }),
-          { status: 502, headers: { "Content-Type": "application/json" } },
-        );
-      }
+      const probe = async (label, path, init) => {
+        const start = Date.now();
+        const controller = new AbortController();
+        const timeoutID = setTimeout(() => controller.abort(), 8000);
+        try {
+          const r = await fetch(TELEGRAM_GATEWAY_HOST + path, { ...init, signal: controller.signal });
+          return { label, ok: true, status: r.status, ms: Date.now() - start };
+        } catch (err) {
+          return { label, ok: false, error: String(err), ms: Date.now() - start };
+        } finally {
+          clearTimeout(timeoutID);
+        }
+      };
+
+      const results = await Promise.all([
+        probe("root_get", "/", {}),
+        // No real token here — this checks whether the send endpoint itself
+        // hangs for any POST, or only ever hangs once a real, valid token is
+        // attached (which would point at Telegram tarpitting/blocking this
+        // specific token/account rather than the endpoint or network path).
+        probe("send_post_fake_auth", "/sendVerificationMessage", {
+          method: "POST",
+          headers: { Authorization: "Bearer fake-token-for-diagnostics", "Content-Type": "application/json" },
+          body: JSON.stringify({ phone_number: "+10000000000", code: "000000", ttl: 60 }),
+        }),
+      ]);
+
+      return new Response(JSON.stringify({ probes: results }), {
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     if (!env.RELAY_SECRET) {
