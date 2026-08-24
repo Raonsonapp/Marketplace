@@ -38,10 +38,11 @@ export default {
       const probe = async (label, path, init) => {
         const start = Date.now();
         const controller = new AbortController();
-        const timeoutID = setTimeout(() => controller.abort(), 8000);
+        const timeoutID = setTimeout(() => controller.abort(), 12000);
         try {
           const r = await fetch(TELEGRAM_GATEWAY_HOST + path, { ...init, signal: controller.signal });
-          return { label, ok: true, status: r.status, ms: Date.now() - start };
+          const text = await r.text();
+          return { label, ok: true, status: r.status, ms: Date.now() - start, body: text.slice(0, 500) };
         } catch (err) {
           return { label, ok: false, error: String(err), ms: Date.now() - start };
         } finally {
@@ -49,19 +50,31 @@ export default {
         }
       };
 
-      const results = await Promise.all([
+      const probes = [
         probe("root_get", "/", {}),
-        // No real token here — this checks whether the send endpoint itself
-        // hangs for any POST, or only ever hangs once a real, valid token is
-        // attached (which would point at Telegram tarpitting/blocking this
-        // specific token/account rather than the endpoint or network path).
+        // No real token here — checks whether the send endpoint itself
+        // hangs for any POST, or only once a real, valid token is attached.
         probe("send_post_fake_auth", "/sendVerificationMessage", {
           method: "POST",
           headers: { Authorization: "Bearer fake-token-for-diagnostics", "Content-Type": "application/json" },
           body: JSON.stringify({ phone_number: "+10000000000", code: "000000", ttl: 60 }),
         }),
-      ]);
+      ];
+      // Optional: set TELEGRAM_GATEWAY_TOKEN as a Worker secret (same value
+      // as the backend's) to also probe with the real token — this sends a
+      // real verification message, so it uses a fixed test number rather
+      // than accepting one from the request.
+      if (env.TELEGRAM_GATEWAY_TOKEN) {
+        probes.push(
+          probe("send_post_real_auth", "/sendVerificationMessage", {
+            method: "POST",
+            headers: { Authorization: "Bearer " + env.TELEGRAM_GATEWAY_TOKEN, "Content-Type": "application/json" },
+            body: JSON.stringify({ phone_number: "+992559994751", code: "000000", ttl: 60 }),
+          }),
+        );
+      }
 
+      const results = await Promise.all(probes);
       return new Response(JSON.stringify({ probes: results }), {
         headers: { "Content-Type": "application/json" },
       });
