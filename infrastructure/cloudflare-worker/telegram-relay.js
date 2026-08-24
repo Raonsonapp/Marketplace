@@ -38,19 +38,35 @@ export default {
     const url = new URL(request.url);
     const target = TELEGRAM_GATEWAY_HOST + url.pathname + url.search;
 
-    const upstream = await fetch(target, {
-      method: request.method,
-      headers: {
-        Authorization: request.headers.get("Authorization") || "",
-        "Content-Type": request.headers.get("Content-Type") || "application/json",
-      },
-      body: request.method === "GET" || request.method === "HEAD" ? undefined : await request.text(),
-    });
+    // A bounded timeout turns a hang into a clean JSON error instead of the
+    // Workers runtime silently killing the isolate and dropping the
+    // connection (which the Go backend sees as an opaque "EOF" with no way
+    // to tell a Cloudflare-side problem from a Telegram-side one).
+    const controller = new AbortController();
+    const timeoutID = setTimeout(() => controller.abort(), 15000);
+    try {
+      const upstream = await fetch(target, {
+        method: request.method,
+        headers: {
+          Authorization: request.headers.get("Authorization") || "",
+          "Content-Type": request.headers.get("Content-Type") || "application/json",
+        },
+        body: request.method === "GET" || request.method === "HEAD" ? undefined : await request.text(),
+        signal: controller.signal,
+      });
 
-    const body = await upstream.text();
-    return new Response(body, {
-      status: upstream.status,
-      headers: { "Content-Type": upstream.headers.get("Content-Type") || "application/json" },
-    });
+      const body = await upstream.text();
+      return new Response(body, {
+        status: upstream.status,
+        headers: { "Content-Type": upstream.headers.get("Content-Type") || "application/json" },
+      });
+    } catch (err) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "relay: upstream fetch to Telegram failed: " + String(err) }),
+        { status: 502, headers: { "Content-Type": "application/json" } },
+      );
+    } finally {
+      clearTimeout(timeoutID);
+    }
   },
 };
