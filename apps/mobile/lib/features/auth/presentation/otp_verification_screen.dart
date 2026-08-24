@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/config/app_constants.dart';
 import '../../../core/router/route_paths.dart';
@@ -67,6 +68,14 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.65),
                     ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              OutlinedButton(
+                onPressed: () => launchUrl(
+                  Uri.parse('https://t.me/${AppConstants.otpTelegramBotUsername}'),
+                  mode: LaunchMode.externalApplication,
+                ),
+                child: Text(l10n.authOpenTelegramBot),
               ),
               const SizedBox(height: AppSpacing.lg),
               TextField(

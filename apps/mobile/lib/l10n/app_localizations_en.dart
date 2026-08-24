@@ -134,7 +134,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String authOtpSubtitle(String phone) {
-    return 'We sent a 6-digit code to $phone';
+    return 'We sent the code for $phone via the Telegram bot, not SMS. Open Telegram — the message from the bot should already be there.';
   }
 
   @override

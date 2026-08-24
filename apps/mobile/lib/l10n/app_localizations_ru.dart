@@ -135,7 +135,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String authOtpSubtitle(String phone) {
-    return 'Мы отправили 6-значный код на номер $phone';
+    return 'Код подтверждения пришёл не по SMS, а через бота в Telegram для номера $phone. Откройте Telegram — сообщение от бота уже должно быть там.';
   }
 
   @override

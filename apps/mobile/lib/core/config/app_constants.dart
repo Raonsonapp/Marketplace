@@ -18,6 +18,12 @@ class AppConstants {
   /// Tajikistan phone number prefix.
   static const String phoneCountryCode = '+992';
 
+  /// The Telegram bot OTP codes are delivered from (docs/SMS_PROVIDERS.md)
+  /// — codes never arrive by SMS. Used for a direct "open the bot" link on
+  /// the OTP screen, alongside the deep link the phone-entry screen gets
+  /// from a TELEGRAM_NOT_LINKED error's details.
+  static const String otpTelegramBotUsername = 'VerificationYouShopBot';
+
   /// Connect/receive timeouts for the HTTP client.
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 20);

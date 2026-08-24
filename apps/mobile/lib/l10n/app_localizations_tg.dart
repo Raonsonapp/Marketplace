@@ -137,7 +137,7 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String authOtpSubtitle(String phone) {
-    return 'Мо рамзи 6-рақамаро ба рақами $phone фиристодем';
+    return 'Рамзи тасдиқро на бо SMS, балки тавассути бот дар Telegram барои рақами $phone фиристодем. Telegram-ро кушоед — паём аз бот бояд аллакай омада бошад.';
   }
 
   @override

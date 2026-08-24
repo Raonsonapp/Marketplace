@@ -46,7 +46,7 @@
   "authSendCode": "Получить код",
   "authOpenTelegramBot": "Открыть бота в Telegram",
   "authOtpTitle": "Введите код подтверждения",
-  "authOtpSubtitle": "Мы отправили 6-значный код на номер {phone}",
+  "authOtpSubtitle": "Код подтверждения пришёл не по SMS, а через бота в Telegram для номера {phone}. Откройте Telegram — сообщение от бота уже должно быть там.",
   "authOtpInvalid": "Неверный код. Попробуйте ещё раз.",
   "authOtpExpired": "Срок действия кода истёк. Запросите новый код.",
   "authResendCode": "Отправить код повторно",
