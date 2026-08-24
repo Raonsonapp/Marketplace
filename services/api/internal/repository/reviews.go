@@ -78,7 +78,14 @@ func (r *ReviewRepository) ListImages(ctx context.Context, q Querier, reviewIDs 
 	if len(reviewIDs) == 0 {
 		return out, nil
 	}
-	rows, err := q.Query(ctx, `SELECT review_id, url FROM review_images WHERE review_id = ANY($1::uuid[]) ORDER BY created_at`, reviewIDs)
+	// Passed as strings, not []uuid.UUID — see products.go's attachImages
+	// doc comment on why a bare []uuid.UUID breaks under this pool's
+	// simple-protocol mode.
+	ids := make([]string, len(reviewIDs))
+	for i, id := range reviewIDs {
+		ids[i] = id.String()
+	}
+	rows, err := q.Query(ctx, `SELECT review_id, url FROM review_images WHERE review_id = ANY($1::uuid[]) ORDER BY created_at`, ids)
 	if err != nil {
 		return nil, fmt.Errorf("repository: list review images: %w", err)
 	}

@@ -67,7 +67,13 @@ func (r *ProductRepository) List(ctx context.Context, q Querier, f ProductFilter
 		WHERE p.is_active = true AND p.deleted_at IS NULL`, priceExpr, oldPriceExpr, stockJoin))
 
 	if len(f.CategoryIDs) > 0 {
-		b.WriteString(fmt.Sprintf(" AND p.category_id = ANY(%s::uuid[])", arg(f.CategoryIDs)))
+		// String slice, not []uuid.UUID — see attachImages's doc comment on
+		// why a bare []uuid.UUID has no text-protocol array encode plan.
+		categoryIDs := make([]string, len(f.CategoryIDs))
+		for i, id := range f.CategoryIDs {
+			categoryIDs[i] = id.String()
+		}
+		b.WriteString(fmt.Sprintf(" AND p.category_id = ANY(%s::uuid[])", arg(categoryIDs)))
 	}
 	if f.BrandID != nil {
 		b.WriteString(fmt.Sprintf(" AND p.brand_id = %s::uuid", arg(*f.BrandID)))
@@ -166,10 +172,16 @@ func (r *ProductRepository) attachImages(ctx context.Context, q Querier, product
 	if len(products) == 0 {
 		return nil
 	}
-	ids := make([]uuid.UUID, len(products))
+	// IDs are passed as strings, not []uuid.UUID: this pool runs in
+	// simple-protocol mode (see NewPostgresPool's doc comment, worked around
+	// a Supabase pooler prepared-statement collision), and pgx's
+	// simple-protocol text encoder has no default array-literal encoding
+	// for a bare []uuid.UUID — every string in the slice does, since
+	// uuid.UUID.String() is exactly what ::uuid[] expects.
+	ids := make([]string, len(products))
 	idx := make(map[uuid.UUID]int, len(products))
 	for i, p := range products {
-		ids[i] = p.ID
+		ids[i] = p.ID.String()
 		idx[p.ID] = i
 	}
 	rows, err := q.Query(ctx, `SELECT product_id, url FROM product_images WHERE product_id = ANY($1::uuid[]) ORDER BY product_id, sort_order`, ids)

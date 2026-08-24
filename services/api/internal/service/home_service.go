@@ -125,8 +125,15 @@ func (s *HomeService) buyAgainProducts(ctx context.Context, userID uuid.UUID, li
 	}
 	// Product IDs from a user's own history are trusted input for an IN-style
 	// filter; reuse the generic list path via a temporary CategoryIDs-free
-	// filter is not applicable here, so query directly.
-	prodRows, err := s.db.Query(ctx, `SELECT id FROM products WHERE id = ANY($1::uuid[]) AND is_active = true AND deleted_at IS NULL`, ids)
+	// filter is not applicable here, so query directly. Passed as strings,
+	// not []uuid.UUID — see repository/products.go's attachImages doc
+	// comment on why a bare []uuid.UUID has no text-protocol array encode
+	// plan under this pool's simple-protocol mode.
+	idStrings := make([]string, len(ids))
+	for i, id := range ids {
+		idStrings[i] = id.String()
+	}
+	prodRows, err := s.db.Query(ctx, `SELECT id FROM products WHERE id = ANY($1::uuid[]) AND is_active = true AND deleted_at IS NULL`, idStrings)
 	if err != nil {
 		return nil, err
 	}
