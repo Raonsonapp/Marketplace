@@ -103,6 +103,9 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 
 			authed.POST("/uploads/presign", h.Upload.Presign)
 
+			authed.POST("/seller-applications", h.SellerApp.Create)
+			authed.GET("/seller-applications/me", h.SellerApp.GetMine)
+
 			authed.GET("/support/conversations", h.Support.ListConversations)
 			authed.POST("/support/conversations", h.Support.CreateConversation)
 			authed.GET("/support/conversations/:id/messages", h.Support.ListMessages)

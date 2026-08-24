@@ -80,6 +80,7 @@ func run() error {
 	notificationRepo := repository.NewNotificationRepository()
 	supportRepo := repository.NewSupportRepository()
 	telegramLinkRepo := repository.NewTelegramLinkRepository()
+	sellerAppRepo := repository.NewSellerApplicationRepository()
 
 	// ---- auth primitives ----
 	tokenMgr := auth.NewTokenManager(cfg.JWTSecret, cfg.AccessTTL)
@@ -151,6 +152,7 @@ func run() error {
 		log.Printf("storage: R2_ENDPOINT not set, uploads/presign will return UPLOADS_NOT_CONFIGURED")
 	}
 	uploadSvc := service.NewUploadService(storageClient)
+	sellerAppSvc := service.NewSellerApplicationService(pool, sellerAppRepo, userRepo, storageClient, cfg.TelegramBotToken, cfg.TelegramAdminChatID)
 
 	// ---- handlers ----
 	hub := ws.NewHub()
@@ -172,6 +174,7 @@ func run() error {
 		Support:      httpapi.NewSupportHandler(supportSvc, hub),
 		SupportWS:    httpapi.NewSupportWSHandler(hub, supportSvc, tokenMgr),
 		Upload:       httpapi.NewUploadHandler(uploadSvc),
+		SellerApp:    httpapi.NewSellerApplicationHandler(sellerAppSvc),
 	}
 
 	router := httpserver.NewRouter(handlers, tokenMgr, limiter, cfg.CORSOrigins)

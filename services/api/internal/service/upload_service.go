@@ -25,6 +25,10 @@ func NewUploadService(client *storage.Client) *UploadService {
 var allowedPurposes = map[string]bool{
 	"review-images":       true,
 	"support-attachments": true,
+	// seller-kyc: passport/selfie documents for POST /seller-applications.
+	// Callers must submit the ObjectKey (never the PublicURL) for this
+	// purpose — see storage.Client.PresignGet's doc comment.
+	"seller-kyc": true,
 }
 
 // PresignUpload validates purpose/contentType and returns a short-lived

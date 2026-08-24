@@ -89,6 +89,15 @@ type Config struct {
 	R2Bucket    string
 	R2PublicURL string
 
+	// TelegramAdminChatID, when set, receives a Telegram message (via the
+	// same bot as TelegramBotToken) for every new seller application — the
+	// free stand-in for a Gmail/admin-panel notification: open a chat with
+	// the bot, message it once, then read the numeric chat id from
+	// `https://api.telegram.org/bot<token>/getUpdates`. Optional: when
+	// empty, applications are still stored and queryable, just without a
+	// push notification.
+	TelegramAdminChatID int64
+
 	// LoyaltyEarnRatePercent is the percentage of order total credited back
 	// as TajBonus on delivery/creation (business rule, not schema-enforced).
 	LoyaltyEarnRatePercent float64
@@ -153,6 +162,11 @@ func Load() (*Config, error) {
 	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
 	cfg.TelegramBotToken = os.Getenv("TELEGRAM_BOT_TOKEN")
 	cfg.TelegramBotUsername = strings.TrimPrefix(os.Getenv("TELEGRAM_BOT_USERNAME"), "@")
+	if v := os.Getenv("TELEGRAM_ADMIN_CHAT_ID"); v != "" {
+		if cfg.TelegramAdminChatID, err = strconv.ParseInt(v, 10, 64); err != nil {
+			return nil, fmt.Errorf("config: TELEGRAM_ADMIN_CHAT_ID: %w", err)
+		}
+	}
 
 	if override := os.Getenv("R2_ENDPOINT"); override != "" {
 		// Manual override for non-Cloudflare S3-compatible endpoints, e.g.

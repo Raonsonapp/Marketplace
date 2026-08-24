@@ -108,3 +108,16 @@ func (c *Client) PresignUpload(ctx context.Context, purpose, contentType string)
 		ExpiresIn: ttl,
 	}, nil
 }
+
+// PresignGet generates a short-lived presigned GET URL for an existing
+// object. Used for private content that must never be reachable at the
+// bucket's public URL — namely seller-application KYC documents (passport
+// scans), which are real PII and must not sit at a permanent, guessable-
+// enough-given-enough-attempts public link the way review/support images do.
+func (c *Client) PresignGet(ctx context.Context, objectKey string, ttl time.Duration) (string, error) {
+	u, err := c.mc.PresignedGetObject(ctx, c.bucket, objectKey, ttl, nil)
+	if err != nil {
+		return "", fmt.Errorf("storage: presign get: %w", err)
+	}
+	return u.String(), nil
+}

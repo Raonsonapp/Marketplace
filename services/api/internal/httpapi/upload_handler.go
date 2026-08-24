@@ -35,6 +35,7 @@ func (h *UploadHandler) Presign(c *gin.Context) {
 	ok(c, dto.PresignUploadResponse{
 		UploadURL: upload.UploadURL,
 		PublicURL: upload.PublicURL,
+		ObjectKey: upload.ObjectKey,
 		ExpiresIn: int(upload.ExpiresIn.Seconds()),
 	})
 }

@@ -67,6 +67,19 @@ func (r *UserRepository) Create(ctx context.Context, q Querier, phone string) (*
 	return u, nil
 }
 
+// UpdateRole sets a user's role (e.g. promoting to 'store_manager' on
+// seller-application approval).
+func (r *UserRepository) UpdateRole(ctx context.Context, q Querier, id uuid.UUID, role string) error {
+	tag, err := q.Exec(ctx, `UPDATE users SET role = $2, updated_at = now() WHERE id = $1::uuid AND deleted_at IS NULL`, id, role)
+	if err != nil {
+		return fmt.Errorf("repository: update role: %w", err)
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
 // UpdateProfile applies a partial update (nil fields are left unchanged) to
 // full_name/email/language and returns the updated row.
 func (r *UserRepository) UpdateProfile(ctx context.Context, q Querier, id uuid.UUID, fullName, email, language *string) (*models.User, error) {
