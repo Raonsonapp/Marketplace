@@ -89,29 +89,43 @@ export default {
 
     const target = TELEGRAM_GATEWAY_HOST + url.pathname + url.search;
 
-    // A bounded timeout turns a hang into a clean JSON error instead of the
-    // Workers runtime silently killing the isolate and dropping the
-    // connection (which the Go backend sees as an opaque "EOF" with no way
-    // to tell a Cloudflare-side problem from a Telegram-side one).
+    // Real relay calls (from the Go backend) still hang to a bare "EOF"
+    // even with the fetch()-level timeout below, while an identical
+    // Worker-internal fetch (the /__debug probe) succeeds in under a
+    // second. Timestamped logs pin down which step actually stalls —
+    // receiving the request, reading its body, or the fetch to Telegram —
+    // instead of guessing. Check Cloudflare's Logs/Observability tab for
+    // these right after triggering a send-otp from the app.
+    const t0 = Date.now();
+    console.log(`relay: start ${request.method} ${url.pathname}`);
+
     const controller = new AbortController();
     const timeoutID = setTimeout(() => controller.abort(), 15000);
     try {
+      console.log(`relay: reading request body t=${Date.now() - t0}ms`);
+      const bodyText = request.method === "GET" || request.method === "HEAD" ? undefined : await request.text();
+      console.log(`relay: body read (${bodyText ? bodyText.length : 0} bytes) t=${Date.now() - t0}ms`);
+
+      console.log(`relay: fetching ${target} t=${Date.now() - t0}ms`);
       const upstream = await fetch(target, {
         method: request.method,
         headers: {
           Authorization: request.headers.get("Authorization") || "",
           "Content-Type": request.headers.get("Content-Type") || "application/json",
         },
-        body: request.method === "GET" || request.method === "HEAD" ? undefined : await request.text(),
+        body: bodyText,
         signal: controller.signal,
       });
+      console.log(`relay: upstream responded status=${upstream.status} t=${Date.now() - t0}ms`);
 
       const body = await upstream.text();
+      console.log(`relay: upstream body read t=${Date.now() - t0}ms`);
       return new Response(body, {
         status: upstream.status,
         headers: { "Content-Type": upstream.headers.get("Content-Type") || "application/json" },
       });
     } catch (err) {
+      console.log(`relay: error t=${Date.now() - t0}ms err=${String(err)}`);
       return new Response(
         JSON.stringify({ ok: false, error: "relay: upstream fetch to Telegram failed: " + String(err) }),
         { status: 502, headers: { "Content-Type": "application/json" } },
