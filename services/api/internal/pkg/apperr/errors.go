@@ -50,6 +50,7 @@ const (
 	CodeUploadsNotConfigured    Code = "UPLOADS_NOT_CONFIGURED"
 	CodeUploadContentType       Code = "UPLOAD_CONTENT_TYPE_UNSUPPORTED"
 	CodeTelegramNotLinked       Code = "TELEGRAM_NOT_LINKED"
+	CodeOTPDeliveryUnavailable  Code = "OTP_DELIVERY_UNAVAILABLE"
 	CodeEmailTaken              Code = "EMAIL_TAKEN"
 	CodeSellerUnderage          Code = "SELLER_UNDERAGE"
 	CodeSellerApplicationExists Code = "SELLER_APPLICATION_EXISTS"
@@ -95,6 +96,7 @@ var httpStatus = map[Code]int{
 	CodeUploadsNotConfigured:    http.StatusServiceUnavailable,
 	CodeUploadContentType:       http.StatusBadRequest,
 	CodeTelegramNotLinked:       http.StatusPreconditionRequired,
+	CodeOTPDeliveryUnavailable:  http.StatusServiceUnavailable,
 	CodeEmailTaken:              http.StatusConflict,
 	CodeSellerUnderage:          http.StatusForbidden,
 	CodeSellerApplicationExists: http.StatusConflict,
@@ -140,6 +142,7 @@ var messagesTJ = map[Code]string{
 	CodeUploadsNotConfigured:    "Боргузории акс ҳоло фаъол нест",
 	CodeUploadContentType:       "Танҳо акси JPEG, PNG ё WebP қабул карда мешавад",
 	CodeTelegramNotLinked:       "Барои гирифтани рамз, аввал бот-ро дар Telegram кушоед ва тугмаи Start-ро пахш кунед",
+	CodeOTPDeliveryUnavailable:  "Хидмати фиристодани рамз айни ҳол дастрас нест. Лутфан баъдтар аз нав кӯшиш кунед",
 	CodeEmailTaken:              "Ин почтаи электронӣ аллакай истифода шудааст",
 	CodeSellerUnderage:          "Синну соли фурушанда бояд на камтар аз 18 сол бошад",
 	CodeSellerApplicationExists: "Шумо аллакай дархости фурушандашавӣ фиристодаед",
@@ -184,6 +187,7 @@ var messagesRU = map[Code]string{
 	CodeUploadsNotConfigured:    "Загрузка изображений пока не подключена",
 	CodeUploadContentType:       "Принимаются только изображения JPEG, PNG или WebP",
 	CodeTelegramNotLinked:       "Чтобы получить код, сначала откройте бота в Telegram и нажмите Start",
+	CodeOTPDeliveryUnavailable:  "Служба отправки кода сейчас недоступна. Попробуйте позже",
 	CodeEmailTaken:              "Этот email уже используется",
 	CodeSellerUnderage:          "Продавцу должно быть не менее 18 лет",
 	CodeSellerApplicationExists: "Вы уже подали заявку на статус продавца",

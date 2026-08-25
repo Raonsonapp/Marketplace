@@ -6,8 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
+
+	"tajikshop/api/internal/pkg/apperr"
 )
 
 // defaultGatewayBaseURL is the real Telegram Gateway API. Some hosts
@@ -160,6 +163,17 @@ func (t *TelegramGatewaySender) Send(ctx context.Context, phone, code string) er
 		return fmt.Errorf("otp: decode telegram gateway response: %w", err)
 	}
 	if !out.OK {
+		if out.Error == "BALANCE_NOT_ENOUGH" {
+			// Sending to the Gateway account's own number is always free
+			// (for testing); any other number is billed against the
+			// account's balance at gateway.telegram.org. A generic 500 here
+			// sends the operator log-diving for something that's actually
+			// an account/billing issue, not a bug — surface it as a typed,
+			// user-facing error instead, and still log the raw reason since
+			// apperr responses aren't logged by the generic handler.
+			log.Printf("otp: telegram gateway balance exhausted — top up at https://gateway.telegram.org")
+			return apperr.New(apperr.CodeOTPDeliveryUnavailable, nil)
+		}
 		return fmt.Errorf("otp: telegram gateway declined: %s", out.Error)
 	}
 	return nil
