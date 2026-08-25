@@ -10,8 +10,14 @@ import '../data/profile_repository.dart';
 class ProfileController extends AsyncNotifier<AppUser?> {
   @override
   Future<AppUser?> build() async {
-    final session = ref.watch(sessionControllerProvider).valueOrNull;
-    if (session == null || !session.isAuthenticated) return null;
+    // .select narrows this to the isAuthenticated flag only — watching the
+    // full SessionState here would re-trigger build() every time updateUser
+    // below writes the freshly-fetched profile back into it, refetching
+    // forever (observed in production: hundreds of GET /profile calls/min).
+    final isAuthenticated = ref.watch(
+      sessionControllerProvider.select((s) => s.valueOrNull?.isAuthenticated ?? false),
+    );
+    if (!isAuthenticated) return null;
     final profile = await ref.watch(profileRepositoryProvider).getProfile();
     ref.read(sessionControllerProvider.notifier).updateUser(profile);
     return profile;

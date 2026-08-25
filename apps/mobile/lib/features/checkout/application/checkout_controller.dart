@@ -127,5 +127,7 @@ final checkoutControllerProvider =
 /// Whether checkout is even reachable right now (requires a session — the
 /// router guard already enforces this, this is a defensive UI-level check).
 final canCheckoutProvider = Provider<bool>((ref) {
-  return ref.watch(sessionControllerProvider).valueOrNull?.isAuthenticated ?? false;
+  // .select avoids rebuilding on every SessionState change (e.g. a profile
+  // field update) when only the isAuthenticated flag is actually needed.
+  return ref.watch(sessionControllerProvider.select((s) => s.valueOrNull?.isAuthenticated ?? false));
 });

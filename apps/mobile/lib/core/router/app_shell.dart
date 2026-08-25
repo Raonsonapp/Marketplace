@@ -25,8 +25,9 @@ class AppShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final isAuthenticated =
-        ref.watch(sessionControllerProvider).valueOrNull?.isAuthenticated ?? false;
+    final isAuthenticated = ref.watch(
+      sessionControllerProvider.select((s) => s.valueOrNull?.isAuthenticated ?? false),
+    );
 
     void onTap(int index) {
       if (_authRequiredIndexes.contains(index) && !isAuthenticated) {

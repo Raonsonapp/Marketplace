@@ -10,8 +10,13 @@ import '../data/cart_repository.dart';
 class CartController extends AsyncNotifier<Cart> {
   @override
   Future<Cart> build() async {
-    final isAuthenticated =
-        ref.watch(sessionControllerProvider).valueOrNull?.isAuthenticated ?? false;
+    // .select narrows this to the isAuthenticated flag only — watching the
+    // full SessionState would re-trigger build() (and refetch the cart)
+    // every time ProfileController writes a freshly-fetched profile into
+    // it, even though isAuthenticated itself never changes.
+    final isAuthenticated = ref.watch(
+      sessionControllerProvider.select((s) => s.valueOrNull?.isAuthenticated ?? false),
+    );
     if (!isAuthenticated) return Cart.empty;
     return ref.watch(cartRepositoryProvider).getCart();
   }

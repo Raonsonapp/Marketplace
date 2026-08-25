@@ -12,8 +12,12 @@ import '../data/favorites_repository.dart';
 class FavoriteIdsController extends AsyncNotifier<Set<String>> {
   @override
   Future<Set<String>> build() async {
-    final isAuthenticated =
-        ref.watch(sessionControllerProvider).valueOrNull?.isAuthenticated ?? false;
+    // .select avoids refetching the whole favorites list on every
+    // SessionState change (e.g. a profile field update) when only the
+    // isAuthenticated flag is actually needed.
+    final isAuthenticated = ref.watch(
+      sessionControllerProvider.select((s) => s.valueOrNull?.isAuthenticated ?? false),
+    );
     if (!isAuthenticated) return <String>{};
 
     final ids = <String>{};
