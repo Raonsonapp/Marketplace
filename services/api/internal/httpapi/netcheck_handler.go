@@ -50,6 +50,15 @@ func (h *NetCheckHandler) Check(c *gin.Context) {
 		// block (which a custom domain on the Worker could route around).
 		{"cloudflare_dot_com", "https://www.cloudflare.com"},
 		{"discord_com", "https://discord.com"},
+		// Candidate relay hosts on networks other than Cloudflare's, now
+		// that Cloudflare's edge (not just telegram.org) is confirmed
+		// blocked from this host — narrows down where a replacement relay
+		// could actually be deployed.
+		{"google_apps_script", "https://script.google.com/"},
+		{"google_cloud_run", "https://run.app"},
+		{"vercel", "https://vercel.com"},
+		{"render_com", "https://render.com"},
+		{"amazonaws", "https://aws.amazon.com"},
 	}
 
 	results := make([]netCheckResult, 0, len(targets))
