@@ -46,7 +46,7 @@
   "authSendCode": "Send code",
   "authOpenTelegramBot": "Open Telegram bot",
   "authOtpTitle": "Enter the verification code",
-  "authOtpSubtitle": "We sent the code for {phone} via the Telegram bot, not SMS. Open Telegram — the message from the bot should already be there.",
+  "authOtpSubtitle": "We sent the code for {phone} via Telegram's official \"Verification Codes\" service, not SMS. Open Telegram — the message should already be there.",
   "authOtpInvalid": "Invalid code. Please try again.",
   "authOtpExpired": "The code has expired. Request a new one.",
   "authResendCode": "Resend code",

@@ -47,7 +47,7 @@
   "authSendCode": "Гирифтани рамз",
   "authOpenTelegramBot": "Кушодани бот дар Telegram",
   "authOtpTitle": "Рамзи тасдиқро ворид кунед",
-  "authOtpSubtitle": "Рамзи тасдиқро на бо SMS, балки тавассути бот дар Telegram барои рақами {phone} фиристодем. Telegram-ро кушоед — паём аз бот бояд аллакай омада бошад.",
+  "authOtpSubtitle": "Рамзи тасдиқро на бо SMS, балки тавассути хизмати расмии \"Verification Codes\" дар Telegram барои рақами {phone} фиристодем. Telegram-ро кушоед — паём бояд аллакай омада бошад.",
   "@authOtpSubtitle": {
     "placeholders": {"phone": {"type": "String"}}
   },
