@@ -43,6 +43,13 @@ func (h *NetCheckHandler) Check(c *gin.Context) {
 		{"telegram_gateway", "https://gatewayapi.telegram.org/"},
 		{"telegram_bot_api", "https://api.telegram.org/"},
 		{"cloudflare_worker_debug", "https://marketplace.ehsonmahmadmurodov.workers.dev/__debug"},
+		// Both served from Cloudflare's own shared edge IP space (unlike
+		// the two above, which are Google's/GitHub's own infra) but with
+		// hostnames unrelated to "workers.dev" or "telegram" — tells apart
+		// a block on Cloudflare's IP ranges broadly vs. a hostname-specific
+		// block (which a custom domain on the Worker could route around).
+		{"cloudflare_dot_com", "https://www.cloudflare.com"},
+		{"discord_com", "https://discord.com"},
 	}
 
 	results := make([]netCheckResult, 0, len(targets))
