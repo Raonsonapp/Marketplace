@@ -10,12 +10,12 @@ import (
 
 func TestTelegramGatewaySender_Success(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if got := r.Header.Get("Authorization"); got != "Bearer test-token" {
-			t.Errorf("expected Authorization header, got %q", got)
-		}
-		var body telegramSendRequest
+		var body relaySendRequest
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 			t.Fatalf("decode request body: %v", err)
+		}
+		if body.RelaySecret != "test-secret" {
+			t.Errorf("expected relay_secret field, got %q", body.RelaySecret)
 		}
 		if body.PhoneNumber != "+992901234567" || body.Code != "042817" {
 			t.Errorf("unexpected request body: %+v", body)
@@ -24,8 +24,7 @@ func TestTelegramGatewaySender_Success(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	sender := NewTelegramGatewaySender("test-token", "", "")
-	sender.baseURL = srv.URL
+	sender := NewTelegramGatewaySender("test-token", srv.URL, "test-secret")
 
 	if err := sender.Send(context.Background(), "+992901234567", "042817"); err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -38,8 +37,7 @@ func TestTelegramGatewaySender_Declined(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	sender := NewTelegramGatewaySender("test-token", "", "")
-	sender.baseURL = srv.URL
+	sender := NewTelegramGatewaySender("test-token", srv.URL, "test-secret")
 
 	if err := sender.Send(context.Background(), "not-a-phone", "042817"); err == nil {
 		t.Fatalf("expected an error when the gateway declines the request")

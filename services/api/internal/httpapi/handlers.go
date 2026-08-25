@@ -20,5 +20,4 @@ type Handlers struct {
 	SupportWS    *SupportWSHandler
 	Upload       *UploadHandler
 	SellerApp    *SellerApplicationHandler
-	NetCheck     *NetCheckHandler
 }

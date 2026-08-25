@@ -12,9 +12,12 @@ import (
 
 // defaultGatewayBaseURL is the real Telegram Gateway API. Some hosts
 // (observed: Hugging Face Spaces) cannot complete a TLS handshake to it at
-// all, in which case NewTelegramGatewaySender should be given a Cloudflare
-// Worker relay URL instead (see docs/TELEGRAM_RELAY_SETUP.md) — the request
-// path/method/body are unchanged, only the host differs.
+// all — and, it turns out, to Cloudflare's entire edge network either (a
+// Cloudflare Worker relay was tried first; every Cloudflare-fronted host
+// tested, not just Telegram, timed out identically — see
+// docs/TELEGRAM_RELAY_SETUP.md's history). Google's network was not
+// blocked, so NewTelegramGatewaySender's proxy mode targets a Google Apps
+// Script relay instead (see docs/TELEGRAM_RELAY_SETUP.md).
 const defaultGatewayBaseURL = "https://gatewayapi.telegram.org"
 
 // TelegramGatewaySender delivers OTP codes via Telegram Gateway
@@ -32,31 +35,30 @@ const defaultGatewayBaseURL = "https://gatewayapi.telegram.org"
 // this implements the same Sender interface as ConsoleSender.
 type TelegramGatewaySender struct {
 	token       string
-	proxySecret string // sent as X-Relay-Secret when relaying through a Worker; empty when calling Telegram directly
+	proxyURL    string // Google Apps Script Web App /exec URL; empty means call Telegram directly
+	proxySecret string // sent as a "relay_secret" body field (Apps Script Web Apps can't read custom request headers)
 	httpClient  *http.Client
-	baseURL     string // overridable in tests; defaults to the real Gateway API
 }
 
 // NewTelegramGatewaySender builds a sender using an API token from
 // https://gateway.telegram.org (Account -> API access). Keep it out of
 // version control; it belongs in TELEGRAM_GATEWAY_TOKEN.
 //
-// proxyURL, when non-empty, is a Cloudflare Worker relay URL
+// proxyURL, when non-empty, is a Google Apps Script Web App relay URL
 // (docs/TELEGRAM_RELAY_SETUP.md) to send requests to instead of Telegram
 // directly — some hosts (observed: Hugging Face Spaces) cannot complete a
-// TLS handshake to Telegram's own servers at all, on every attempt, which no
-// amount of client-side timeout tuning fixes since the network path itself
-// is blocked; Cloudflare's edge network reaches Telegram fine. proxySecret
-// is sent as X-Relay-Secret so the relay only accepts requests from this
-// backend. Both empty means "call Telegram directly", i.e. previous
-// behavior.
+// TLS handshake to Telegram's own servers, or to Cloudflare's edge network
+// (tried first as a relay host, also blocked), on every attempt — a
+// network-level block, not something client-side timeout tuning fixes.
+// Google's network was reachable, so the relay lives there instead.
+// proxySecret is sent as a body field (not a header — Apps Script Web Apps
+// don't expose custom request headers to script code) so the relay only
+// accepts requests from this backend. Both empty means "call Telegram
+// directly", i.e. previous behavior.
 func NewTelegramGatewaySender(token, proxyURL, proxySecret string) *TelegramGatewaySender {
-	baseURL := defaultGatewayBaseURL
-	if proxyURL != "" {
-		baseURL = proxyURL
-	}
 	return &TelegramGatewaySender{
 		token:       token,
+		proxyURL:    proxyURL,
 		proxySecret: proxySecret,
 		// Observed in production (a Hugging Face Space host): the TCP
 		// connection to gatewayapi.telegram.org succeeds but the TLS
@@ -75,11 +77,20 @@ func NewTelegramGatewaySender(token, proxyURL, proxySecret string) *TelegramGate
 				TLSHandshakeTimeout: 20 * time.Second,
 			},
 		},
-		baseURL: baseURL,
 	}
 }
 
 type telegramSendRequest struct {
+	PhoneNumber string `json:"phone_number"`
+	Code        string `json:"code"`
+	TTL         int    `json:"ttl"`
+}
+
+// relaySendRequest is what's posted to the Apps Script relay: the Telegram
+// Gateway payload plus the shared secret as a body field, since the relay
+// can't authenticate via a header.
+type relaySendRequest struct {
+	RelaySecret string `json:"relay_secret"`
 	PhoneNumber string `json:"phone_number"`
 	Code        string `json:"code"`
 	TTL         int    `json:"ttl"`
@@ -97,24 +108,40 @@ type telegramSendResponse struct {
 // phone. Telegram embeds code into its own verification message template,
 // so the message text itself is not controlled here.
 func (t *TelegramGatewaySender) Send(ctx context.Context, phone, code string) error {
-	body, err := json.Marshal(telegramSendRequest{
-		PhoneNumber: phone,
-		Code:        code,
-		TTL:         int(OTPMessageTTL.Seconds()),
-	})
+	var (
+		url        string
+		reqBody    []byte
+		err        error
+		setAuthHdr bool
+	)
+	if t.proxyURL != "" {
+		url = t.proxyURL
+		reqBody, err = json.Marshal(relaySendRequest{
+			RelaySecret: t.proxySecret,
+			PhoneNumber: phone,
+			Code:        code,
+			TTL:         int(OTPMessageTTL.Seconds()),
+		})
+	} else {
+		url = defaultGatewayBaseURL + "/sendVerificationMessage"
+		reqBody, err = json.Marshal(telegramSendRequest{
+			PhoneNumber: phone,
+			Code:        code,
+			TTL:         int(OTPMessageTTL.Seconds()),
+		})
+		setAuthHdr = true
+	}
 	if err != nil {
 		return fmt.Errorf("otp: marshal telegram gateway request: %w", err)
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		t.baseURL+"/sendVerificationMessage", bytes.NewReader(body))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(reqBody))
 	if err != nil {
 		return fmt.Errorf("otp: build telegram gateway request: %w", err)
 	}
-	req.Header.Set("Authorization", "Bearer "+t.token)
 	req.Header.Set("Content-Type", "application/json")
-	if t.proxySecret != "" {
-		req.Header.Set("X-Relay-Secret", t.proxySecret)
+	if setAuthHdr {
+		req.Header.Set("Authorization", "Bearer "+t.token)
 	}
 
 	resp, err := t.httpClient.Do(req)

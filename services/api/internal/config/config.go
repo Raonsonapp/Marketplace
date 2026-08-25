@@ -58,14 +58,16 @@ type Config struct {
 	TelegramGatewayToken string
 
 	// TelegramGatewayProxyURL/TelegramGatewayProxySecret route Telegram
-	// Gateway calls through a Cloudflare Worker relay instead of hitting
+	// Gateway calls through a Google Apps Script relay instead of hitting
 	// gatewayapi.telegram.org directly — see docs/TELEGRAM_RELAY_SETUP.md.
 	// Some hosts (observed: Hugging Face Spaces) cannot complete a TLS
 	// handshake to Telegram's own servers at all (times out well past any
 	// reasonable client timeout, on every attempt), which no amount of
 	// http.Client tuning fixes since the network path itself is the
-	// problem; Cloudflare's edge network reaches Telegram fine, so relaying
-	// through a Worker there sidesteps it without moving the whole backend.
+	// problem. A Cloudflare Worker relay was tried first, but that same
+	// host turned out to have Cloudflare's entire edge network blocked too
+	// (confirmed via unrelated Cloudflare-fronted hosts also timing out) —
+	// Google's network was reachable, so the relay lives on Apps Script.
 	// Optional: when TelegramGatewayProxyURL is empty, requests go straight
 	// to gatewayapi.telegram.org as before.
 	TelegramGatewayProxyURL    string

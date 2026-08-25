@@ -73,9 +73,9 @@ Hugging Face Spaces) fail every single request to
 a network-level block on that host, not something fixable by raising
 timeouts. If the server log shows `net/http: TLS handshake timeout` (or
 `TLS handshake failure`) no matter how long the configured timeout is, see
-`docs/TELEGRAM_RELAY_SETUP.md` — a free Cloudflare Worker relay that routes
-around it in about five minutes, no code changes needed on top of what's
-already here.
+`docs/TELEGRAM_RELAY_SETUP.md` — a free Google Apps Script relay that
+routes around it in about five minutes, no code changes needed on top of
+what's already here.
 
 ## 4. Firebase Phone Auth — alternative, client-driven
 
