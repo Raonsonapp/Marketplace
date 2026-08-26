@@ -49,18 +49,17 @@ type SellerApplicationService struct {
 	apps     *repository.SellerApplicationRepository
 	users    *repository.UserRepository
 	storage  *storage.Client // nil when R2 isn't configured — admin notify skips document links
-	botToken string
-	adminID  int64
+	notifier *telegrambot.AdminNotifier
 }
 
-// NewSellerApplicationService builds a SellerApplicationService. botToken/
-// adminID may be empty/zero — the admin Telegram notification is then
-// skipped (applications are still stored and queryable via GET .../me).
+// NewSellerApplicationService builds a SellerApplicationService. notifier may
+// be nil or disabled — the admin Telegram notification is then skipped
+// (applications are still stored and queryable via GET .../me).
 func NewSellerApplicationService(
 	db *pgxpool.Pool, apps *repository.SellerApplicationRepository, users *repository.UserRepository,
-	storageClient *storage.Client, botToken string, adminID int64,
+	storageClient *storage.Client, notifier *telegrambot.AdminNotifier,
 ) *SellerApplicationService {
-	return &SellerApplicationService{db: db, apps: apps, users: users, storage: storageClient, botToken: botToken, adminID: adminID}
+	return &SellerApplicationService{db: db, apps: apps, users: users, storage: storageClient, notifier: notifier}
 }
 
 // CreateSellerApplicationInput is the service-level input for POST /seller-applications.
@@ -153,10 +152,10 @@ func (s *SellerApplicationService) GetMine(ctx context.Context, userID uuid.UUID
 // context.Background() deliberately: the request context is cancelled the
 // moment the HTTP handler returns, before this goroutine would get to run.
 func (s *SellerApplicationService) notifyAdmin(app *models.SellerApplication) {
-	if s.botToken == "" || s.adminID == 0 {
+	if s.notifier == nil || !s.notifier.Enabled() {
 		return
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 
 	text := fmt.Sprintf(
@@ -175,7 +174,7 @@ func (s *SellerApplicationService) notifyAdmin(app *models.SellerApplication) {
 			}
 		}
 	}
-	telegrambot.NotifyAdmin(ctx, s.botToken, s.adminID, text)
+	s.notifier.Notify(ctx, text)
 }
 
 func formatScore(score *float64) string {

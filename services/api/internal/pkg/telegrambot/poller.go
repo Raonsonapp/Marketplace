@@ -146,31 +146,10 @@ func (p *Poller) handleUpdate(ctx context.Context, u telegramUpdate) {
 	p.reply(ctx, u.Message.Chat.ID, "✅ Рақами телефони шумо тасдиқ шуд. Ба барномаи YouShop баргардед ва \"Гирифтани рамз\"-ро аз нав пахш кунед.")
 }
 
-// NotifyAdmin sends a one-off message to chatID via the bot identified by
-// token — used by service.SellerApplicationService to alert
-// TELEGRAM_ADMIN_CHAT_ID of a new seller application, reusing this same
-// free bot infrastructure instead of requiring a paid email/notification
-// service. Errors are logged, never returned: a failed admin ping must
-// never fail the application submission itself.
-func NotifyAdmin(ctx context.Context, token string, chatID int64, text string) {
-	body, err := json.Marshal(map[string]any{"chat_id": chatID, "text": text})
-	if err != nil {
-		return
-	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		"https://api.telegram.org/bot"+token+"/sendMessage", strings.NewReader(string(body)))
-	if err != nil {
-		return
-	}
-	req.Header.Set("Content-Type", "application/json")
-	client := &http.Client{Timeout: 8 * time.Second}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Printf("telegrambot: notify admin %d failed: %v", chatID, err)
-		return
-	}
-	defer resp.Body.Close()
-}
+// Owner alerts (new seller application, new support message) are sent by
+// AdminNotifier (adminnotify.go), which — unlike this poller's own direct
+// calls — can route through the OTP relay when api.telegram.org is
+// unreachable from this host.
 
 func (p *Poller) reply(ctx context.Context, chatID int64, text string) {
 	body, err := json.Marshal(map[string]any{"chat_id": chatID, "text": text})

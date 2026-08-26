@@ -3,12 +3,14 @@ package service
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"tajikshop/api/internal/models"
 	"tajikshop/api/internal/pkg/apperr"
+	"tajikshop/api/internal/pkg/telegrambot"
 	"tajikshop/api/internal/repository"
 )
 
@@ -19,13 +21,17 @@ import (
 // of internal/httpapi, not this service — it stays free of that dependency
 // so it can be unit tested and reused from a future admin/agent surface.
 type SupportService struct {
-	db      *pgxpool.Pool
-	support *repository.SupportRepository
+	db       *pgxpool.Pool
+	support  *repository.SupportRepository
+	users    *repository.UserRepository
+	notifier *telegrambot.AdminNotifier // nil/disabled = no owner Telegram ping
 }
 
-// NewSupportService builds a SupportService.
-func NewSupportService(db *pgxpool.Pool, support *repository.SupportRepository) *SupportService {
-	return &SupportService{db: db, support: support}
+// NewSupportService builds a SupportService. users/notifier may be nil — the
+// owner Telegram notification on a new customer message is then skipped
+// (the message is still stored and delivered in-app as before).
+func NewSupportService(db *pgxpool.Pool, support *repository.SupportRepository, users *repository.UserRepository, notifier *telegrambot.AdminNotifier) *SupportService {
+	return &SupportService{db: db, support: support, users: users, notifier: notifier}
 }
 
 // ListConversations returns a user's own conversations.
@@ -87,5 +93,38 @@ func (s *SupportService) PostMessage(ctx context.Context, userID, conversationID
 	if err := s.support.TouchConversation(ctx, s.db, conversationID); err != nil {
 		return nil, fmt.Errorf("service: touch support conversation: %w", err)
 	}
+	s.notifyOwner(userID, conversationID, text, imageURL)
 	return m, nil
+}
+
+// notifyOwner pings the owner's Telegram with a new customer support
+// message so it can be answered without an admin panel. Run in its own
+// goroutine with a background context (the request context dies when the
+// handler returns) and never blocks or fails the message post.
+func (s *SupportService) notifyOwner(userID, conversationID uuid.UUID, text, imageURL *string) {
+	if s.notifier == nil || !s.notifier.Enabled() {
+		return
+	}
+	go func() {
+		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+		defer cancel()
+
+		who := userID.String()
+		if s.users != nil {
+			if u, err := s.users.GetByID(ctx, s.db, userID); err == nil {
+				if u.FullName != nil && *u.FullName != "" {
+					who = *u.FullName
+				}
+				who += " (" + u.Phone + ")"
+			}
+		}
+		body := "—"
+		if text != nil && *text != "" {
+			body = *text
+		} else if imageURL != nil && *imageURL != "" {
+			body = "[расм]"
+		}
+		msg := fmt.Sprintf("💬 Паёми нави дастгирӣ\nАз: %s\nГуфтугӯ: %s\n\n%s", who, conversationID, body)
+		s.notifier.Notify(ctx, msg)
+	}()
 }

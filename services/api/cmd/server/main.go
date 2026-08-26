@@ -132,7 +132,20 @@ func run() error {
 	promotionSvc := service.NewPromotionService(pool, discountRepo, promoRepo)
 	reviewSvc := service.NewReviewService(pool, reviewRepo)
 	notificationSvc := service.NewNotificationService(pool, notificationRepo)
-	supportSvc := service.NewSupportService(pool, supportRepo)
+
+	// Owner-alert channel (new seller application, new support message):
+	// the bot messages the owner's chat, routed through the OTP relay when
+	// api.telegram.org is unreachable from this host. See
+	// docs/TELEGRAM_RELAY_SETUP.md. Disabled (no-op) until
+	// TELEGRAM_ADMIN_CHAT_ID is set.
+	adminNotifier := telegrambot.NewAdminNotifier(
+		cfg.TelegramBotToken, cfg.TelegramAdminChatID,
+		cfg.TelegramGatewayProxyURL, cfg.TelegramGatewayProxySecret,
+	)
+	if adminNotifier.Enabled() {
+		log.Printf("notify: owner alerts (seller apps, support) enabled for chat %d", cfg.TelegramAdminChatID)
+	}
+	supportSvc := service.NewSupportService(pool, supportRepo, userRepo, adminNotifier)
 
 	// Object storage (Cloudflare R2 / any S3-compatible endpoint) is
 	// optional: uploads/presign returns UPLOADS_NOT_CONFIGURED until these
@@ -156,7 +169,7 @@ func run() error {
 		log.Printf("storage: R2_ENDPOINT not set, uploads/presign will return UPLOADS_NOT_CONFIGURED")
 	}
 	uploadSvc := service.NewUploadService(storageClient)
-	sellerAppSvc := service.NewSellerApplicationService(pool, sellerAppRepo, userRepo, storageClient, cfg.TelegramBotToken, cfg.TelegramAdminChatID)
+	sellerAppSvc := service.NewSellerApplicationService(pool, sellerAppRepo, userRepo, storageClient, adminNotifier)
 
 	// ---- handlers ----
 	hub := ws.NewHub()

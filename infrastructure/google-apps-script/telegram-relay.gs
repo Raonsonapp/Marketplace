@@ -30,6 +30,7 @@
  */
 
 var TELEGRAM_GATEWAY_HOST = "https://gatewayapi.telegram.org";
+var TELEGRAM_BOT_HOST = "https://api.telegram.org";
 
 function doPost(e) {
   var props = PropertiesService.getScriptProperties();
@@ -46,6 +47,28 @@ function doPost(e) {
   if (!relaySecret || body.relay_secret !== relaySecret) {
     return jsonResponse({ ok: false, error: "relay: unauthorized" });
   }
+
+  // kind="bot_message": a plain owner-alert (new seller application, new
+  // support message) sent via the Bot API. Needs a TELEGRAM_BOT_TOKEN
+  // script property; the target chat is the owner's TELEGRAM_ADMIN_CHAT_ID
+  // (passed as body.chat_id by the backend).
+  if (body.kind === "bot_message") {
+    var botToken = props.getProperty("TELEGRAM_BOT_TOKEN");
+    if (!botToken) {
+      return jsonResponse({ ok: false, error: "relay: TELEGRAM_BOT_TOKEN not configured" });
+    }
+    var botResp = UrlFetchApp.fetch(TELEGRAM_BOT_HOST + "/bot" + botToken + "/sendMessage", {
+      method: "post",
+      contentType: "application/json",
+      payload: JSON.stringify({ chat_id: body.chat_id, text: body.text }),
+      muteHttpExceptions: true,
+    });
+    return ContentService.createTextOutput(botResp.getContentText()).setMimeType(
+      ContentService.MimeType.JSON,
+    );
+  }
+
+  // Default: an OTP verification code via Telegram Gateway.
   if (!telegramToken) {
     return jsonResponse({ ok: false, error: "relay: TELEGRAM_GATEWAY_TOKEN not configured" });
   }

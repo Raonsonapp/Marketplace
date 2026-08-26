@@ -98,6 +98,28 @@ you edit the existing deployment (**Deploy → Manage deployments → edit
 Creating a brand new deployment gives a new URL, which would need updating
 in the backend's `TELEGRAM_GATEWAY_PROXY_URL` secret too.
 
+## Optional: owner alerts (new seller applications & support messages)
+
+The same relay can also deliver the owner's operational alerts — a Telegram
+message to you whenever a customer opens a "become a seller" application or
+sends a support-chat message — so you can run the shop without an admin
+panel or a paid email service. This is off until you configure it.
+
+1. **Your bot** — you need the Telegram bot from `@BotFather` whose token is
+   `TELEGRAM_BOT_TOKEN` (the app's is `VerificationYouShopBot`). In the Apps
+   Script project's **Script Properties**, add one more property:
+   `TELEGRAM_BOT_TOKEN` = that bot token.
+2. **Your chat id** — open that bot in Telegram and press **Start** (or send
+   it any message), then message `@userinfobot`, which replies with your
+   numeric id. (That number is your chat id.)
+3. **Backend** — set the secret `TELEGRAM_ADMIN_CHAT_ID` to that number.
+   Nothing else — the alerts reuse the `TELEGRAM_GATEWAY_PROXY_URL`/
+   `TELEGRAM_GATEWAY_PROXY_SECRET` you already set for OTP.
+
+On boot the log shows `notify: owner alerts ... enabled for chat <id>`, and
+from then on new seller applications and new support messages arrive in your
+Telegram. Leave `TELEGRAM_ADMIN_CHAT_ID` unset to keep alerts off.
+
 ## Reverting
 
 If Telegram (or Google) ever becomes unreachable and something else needs
