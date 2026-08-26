@@ -18,6 +18,8 @@ abstract class Review with _$Review {
     @Default(<String>[]) List<String> images,
     required DateTime createdAt,
     String? reviewerName,
+    @Default(0) int helpfulCount,
+    @Default(false) bool viewerVoted,
   }) = _Review;
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);

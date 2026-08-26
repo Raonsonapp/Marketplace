@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/models/category.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/section_header.dart';
 
@@ -17,6 +18,21 @@ class CategoriesRow extends StatelessWidget {
   final String title;
   final List<Category> categories;
   final void Function(Category category) onCategoryTap;
+
+  /// Cycled by index when a category has no `iconUrl` (the seed catalog
+  /// doesn't set one) — varied icons on a brand-gradient circle read as
+  /// designed imagery rather than one repeated gray placeholder, matching
+  /// the Catalog tab's treatment.
+  static const _icons = [
+    LucideIcons.shoppingBag,
+    LucideIcons.gift,
+    LucideIcons.package,
+    LucideIcons.store,
+    LucideIcons.badgePercent,
+    LucideIcons.coins,
+    LucideIcons.heart,
+    LucideIcons.star,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +60,25 @@ class CategoriesRow extends StatelessWidget {
                       Container(
                         width: 60,
                         height: 60,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                        decoration: const BoxDecoration(
+                          gradient: AppColors.primaryGradient,
                           shape: BoxShape.circle,
                         ),
                         child: category.iconUrl == null || category.iconUrl!.isEmpty
-                            ? const Icon(LucideIcons.layoutGrid)
+                            ? Icon(
+                                _icons[index % _icons.length],
+                                color: Colors.white,
+                                size: 26,
+                              )
                             : ClipOval(
                                 child: Image.network(
                                   category.iconUrl!,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const Icon(LucideIcons.layoutGrid),
+                                  errorBuilder: (context, error, stackTrace) => Icon(
+                                    _icons[index % _icons.length],
+                                    color: Colors.white,
+                                    size: 26,
+                                  ),
                                 ),
                               ),
                       ),

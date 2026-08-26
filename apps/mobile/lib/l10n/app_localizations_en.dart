@@ -793,6 +793,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewsAnonymousReviewer => 'Customer';
 
   @override
+  String get reviewsHelpful => 'Helpful';
+
+  @override
   String get reviewsLeaveReview => 'Leave a review';
 
   @override

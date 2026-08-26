@@ -57,12 +57,17 @@ class ApiClient {
     }
   }
 
-  Future<void> delete(
+  /// Returns the decoded response body as a map (empty for a 204 / no body),
+  /// so a caller that needs it (e.g. DELETE /reviews/:id/helpful, which
+  /// echoes the new count) can read it; callers that don't simply ignore
+  /// the result.
+  Future<Map<String, dynamic>> delete(
     String path, {
     Object? data,
   }) async {
     try {
-      await _dio.delete<dynamic>(path, data: data);
+      final response = await _dio.delete<dynamic>(path, data: data);
+      return _asMap(response.data);
     } catch (error) {
       throw ErrorMapper.map(error);
     }

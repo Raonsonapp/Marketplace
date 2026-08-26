@@ -2,6 +2,7 @@ package httpapi
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 
 	"tajikshop/api/internal/httpapi/dto"
 	"tajikshop/api/internal/httpctx"
@@ -27,13 +28,40 @@ func (h *ReviewHandler) List(c *gin.Context) {
 	}
 	limit := queryLimit(c)
 	offset := queryOffset(c)
-	revs, err := h.svc.List(c.Request.Context(), productID, limit, offset)
+	var viewerID *uuid.UUID
+	if uid, ok := httpctx.UserID(c); ok {
+		viewerID = &uid
+	}
+	revs, err := h.svc.List(c.Request.Context(), productID, viewerID, limit, offset)
 	if err != nil {
 		handleErr(c, err)
 		return
 	}
 	list(c, dto.NewReviewListResponse(revs), pagination.NextCursor(offset, limit, len(revs)))
 }
+
+// SetHelpful handles POST /reviews/:id/helpful (mark helpful) and
+// DELETE /reviews/:id/helpful (withdraw). It returns the review's new
+// helpful count so the client can reconcile its optimistic update.
+func (h *ReviewHandler) SetHelpful(c *gin.Context, helpful bool) {
+	reviewID, valid := dto.ParseUUID(c.Param("id"))
+	if !valid {
+		handleErr(c, apperr.New(apperr.CodeValidation, map[string]any{"field": "id"}))
+		return
+	}
+	count, err := h.svc.SetHelpful(c.Request.Context(), httpctx.MustUserID(c), reviewID, helpful)
+	if err != nil {
+		handleErr(c, err)
+		return
+	}
+	ok(c, dto.ReviewHelpfulResponse{HelpfulCount: count, ViewerVoted: helpful})
+}
+
+// MarkHelpful handles POST /reviews/:id/helpful.
+func (h *ReviewHandler) MarkHelpful(c *gin.Context) { h.SetHelpful(c, true) }
+
+// UnmarkHelpful handles DELETE /reviews/:id/helpful.
+func (h *ReviewHandler) UnmarkHelpful(c *gin.Context) { h.SetHelpful(c, false) }
 
 // Create handles POST /reviews.
 func (h *ReviewHandler) Create(c *gin.Context) {

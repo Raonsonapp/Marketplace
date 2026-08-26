@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/session/session_controller.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/error_state_view.dart';
 import '../../../../core/widgets/skeleton_loader.dart';
@@ -21,6 +22,9 @@ class ProductReviewsSection extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final provider = productReviewsControllerProvider(productId);
     final reviewsAsync = ref.watch(provider);
+    final isAuthenticated = ref.watch(
+      sessionControllerProvider.select((s) => s.valueOrNull?.isAuthenticated ?? false),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +36,12 @@ class ProductReviewsSection extends ConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ProductReviewsList(reviews: data.items),
+                ProductReviewsList(
+                  reviews: data.items,
+                  onHelpfulTap: isAuthenticated
+                      ? (review) => ref.read(provider.notifier).toggleHelpful(review)
+                      : null,
+                ),
                 if (data.hasMore)
                   Center(
                     child: TextButton(

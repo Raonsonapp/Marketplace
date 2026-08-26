@@ -59,7 +59,7 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 		v1.GET("/products/barcode/:code", optionalAuth, h.Catalog.ProductByBarcode)
 		v1.GET("/search", optionalAuth, h.Catalog.Search)
 
-		v1.GET("/reviews", h.Review.List)
+		v1.GET("/reviews", optionalAuth, h.Review.List)
 		v1.GET("/promotions", optionalAuth, h.Promotion.List)
 
 		authed := v1.Group("")
@@ -96,6 +96,8 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 
 			authed.POST("/promo-codes/validate", h.Promotion.Validate)
 			authed.POST("/reviews", h.Review.Create)
+			authed.POST("/reviews/:id/helpful", h.Review.MarkHelpful)
+			authed.DELETE("/reviews/:id/helpful", h.Review.UnmarkHelpful)
 
 			authed.GET("/notifications", h.Notification.List)
 			authed.PATCH("/notifications/:id/read", h.Notification.MarkRead)

@@ -37,6 +37,17 @@ class ReviewsRepository {
     });
     return Review.fromJson(json);
   }
+
+  /// Marks (helpful=true) or withdraws (helpful=false) the current user's
+  /// helpful vote on a review, returning the review's new helpful count.
+  Future<int> setHelpful({required String reviewId, required bool helpful}) async {
+    final json = helpful
+        ? await _client.post('/reviews/$reviewId/helpful')
+        : await _client.delete('/reviews/$reviewId/helpful');
+    // Both POST and DELETE return {helpful_count, viewer_voted}.
+    final count = json['helpful_count'];
+    return count is num ? count.toInt() : 0;
+  }
 }
 
 final reviewsRepositoryProvider = Provider<ReviewsRepository>((ref) {

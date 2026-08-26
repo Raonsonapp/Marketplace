@@ -19,15 +19,24 @@ type CreateReviewRequest struct {
 
 // ReviewResponse mirrors one review for API responses.
 type ReviewResponse struct {
-	ID          string    `json:"id"`
-	ProductID   string    `json:"product_id"`
-	UserID      string    `json:"user_id"`
-	OrderItemID string    `json:"order_item_id"`
-	Rating      int       `json:"rating"`
-	Text        *string   `json:"text,omitempty"`
-	Status      string    `json:"status"`
-	Images      []string  `json:"images"`
-	CreatedAt   time.Time `json:"created_at"`
+	ID           string    `json:"id"`
+	ProductID    string    `json:"product_id"`
+	UserID       string    `json:"user_id"`
+	OrderItemID  string    `json:"order_item_id"`
+	ReviewerName string    `json:"reviewer_name"`
+	Rating       int       `json:"rating"`
+	Text         *string   `json:"text,omitempty"`
+	Status       string    `json:"status"`
+	Images       []string  `json:"images"`
+	HelpfulCount int       `json:"helpful_count"`
+	ViewerVoted  bool      `json:"viewer_voted"`
+	CreatedAt    time.Time `json:"created_at"`
+}
+
+// ReviewHelpfulResponse is returned by POST/DELETE /reviews/:id/helpful.
+type ReviewHelpfulResponse struct {
+	HelpfulCount int  `json:"helpful_count"`
+	ViewerVoted  bool `json:"viewer_voted"`
 }
 
 // NewReviewResponse converts a models.Review.
@@ -38,7 +47,8 @@ func NewReviewResponse(r *models.Review) ReviewResponse {
 	}
 	return ReviewResponse{
 		ID: r.ID.String(), ProductID: r.ProductID.String(), UserID: r.UserID.String(), OrderItemID: r.OrderItemID.String(),
-		Rating: r.Rating, Text: r.Text, Status: r.Status, Images: images, CreatedAt: r.CreatedAt,
+		ReviewerName: r.ReviewerName, Rating: r.Rating, Text: r.Text, Status: r.Status, Images: images,
+		HelpfulCount: r.HelpfulCount, ViewerVoted: r.ViewerVoted, CreatedAt: r.CreatedAt,
 	}
 }
 

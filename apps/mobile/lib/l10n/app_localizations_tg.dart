@@ -802,6 +802,9 @@ class AppLocalizationsTg extends AppLocalizations {
   String get reviewsAnonymousReviewer => 'Харидор';
 
   @override
+  String get reviewsHelpful => 'Фоиданок';
+
+  @override
   String get reviewsLeaveReview => 'Шарҳ навиштан';
 
   @override

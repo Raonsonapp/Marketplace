@@ -794,6 +794,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get reviewsAnonymousReviewer => 'Покупатель';
 
   @override
+  String get reviewsHelpful => 'Полезно';
+
+  @override
   String get reviewsLeaveReview => 'Оставить отзыв';
 
   @override

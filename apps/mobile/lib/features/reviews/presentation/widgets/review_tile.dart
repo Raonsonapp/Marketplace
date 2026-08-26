@@ -7,12 +7,15 @@ import '../../../../core/widgets/rating_stars.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/review_models.dart';
 
-/// One review row: rating stars, reviewer name, date, text, and any
-/// attached images (product detail screen — `GET /reviews?product_id=`).
+/// One review row: rating stars, reviewer name, date, text, any attached
+/// images, and a "helpful" vote button (product detail screen —
+/// `GET /reviews?product_id=`). [onHelpfulTap] is null for anonymous
+/// viewers, who can read the count but not vote.
 class ReviewTile extends StatelessWidget {
-  const ReviewTile({super.key, required this.review});
+  const ReviewTile({super.key, required this.review, this.onHelpfulTap});
 
   final Review review;
+  final VoidCallback? onHelpfulTap;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,55 @@ class ReviewTile extends StatelessWidget {
               ),
             ),
           ],
+          const SizedBox(height: AppSpacing.xs),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: _HelpfulButton(
+              count: review.helpfulCount,
+              voted: review.viewerVoted,
+              onTap: onHelpfulTap,
+              label: l10n.reviewsHelpful,
+            ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _HelpfulButton extends StatelessWidget {
+  const _HelpfulButton({
+    required this.count,
+    required this.voted,
+    required this.onTap,
+    required this.label,
+  });
+
+  final int count;
+  final bool voted;
+  final VoidCallback? onTap;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = voted ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(AppSpacing.buttonRadius),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs, vertical: AppSpacing.xxs),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(LucideIcons.heart, size: 16, color: color),
+            const SizedBox(width: AppSpacing.xxs),
+            Text(
+              count > 0 ? '$label · $count' : label,
+              style: theme.textTheme.labelMedium?.copyWith(color: color),
+            ),
+          ],
+        ),
       ),
     );
   }

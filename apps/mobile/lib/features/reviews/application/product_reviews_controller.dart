@@ -43,6 +43,40 @@ class ProductReviewsController extends FamilyAsyncNotifier<PaginatedState<Review
       return PaginatedState(items: page.data, nextCursor: page.nextCursor);
     });
   }
+
+  /// Toggles the current user's helpful vote on [review], updating that one
+  /// row optimistically and reconciling the count with the server's reply.
+  /// A failed request rolls the row back to its previous state.
+  Future<void> toggleHelpful(Review review) async {
+    final current = state.valueOrNull;
+    if (current == null) return;
+    final willVote = !review.viewerVoted;
+
+    Review apply(Review r) => r.copyWith(
+          viewerVoted: willVote,
+          helpfulCount: (r.helpfulCount + (willVote ? 1 : -1)).clamp(0, 1 << 30),
+        );
+    List<Review> replace(List<Review> items, Review value) =>
+        [for (final r in items) if (r.id == review.id) value else r];
+
+    final optimistic = apply(review);
+    state = AsyncData(current.copyWith(items: replace(current.items, optimistic)));
+
+    try {
+      final count = await ref
+          .read(reviewsRepositoryProvider)
+          .setHelpful(reviewId: review.id, helpful: willVote);
+      final latest = state.valueOrNull;
+      if (latest == null) return;
+      state = AsyncData(latest.copyWith(
+        items: replace(latest.items, optimistic.copyWith(helpfulCount: count)),
+      ));
+    } catch (_) {
+      final latest = state.valueOrNull;
+      if (latest == null) return;
+      state = AsyncData(latest.copyWith(items: replace(latest.items, review)));
+    }
+  }
 }
 
 final productReviewsControllerProvider = AsyncNotifierProvider.family<ProductReviewsController,

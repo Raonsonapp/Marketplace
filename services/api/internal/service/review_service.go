@@ -32,10 +32,11 @@ func NewReviewService(db *pgxpool.Pool, reviews *repository.ReviewRepository) *R
 	return &ReviewService{db: db, reviews: reviews}
 }
 
-// List returns approved reviews for a product, most recent first, with
-// their images attached.
-func (s *ReviewService) List(ctx context.Context, productID uuid.UUID, limit, offset int) ([]models.Review, error) {
-	revs, err := s.reviews.ListApprovedByProduct(ctx, s.db, productID, limit, offset)
+// List returns approved reviews for a product, most-helpful first, with
+// their images attached. viewerID (nil for anonymous readers) marks which
+// reviews the requesting user has already voted helpful.
+func (s *ReviewService) List(ctx context.Context, productID uuid.UUID, viewerID *uuid.UUID, limit, offset int) ([]models.Review, error) {
+	revs, err := s.reviews.ListApprovedByProduct(ctx, s.db, productID, viewerID, limit, offset)
 	if err != nil {
 		return nil, fmt.Errorf("service: list reviews: %w", err)
 	}
@@ -65,8 +66,28 @@ type CreateReviewInput struct {
 	Images      []string
 }
 
-// Create verifies the purchase-gating rule, then inserts a new review in
-// 'pending' status (moderation queue — never auto-approved).
+// SetHelpful adds (helpful=true) or withdraws (helpful=false) the user's
+// helpful vote on a review, returning the review's new helpful count.
+func (s *ReviewService) SetHelpful(ctx context.Context, userID, reviewID uuid.UUID, helpful bool) (int, error) {
+	var (
+		count int
+		err   error
+	)
+	if helpful {
+		count, err = s.reviews.AddHelpfulVote(ctx, s.db, reviewID, userID)
+	} else {
+		count, err = s.reviews.RemoveHelpfulVote(ctx, s.db, reviewID, userID)
+	}
+	if err != nil {
+		if err == repository.ErrNotFound {
+			return 0, apperr.New(apperr.CodeNotFound, nil)
+		}
+		return 0, fmt.Errorf("service: set review helpful: %w", err)
+	}
+	return count, nil
+}
+
+// Create verifies the purchase-gating rule, then inserts a new review.
 func (s *ReviewService) Create(ctx context.Context, userID uuid.UUID, in CreateReviewInput) (*models.Review, error) {
 	if _, err := s.reviews.FindOwnedOrderItem(ctx, s.db, userID, in.ProductID, in.OrderItemID); err != nil {
 		if err == repository.ErrNotFound {

@@ -1594,6 +1594,12 @@ abstract class AppLocalizations {
   /// **'Харидор'**
   String get reviewsAnonymousReviewer;
 
+  /// No description provided for @reviewsHelpful.
+  ///
+  /// In tg, this message translates to:
+  /// **'Фоиданок'**
+  String get reviewsHelpful;
+
   /// No description provided for @reviewsLeaveReview.
   ///
   /// In tg, this message translates to:

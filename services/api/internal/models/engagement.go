@@ -27,7 +27,14 @@ type Review struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 
-	Images []string
+	Images       []string
+	HelpfulCount int
+	// ReviewerName is the reviewer's display name, joined from users at
+	// read time (never their phone/id). ViewerVoted is whether the
+	// requesting user has marked this review helpful (nil for anonymous
+	// readers). Neither is a column on reviews.
+	ReviewerName string
+	ViewerVoted  bool
 }
 
 // ReviewImage mirrors review_images.

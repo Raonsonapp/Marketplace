@@ -12,9 +12,13 @@ import 'review_tile.dart';
 /// straightforward to widget-test in isolation
 /// (see `test/widget/product_reviews_list_test.dart`).
 class ProductReviewsList extends StatelessWidget {
-  const ProductReviewsList({super.key, required this.reviews});
+  const ProductReviewsList({super.key, required this.reviews, this.onHelpfulTap});
 
   final List<Review> reviews;
+
+  /// Called when a signed-in viewer taps a review's "helpful" button; null
+  /// disables voting (anonymous viewers still see the counts).
+  final void Function(Review review)? onHelpfulTap;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,10 @@ class ProductReviewsList extends StatelessWidget {
     return Column(
       children: [
         for (var i = 0; i < reviews.length; i++) ...[
-          ReviewTile(review: reviews[i]),
+          ReviewTile(
+            review: reviews[i],
+            onHelpfulTap: onHelpfulTap == null ? null : () => onHelpfulTap!(reviews[i]),
+          ),
           if (i < reviews.length - 1) const Divider(height: AppSpacing.xs),
         ],
       ],
