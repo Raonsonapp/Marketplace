@@ -30,9 +30,10 @@ type CartItemResponse struct {
 
 // CartResponse is the response for GET /cart and every cart mutation.
 type CartResponse struct {
-	StoreID  *string            `json:"store_id"`
-	Items    []CartItemResponse `json:"items"`
-	Subtotal money.Money        `json:"subtotal"`
+	StoreID       *string            `json:"store_id"`
+	Items         []CartItemResponse `json:"items"`
+	SavedForLater []CartItemResponse `json:"saved_for_later"`
+	Subtotal      money.Money        `json:"subtotal"`
 }
 
 // NewCartResponse converts a service.CartView.
@@ -42,14 +43,21 @@ func NewCartResponse(v *service.CartView, lang string) CartResponse {
 		s := v.Cart.StoreID.String()
 		storeID = &s
 	}
-	resp := CartResponse{StoreID: storeID, Subtotal: v.Subtotal, Items: []CartItemResponse{}}
+	resp := CartResponse{StoreID: storeID, Subtotal: v.Subtotal, Items: []CartItemResponse{}, SavedForLater: []CartItemResponse{}}
 	for _, l := range v.Lines {
-		resp.Items = append(resp.Items, CartItemResponse{
-			ID: l.Item.ID.String(), Product: NewProductResponse(l.Product, lang), Quantity: l.Item.Quantity,
-			UnitPrice: l.UnitPrice, LineTotal: l.LineTotal, Available: l.Available, StockQty: l.StockQty, Adjusted: l.Adjusted,
-		})
+		resp.Items = append(resp.Items, newCartItemResponse(l, lang))
+	}
+	for _, l := range v.SavedLines {
+		resp.SavedForLater = append(resp.SavedForLater, newCartItemResponse(l, lang))
 	}
 	return resp
+}
+
+func newCartItemResponse(l service.CartLine, lang string) CartItemResponse {
+	return CartItemResponse{
+		ID: l.Item.ID.String(), Product: NewProductResponse(l.Product, lang), Quantity: l.Item.Quantity,
+		UnitPrice: l.UnitPrice, LineTotal: l.LineTotal, Available: l.Available, StockQty: l.StockQty, Adjusted: l.Adjusted,
+	}
 }
 
 // CheckoutQuoteRequest is the body for POST /checkout/quote and (embedded

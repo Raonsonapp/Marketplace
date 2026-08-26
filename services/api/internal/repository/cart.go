@@ -59,6 +59,40 @@ func (r *CartRepository) Items(ctx context.Context, q Querier, cartID uuid.UUID)
 	return out, rows.Err()
 }
 
+// SavedItems returns the saved-for-later items in a cart.
+func (r *CartRepository) SavedItems(ctx context.Context, q Querier, cartID uuid.UUID) ([]models.CartItem, error) {
+	rows, err := q.Query(ctx, `
+		SELECT id, cart_id, product_id, quantity, saved_for_later, created_at, updated_at
+		FROM cart_items WHERE cart_id = $1::uuid AND saved_for_later = true
+		ORDER BY updated_at DESC`, cartID)
+	if err != nil {
+		return nil, fmt.Errorf("repository: saved cart items: %w", err)
+	}
+	defer rows.Close()
+	var out []models.CartItem
+	for rows.Next() {
+		var it models.CartItem
+		if err := rows.Scan(&it.ID, &it.CartID, &it.ProductID, &it.Quantity, &it.SavedForLater, &it.CreatedAt, &it.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("repository: scan saved cart item: %w", err)
+		}
+		out = append(out, it)
+	}
+	return out, rows.Err()
+}
+
+// SetSavedForLater flips a cart item's saved_for_later flag (true = move to
+// the saved list, false = move back into the active cart).
+func (r *CartRepository) SetSavedForLater(ctx context.Context, q Querier, itemID uuid.UUID, saved bool) error {
+	tag, err := q.Exec(ctx, `UPDATE cart_items SET saved_for_later = $2, updated_at = now() WHERE id = $1::uuid`, itemID, saved)
+	if err != nil {
+		return fmt.Errorf("repository: set cart item saved_for_later: %w", err)
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}
+
 // UpsertItem adds quantity to an existing line for productID, or inserts a
 // new line, per the additive semantics of POST /cart/items.
 func (r *CartRepository) UpsertItem(ctx context.Context, q Querier, cartID, productID uuid.UUID, quantity int) error {

@@ -119,6 +119,7 @@
   "cartRemoveItem": "Remove",
   "cartSaveForLater": "Save for later",
   "cartMoveToCart": "Move to cart",
+  "cartMoveToCart": "Move to cart",
   "cartSavedForLaterTitle": "Saved for later",
   "cartPromoCodeLabel": "Promo code",
   "cartPromoCodeHint": "Enter code",

@@ -29,8 +29,7 @@ class OrderTrackingSocket {
     required void Function(Object error) onError,
   }) async {
     final accessToken = await _ref.read(secureTokenStorageProvider).readAccessToken();
-    final wsBase = Env.apiBaseUrl.replaceFirst(RegExp('^http'), 'ws');
-    final uri = Uri.parse('$wsBase/ws/orders/$orderId').replace(
+    final uri = Uri.parse('${Env.wsBaseUrl}/ws/orders/$orderId').replace(
       queryParameters: {
         if (accessToken != null && accessToken.isNotEmpty) 'token': accessToken,
       },

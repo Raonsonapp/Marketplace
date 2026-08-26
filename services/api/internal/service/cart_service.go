@@ -52,9 +52,10 @@ type CartLine struct {
 
 // CartView is the full current-cart response for GET /cart.
 type CartView struct {
-	Cart     models.Cart
-	Lines    []CartLine
-	Subtotal money.Money
+	Cart       models.Cart
+	Lines      []CartLine
+	SavedLines []CartLine
+	Subtotal   money.Money
 }
 
 // Get returns the user's cart with every line re-priced from live inventory.
@@ -71,40 +72,61 @@ func (s *CartService) buildView(ctx context.Context, cart *models.Cart) (*CartVi
 	if err != nil {
 		return nil, fmt.Errorf("service: cart items: %w", err)
 	}
+	saved, err := s.carts.SavedItems(ctx, s.db, cart.ID)
+	if err != nil {
+		return nil, fmt.Errorf("service: saved cart items: %w", err)
+	}
 	view := &CartView{Cart: *cart}
 	if cart.StoreID == nil {
 		return view, nil
 	}
 	for _, item := range items {
-		p, err := s.products.GetByID(ctx, s.db, item.ProductID, cart.StoreID)
+		line, err := s.priceLine(ctx, item, *cart.StoreID)
 		if err != nil {
-			if err == repository.ErrNotFound {
-				view.Lines = append(view.Lines, CartLine{Item: item, Available: false})
-				continue
-			}
-			return nil, fmt.Errorf("service: cart line product: %w", err)
+			return nil, err
 		}
-		inv, err := s.inventory.GetByProductStore(ctx, s.db, item.ProductID, *cart.StoreID)
-		if err != nil {
-			if err == repository.ErrNotFound {
-				view.Lines = append(view.Lines, CartLine{Item: item, Product: *p, Available: false})
-				continue
-			}
-			return nil, fmt.Errorf("service: cart line inventory: %w", err)
-		}
-		line := CartLine{Item: item, Product: *p, UnitPrice: inv.Price, StockQty: inv.StockQty, Available: inv.IsAvailable && inv.StockQty > 0}
-		qty := item.Quantity
-		if qty > inv.StockQty {
-			qty = inv.StockQty
-			line.Adjusted = true
-		}
-		line.LineTotal = inv.Price.MulInt(qty)
 		view.Lines = append(view.Lines, line)
 		if line.Available {
 			view.Subtotal = view.Subtotal.Add(line.LineTotal)
 		}
 	}
+	for _, item := range saved {
+		line, err := s.priceLine(ctx, item, *cart.StoreID)
+		if err != nil {
+			return nil, err
+		}
+		view.SavedLines = append(view.SavedLines, line)
+	}
 	return view, nil
+}
+
+// priceLine re-derives one cart line's live price/availability from
+// inventory. A missing product/inventory row (deleted/delisted since being
+// added to the cart) degrades to an "unavailable" line; any other error
+// propagates and fails the whole cart read.
+func (s *CartService) priceLine(ctx context.Context, item models.CartItem, storeID uuid.UUID) (CartLine, error) {
+	p, err := s.products.GetByID(ctx, s.db, item.ProductID, &storeID)
+	if err != nil {
+		if err == repository.ErrNotFound {
+			return CartLine{Item: item, Available: false}, nil
+		}
+		return CartLine{}, fmt.Errorf("service: cart line product: %w", err)
+	}
+	inv, err := s.inventory.GetByProductStore(ctx, s.db, item.ProductID, storeID)
+	if err != nil {
+		if err == repository.ErrNotFound {
+			return CartLine{Item: item, Product: *p, Available: false}, nil
+		}
+		return CartLine{}, fmt.Errorf("service: cart line inventory: %w", err)
+	}
+	line := CartLine{Item: item, Product: *p, UnitPrice: inv.Price, StockQty: inv.StockQty, Available: inv.IsAvailable && inv.StockQty > 0}
+	qty := item.Quantity
+	if qty > inv.StockQty {
+		qty = inv.StockQty
+		line.Adjusted = true
+	}
+	line.LineTotal = inv.Price.MulInt(qty)
+	return line, nil
 }
 
 // AddItem adds quantity of productID to the user's cart, resolving/checking
@@ -198,6 +220,22 @@ func (s *CartService) RemoveItem(ctx context.Context, userID, itemID uuid.UUID) 
 	}
 	if err := s.carts.DeleteItem(ctx, s.db, itemID); err != nil {
 		return nil, fmt.Errorf("service: delete cart item: %w", err)
+	}
+	return s.buildView(ctx, cart)
+}
+
+// SetSavedForLater moves a cart item the user owns between the active cart
+// and the saved-for-later list.
+func (s *CartService) SetSavedForLater(ctx context.Context, userID, itemID uuid.UUID, saved bool) (*CartView, error) {
+	_, cart, err := s.carts.GetItemByID(ctx, s.db, itemID, userID)
+	if err != nil {
+		if err == repository.ErrNotFound {
+			return nil, apperr.New(apperr.CodeNotFound, nil)
+		}
+		return nil, fmt.Errorf("service: get cart item: %w", err)
+	}
+	if err := s.carts.SetSavedForLater(ctx, s.db, itemID, saved); err != nil {
+		return nil, fmt.Errorf("service: set cart item saved_for_later: %w", err)
 	}
 	return s.buildView(ctx, cart)
 }

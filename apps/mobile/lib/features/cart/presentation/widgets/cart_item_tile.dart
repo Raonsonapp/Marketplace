@@ -13,15 +13,21 @@ class CartItemTile extends StatelessWidget {
   const CartItemTile({
     super.key,
     required this.item,
-    required this.onQuantityChanged,
+    this.onQuantityChanged,
     required this.onRemove,
     this.onSaveForLater,
+    this.onMoveToCart,
   });
 
   final CartItem item;
-  final ValueChanged<int> onQuantityChanged;
+  final ValueChanged<int>? onQuantityChanged;
   final VoidCallback onRemove;
+
+  /// Shown for an active cart line — moves it to "saved for later".
   final VoidCallback? onSaveForLater;
+
+  /// Shown for a saved-for-later line — moves it back into the active cart.
+  final VoidCallback? onMoveToCart;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +101,16 @@ class CartItemTile extends StatelessWidget {
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           child: Text(l10n.cartSaveForLater, style: theme.textTheme.labelMedium),
+                        ),
+                      if (onMoveToCart != null)
+                        TextButton(
+                          onPressed: onMoveToCart,
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: Text(l10n.cartMoveToCart, style: theme.textTheme.labelMedium),
                         ),
                       const Spacer(),
                       IconButton(

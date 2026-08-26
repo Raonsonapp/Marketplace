@@ -26,6 +26,16 @@ class Env {
     defaultValue: _defaultApiBaseUrl,
   );
 
+  /// Base URL for `WS /ws/...` connections. Those routes are mounted at the
+  /// Gin engine's root (`internal/httpserver/router.go`), not under the
+  /// REST API's own `/api/v1` prefix like everything else — so this is the
+  /// bare origin (scheme+host+port) with ws(s) swapped in, not [apiBaseUrl]
+  /// with a suffix stripped off.
+  static String get wsBaseUrl {
+    final origin = Uri.parse(apiBaseUrl).origin;
+    return origin.replaceFirst(RegExp('^http'), 'ws');
+  }
+
   /// Whether verbose network/debug logging should be enabled. Defaults to
   /// the debug-mode assert flag but can be forced via `--dart-define`.
   static const bool verboseLogging = bool.fromEnvironment(

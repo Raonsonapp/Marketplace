@@ -90,6 +90,36 @@ func (h *CartHandler) RemoveItem(c *gin.Context) {
 	ok(c, dto.NewCartResponse(view, httpctx.Lang(c)))
 }
 
+// SaveForLater handles POST /cart/items/:id/save-for-later.
+func (h *CartHandler) SaveForLater(c *gin.Context) {
+	itemID, valid := dto.ParseUUID(c.Param("id"))
+	if !valid {
+		handleErr(c, apperr.New(apperr.CodeValidation, map[string]any{"field": "id"}))
+		return
+	}
+	view, err := h.svc.SetSavedForLater(c.Request.Context(), httpctx.MustUserID(c), itemID, true)
+	if err != nil {
+		handleErr(c, err)
+		return
+	}
+	ok(c, dto.NewCartResponse(view, httpctx.Lang(c)))
+}
+
+// MoveToCart handles POST /cart/items/:id/move-to-cart.
+func (h *CartHandler) MoveToCart(c *gin.Context) {
+	itemID, valid := dto.ParseUUID(c.Param("id"))
+	if !valid {
+		handleErr(c, apperr.New(apperr.CodeValidation, map[string]any{"field": "id"}))
+		return
+	}
+	view, err := h.svc.SetSavedForLater(c.Request.Context(), httpctx.MustUserID(c), itemID, false)
+	if err != nil {
+		handleErr(c, err)
+		return
+	}
+	ok(c, dto.NewCartResponse(view, httpctx.Lang(c)))
+}
+
 // Clear handles DELETE /cart.
 func (h *CartHandler) Clear(c *gin.Context) {
 	if err := h.svc.Clear(c.Request.Context(), httpctx.MustUserID(c)); err != nil {

@@ -14,12 +14,10 @@ abstract class Product with _$Product {
     required String id,
     required String name,
     String? description,
-    required String imageUrl,
     @Default(<String>[]) List<String> images,
     required String price,
     String? oldPrice,
-    @Default(0) int discountPercent,
-    @Default(0.0) double ratingAvg,
+    @Default(0.0) @JsonKey(fromJson: _ratingFromJson) double ratingAvg,
     @Default(0) int ratingCount,
     @Default(true) bool inStock,
     int? stockQuantity,
@@ -31,7 +29,34 @@ abstract class Product with _$Product {
     @Default(false) bool isFavorite,
   }) = _Product;
 
+  const Product._();
+
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
+
+  /// The backend (`docs/API_SPEC.md`) never sends a single `image_url` —
+  /// only an `images` array — so this is derived rather than parsed.
+  String get imageUrl => images.isNotEmpty ? images.first : '';
+
+  /// discount_percent isn't sent by the backend either; derive it from
+  /// price/oldPrice (both decimal strings — see docs/SECURITY.md on why the
+  /// client never does money arithmetic with floats for anything that
+  /// affects a real total, which display-only rounding here does not).
+  int get discountPercent {
+    final old = oldPrice;
+    if (old == null) return 0;
+    final oldValue = double.tryParse(old);
+    final newValue = double.tryParse(price);
+    if (oldValue == null || newValue == null || oldValue <= 0 || newValue >= oldValue) return 0;
+    return (((oldValue - newValue) / oldValue) * 100).round();
+  }
+}
+
+/// The backend sends `rating_avg` as a decimal string (e.g. "4.5"), not a
+/// JSON number — see `services/api/internal/httpapi/dto/catalog.go`.
+double _ratingFromJson(dynamic value) {
+  if (value == null) return 0.0;
+  if (value is num) return value.toDouble();
+  return double.tryParse(value.toString()) ?? 0.0;
 }
 
 /// Full product detail payload from `GET /products/:id`, extending the

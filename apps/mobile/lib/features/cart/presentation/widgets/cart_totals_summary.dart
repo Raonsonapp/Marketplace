@@ -7,9 +7,12 @@ import '../../../../core/utils/currency_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/cart_models.dart';
 
-/// Renders exactly what the server returned for the cart totals —
-/// subtotal/discount/delivery fee/total — and nothing computed on-device
-/// (docs/SECURITY.md: "the client never computes money").
+/// Renders the cart's subtotal exactly as the server returned it — nothing
+/// computed on-device (docs/SECURITY.md: "the client never computes money").
+/// Discount, delivery fee, and the final total all depend on a chosen
+/// address/delivery method the cart doesn't know yet; those show on the
+/// Checkout screen instead, from `POST /checkout/quote`
+/// (`CheckoutQuoteSummary`).
 class CartTotalsSummary extends StatelessWidget {
   const CartTotalsSummary({super.key, required this.cart});
 
@@ -21,29 +24,7 @@ class CartTotalsSummary extends StatelessWidget {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
 
-    Widget row(String label, String amount, {bool isTotal = false, bool isDiscount = false}) {
-      final formatted = CurrencyFormatter.format(amount, languageCode: languageCode);
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxs),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              label,
-              style: isTotal ? theme.textTheme.titleMedium : theme.textTheme.bodyMedium,
-            ),
-            Text(
-              isDiscount ? '-$formatted' : formatted,
-              style: isTotal
-                  ? theme.textTheme.titleMedium?.copyWith(color: AppColors.emeraldGreen)
-                  : theme.textTheme.bodyMedium?.copyWith(
-                      color: isDiscount ? AppColors.emeraldGreen : null,
-                    ),
-            ),
-          ],
-        ),
-      );
-    }
+    final formattedSubtotal = CurrencyFormatter.format(cart.subtotal, languageCode: languageCode);
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -53,15 +34,16 @@ class CartTotalsSummary extends StatelessWidget {
       ),
       child: Column(
         children: [
-          row(l10n.cartSubtotal, cart.subtotal),
-          if (double.tryParse(cart.discount) != null && double.parse(cart.discount) > 0)
-            row(l10n.cartDiscount, cart.discount, isDiscount: true),
-          row(l10n.cartDeliveryFee, cart.deliveryFee),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
-            child: Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(l10n.cartSubtotal, style: theme.textTheme.titleMedium),
+              Text(
+                formattedSubtotal,
+                style: theme.textTheme.titleMedium?.copyWith(color: AppColors.emeraldGreen),
+              ),
+            ],
           ),
-          row(l10n.cartTotal, cart.total, isTotal: true),
           const SizedBox(height: AppSpacing.xs),
           Row(
             children: [

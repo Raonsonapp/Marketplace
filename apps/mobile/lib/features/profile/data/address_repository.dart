@@ -30,7 +30,13 @@ class AddressRepository {
 
   Future<void> deleteAddress(String id) => _client.delete('/addresses/$id');
 
-  Future<void> setDefault(String id) => _client.post('/addresses/$id/default');
+  /// There's no dedicated "set default" endpoint — `PATCH /addresses/:id`
+  /// already demotes every other address when `is_default: true` is patched
+  /// (see `AddressRepository.Update` in the backend), so this is just that.
+  Future<Address> setDefault(String id) async {
+    final json = await _client.patch('/addresses/$id', data: {'is_default': true});
+    return Address.fromJson(json);
+  }
 }
 
 final addressRepositoryProvider = Provider<AddressRepository>((ref) {

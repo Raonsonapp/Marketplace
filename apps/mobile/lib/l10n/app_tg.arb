@@ -131,6 +131,7 @@
   "cartEmptyMessage": "Барои оғоз маҳсулот илова кунед",
   "cartRemoveItem": "Нест кардан",
   "cartSaveForLater": "Барои баъд нигоҳ доштан",
+  "cartMoveToCart": "Ба сабад баргардонед",
   "cartMoveToCart": "Ба сабад гузарондан",
   "cartSavedForLaterTitle": "Барои баъд нигоҳ дошташуда",
   "cartPromoCodeLabel": "Рамзи промо",

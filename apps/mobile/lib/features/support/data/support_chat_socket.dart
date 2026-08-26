@@ -31,8 +31,7 @@ class SupportChatSocket {
     required void Function(Object error) onError,
   }) async {
     final accessToken = await _ref.read(secureTokenStorageProvider).readAccessToken();
-    final wsBase = Env.apiBaseUrl.replaceFirst(RegExp('^http'), 'ws');
-    final uri = Uri.parse('$wsBase/ws/support/$conversationId').replace(
+    final uri = Uri.parse('${Env.wsBaseUrl}/ws/support/$conversationId').replace(
       queryParameters: {
         if (accessToken != null && accessToken.isNotEmpty) 'token': accessToken,
       },

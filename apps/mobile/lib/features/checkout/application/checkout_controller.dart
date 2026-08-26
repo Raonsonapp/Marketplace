@@ -24,6 +24,7 @@ abstract class CheckoutState with _$CheckoutState {
     @Default(true) bool isAsap,
     DateTime? scheduledAt,
     @Default(kCashOnDeliveryMethod) String paymentMethod,
+    String? promoCode,
     @Default(AsyncValue<CheckoutQuote>.loading()) AsyncValue<CheckoutQuote> quote,
     @Default(false) bool isPlacingOrder,
     AppException? placeOrderError,
@@ -79,6 +80,11 @@ class CheckoutController extends Notifier<CheckoutState> {
     _refreshQuote();
   }
 
+  void setPromoCode(String? code) {
+    state = state.copyWith(promoCode: code);
+    _refreshQuote();
+  }
+
   Future<void> _refreshQuote() async {
     if (state.deliveryMethod == DeliveryMethod.delivery && state.selectedAddressId == null) {
       return;
@@ -90,6 +96,7 @@ class CheckoutController extends Notifier<CheckoutState> {
                 ? state.selectedAddressId
                 : null,
             deliveryMethod: state.deliveryMethod,
+            promoCode: state.promoCode,
           );
       state = state.copyWith(quote: AsyncData(quote));
     } catch (e) {
@@ -112,6 +119,7 @@ class CheckoutController extends Notifier<CheckoutState> {
             deliveryMethod: state.deliveryMethod,
             scheduledAt: state.isAsap ? null : state.scheduledAt,
             paymentMethod: state.paymentMethod,
+            promoCode: state.promoCode,
           );
       state = state.copyWith(isPlacingOrder: false, placedOrder: order, idempotencyKey: null);
       ref.invalidate(cartControllerProvider);

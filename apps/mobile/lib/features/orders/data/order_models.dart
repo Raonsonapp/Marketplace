@@ -56,7 +56,7 @@ abstract class OrderItemLine with _$OrderItemLine {
     // ties back to a real purchased line, never a client-invented id.
     required String id,
     required String productId,
-    required String nameSnapshot,
+    @JsonKey(name: 'name') required String nameSnapshot,
     required String unitPrice,
     required int quantity,
     required String totalPrice,

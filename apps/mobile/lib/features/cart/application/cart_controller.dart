@@ -53,21 +53,16 @@ class CartController extends AsyncNotifier<Cart> {
   }
 
   Future<void> saveForLater(String cartItemId) async {
-    await ref.read(cartRepositoryProvider).saveForLater(cartItemId);
-    await refresh();
+    state = await AsyncValue.guard(() => ref.read(cartRepositoryProvider).saveForLater(cartItemId));
+  }
+
+  Future<void> moveToCart(String cartItemId) async {
+    state = await AsyncValue.guard(() => ref.read(cartRepositoryProvider).moveToCart(cartItemId));
   }
 
   Future<void> clearCart() async {
     await ref.read(cartRepositoryProvider).clearCart();
     await refresh();
-  }
-
-  Future<void> applyPromoCode(String code) async {
-    state = await AsyncValue.guard(() => ref.read(cartRepositoryProvider).applyPromoCode(code));
-  }
-
-  Future<void> removePromoCode() async {
-    state = await AsyncValue.guard(() => ref.read(cartRepositoryProvider).removePromoCode());
   }
 }
 

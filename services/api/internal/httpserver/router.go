@@ -69,6 +69,8 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 			authed.POST("/cart/items", h.Cart.AddItem)
 			authed.PATCH("/cart/items/:id", h.Cart.UpdateItem)
 			authed.DELETE("/cart/items/:id", h.Cart.RemoveItem)
+			authed.POST("/cart/items/:id/save-for-later", h.Cart.SaveForLater)
+			authed.POST("/cart/items/:id/move-to-cart", h.Cart.MoveToCart)
 			authed.DELETE("/cart", h.Cart.Clear)
 
 			authed.POST("/checkout/quote", h.Checkout.Quote)

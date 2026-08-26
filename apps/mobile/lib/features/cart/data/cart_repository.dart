@@ -31,20 +31,17 @@ class CartRepository {
 
   Future<void> removeItem(String cartItemId) => _client.delete('/cart/items/$cartItemId');
 
-  Future<void> saveForLater(String cartItemId) =>
-      _client.post('/cart/items/$cartItemId/save-for-later');
-
-  Future<void> clearCart() => _client.delete('/cart');
-
-  Future<Cart> applyPromoCode(String code) async {
-    final json = await _client.post('/cart/promo-code', data: {'code': code});
+  Future<Cart> saveForLater(String cartItemId) async {
+    final json = await _client.post('/cart/items/$cartItemId/save-for-later');
     return Cart.fromJson(json);
   }
 
-  Future<Cart> removePromoCode() async {
-    await _client.delete('/cart/promo-code');
-    return getCart();
+  Future<Cart> moveToCart(String cartItemId) async {
+    final json = await _client.post('/cart/items/$cartItemId/move-to-cart');
+    return Cart.fromJson(json);
   }
+
+  Future<void> clearCart() => _client.delete('/cart');
 }
 
 final cartRepositoryProvider = Provider<CartRepository>((ref) {

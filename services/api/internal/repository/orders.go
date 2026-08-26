@@ -75,6 +75,27 @@ func (r *OrderRepository) InsertStatusHistory(ctx context.Context, q Querier, or
 	return nil
 }
 
+// GetStatusHistory returns an order's status transitions, oldest first (for
+// the mobile order-tracking timeline).
+func (r *OrderRepository) GetStatusHistory(ctx context.Context, q Querier, orderID uuid.UUID) ([]models.OrderStatusHistory, error) {
+	rows, err := q.Query(ctx, `
+		SELECT id, order_id, status, note, changed_by, created_at
+		FROM order_status_history WHERE order_id = $1::uuid ORDER BY created_at`, orderID)
+	if err != nil {
+		return nil, fmt.Errorf("repository: get order status history: %w", err)
+	}
+	defer rows.Close()
+	var out []models.OrderStatusHistory
+	for rows.Next() {
+		var h models.OrderStatusHistory
+		if err := rows.Scan(&h.ID, &h.OrderID, &h.Status, &h.Note, &h.ChangedBy, &h.CreatedAt); err != nil {
+			return nil, fmt.Errorf("repository: scan order status history: %w", err)
+		}
+		out = append(out, h)
+	}
+	return out, rows.Err()
+}
+
 const orderColumns = `id, order_number, user_id, store_id, address_id, delivery_method, status, payment_method, payment_status,
 	subtotal::text, discount_amount::text, delivery_fee::text, bonus_used::text, bonus_earned::text, promo_code_id, total::text,
 	scheduled_at, courier_id, delivery_note, cancelled_reason, created_at, updated_at`
@@ -111,6 +132,11 @@ func (r *OrderRepository) GetByID(ctx context.Context, q Querier, id, userID uui
 		return nil, err
 	}
 	o.Items = items
+	history, err := r.GetStatusHistory(ctx, q, o.ID)
+	if err != nil {
+		return nil, err
+	}
+	o.StatusHistory = history
 	return o, nil
 }
 

@@ -118,6 +118,7 @@
   "cartEmptyMessage": "Добавьте товары, чтобы начать",
   "cartRemoveItem": "Удалить",
   "cartSaveForLater": "Отложить",
+  "cartMoveToCart": "Вернуть в корзину",
   "cartMoveToCart": "Переместить в корзину",
   "cartSavedForLaterTitle": "Отложенные товары",
   "cartPromoCodeLabel": "Промокод",

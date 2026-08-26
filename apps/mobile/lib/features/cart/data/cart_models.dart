@@ -14,27 +14,24 @@ abstract class CartItem with _$CartItem {
     required String id,
     required Product product,
     required int quantity,
-    required String lineTotal,
-    @Default(true) bool isAvailable,
-    @Default(false) bool savedForLater,
+    @JsonKey(name: 'line_total') required String lineTotal,
+    @JsonKey(name: 'available') @Default(true) bool isAvailable,
   }) = _CartItem;
 
   factory CartItem.fromJson(Map<String, dynamic> json) => _$CartItemFromJson(json);
 }
 
-/// `GET /cart` response. Every money field is server-computed — the UI
-/// only ever displays these values, never derives its own (docs/SECURITY.md:
-/// "client never computes money").
+/// `GET /cart` response. `subtotal` is the only total the backend computes
+/// at this stage (`services/api/internal/httpapi/dto/cart.go`) — discount,
+/// delivery fee, and the final total all depend on a chosen address/delivery
+/// method and are only known from `POST /checkout/quote`, shown on the
+/// Checkout screen instead (`CheckoutQuoteSummary`).
 @freezed
 abstract class Cart with _$Cart {
   const factory Cart({
     @Default(<CartItem>[]) List<CartItem> items,
     @Default(<CartItem>[]) List<CartItem> savedForLater,
     required String subtotal,
-    @Default('0.00') String discount,
-    @Default('0.00') String deliveryFee,
-    required String total,
-    String? promoCode,
   }) = _Cart;
 
   const Cart._();
@@ -44,5 +41,5 @@ abstract class Cart with _$Cart {
   bool get isEmpty => items.isEmpty;
   int get itemCount => items.fold(0, (sum, item) => sum + item.quantity);
 
-  static const empty = Cart(items: [], savedForLater: [], subtotal: '0.00', total: '0.00');
+  static const empty = Cart(items: [], savedForLater: [], subtotal: '0.00');
 }

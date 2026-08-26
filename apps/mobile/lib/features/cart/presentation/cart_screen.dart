@@ -26,14 +26,6 @@ class CartScreen extends ConsumerStatefulWidget {
 }
 
 class _CartScreenState extends ConsumerState<CartScreen> {
-  final _promoController = TextEditingController();
-
-  @override
-  void dispose() {
-    _promoController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -71,11 +63,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             onSaveForLater: () =>
                                 ref.read(cartControllerProvider.notifier).saveForLater(item.id),
                           )),
-                      const SizedBox(height: AppSpacing.sm),
-                      _PromoCodeField(
-                        controller: _promoController,
-                        currentCode: cart.promoCode,
-                      ),
                       const SizedBox(height: AppSpacing.md),
                       CartTotalsSummary(cart: cart),
                       if (cart.savedForLater.isNotEmpty) ...[
@@ -84,9 +71,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                         const SizedBox(height: AppSpacing.xs),
                         ...cart.savedForLater.map((item) => CartItemTile(
                               item: item,
-                              onQuantityChanged: (_) {},
                               onRemove: () =>
                                   ref.read(cartControllerProvider.notifier).removeItem(item.id),
+                              onMoveToCart: () =>
+                                  ref.read(cartControllerProvider.notifier).moveToCart(item.id),
                             )),
                       ],
                       const SizedBox(height: AppSpacing.xl),
@@ -125,56 +113,3 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   }
 }
 
-class _PromoCodeField extends ConsumerWidget {
-  const _PromoCodeField({required this.controller, this.currentCode});
-
-  final TextEditingController controller;
-  final String? currentCode;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
-
-    if (currentCode != null) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(AppSpacing.buttonRadius),
-        ),
-        child: Row(
-          children: [
-            const Icon(LucideIcons.tag, size: 18),
-            const SizedBox(width: AppSpacing.xs),
-            Expanded(child: Text(currentCode!)),
-            TextButton(
-              onPressed: () => ref.read(cartControllerProvider.notifier).removePromoCode(),
-              child: Text(l10n.cartPromoCodeRemove),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: controller,
-            textCapitalization: TextCapitalization.characters,
-            decoration: InputDecoration(hintText: l10n.cartPromoCodeHint),
-          ),
-        ),
-        const SizedBox(width: AppSpacing.xs),
-        OutlinedButton(
-          onPressed: () {
-            final code = controller.text.trim();
-            if (code.isEmpty) return;
-            ref.read(cartControllerProvider.notifier).applyPromoCode(code);
-          },
-          child: Text(l10n.cartPromoCodeApply),
-        ),
-      ],
-    );
-  }
-}

@@ -52,6 +52,8 @@ class CheckoutScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xs),
           _PaymentMethodSelector(),
           const SizedBox(height: AppSpacing.lg),
+          _PromoCodeField(currentCode: state.promoCode),
+          const SizedBox(height: AppSpacing.lg),
           Text(l10n.checkoutQuoteTitle, style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: AppSpacing.xs),
           state.quote.when(
@@ -287,6 +289,72 @@ class _OrderConfirmation extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _PromoCodeField extends ConsumerStatefulWidget {
+  const _PromoCodeField({required this.currentCode});
+
+  final String? currentCode;
+
+  @override
+  ConsumerState<_PromoCodeField> createState() => _PromoCodeFieldState();
+}
+
+class _PromoCodeFieldState extends ConsumerState<_PromoCodeField> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    if (widget.currentCode != null) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(AppSpacing.buttonRadius),
+        ),
+        child: Row(
+          children: [
+            const Icon(LucideIcons.tag, size: 18),
+            const SizedBox(width: AppSpacing.xs),
+            Expanded(child: Text(widget.currentCode!)),
+            TextButton(
+              onPressed: () => ref.read(checkoutControllerProvider.notifier).setPromoCode(null),
+              child: Text(l10n.cartPromoCodeRemove),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _controller,
+            textCapitalization: TextCapitalization.characters,
+            decoration: InputDecoration(hintText: l10n.cartPromoCodeHint),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.xs),
+        OutlinedButton(
+          onPressed: () {
+            final code = _controller.text.trim();
+            if (code.isEmpty) return;
+            ref.read(checkoutControllerProvider.notifier).setPromoCode(code);
+          },
+          child: Text(l10n.cartPromoCodeApply),
+        ),
+      ],
     );
   }
 }

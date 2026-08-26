@@ -72,7 +72,8 @@ type Order struct {
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 
-	Items []OrderItem
+	Items         []OrderItem
+	StatusHistory []OrderStatusHistory
 }
 
 // OrderItem mirrors order_items (price/name snapshot at order time).
