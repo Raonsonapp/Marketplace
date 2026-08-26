@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tajikshop/core/icons/app_icons.dart';
 
+import '../../../core/location/location_service.dart';
 import '../../../core/models/address.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -103,6 +104,9 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
   final _apartmentController = TextEditingController();
   final _commentController = TextEditingController();
   bool _isSaving = false;
+  bool _isLocating = false;
+  double? _lat;
+  double? _lng;
 
   @override
   void dispose() {
@@ -130,6 +134,15 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(l10n.checkoutAddressAdd, style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: AppSpacing.sm),
+            OutlinedButton.icon(
+              onPressed: _isLocating ? null : _useMyLocation,
+              icon: _isLocating
+                  ? const SizedBox(
+                      width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                  : Icon(_lat != null ? LucideIcons.checkCircle : LucideIcons.mapPin),
+              label: Text(_lat != null ? l10n.sellerLocationCaptured : l10n.sellerUseMyLocation),
+            ),
             const SizedBox(height: AppSpacing.md),
             TextField(
               controller: _cityController,
@@ -179,6 +192,35 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
     );
   }
 
+  Future<void> _useMyLocation() async {
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _isLocating = true);
+    try {
+      final loc = await ref.read(locationServiceProvider).currentLocation(withAddress: true);
+      if (!mounted) return;
+      setState(() {
+        _lat = loc.latitude;
+        _lng = loc.longitude;
+        if (loc.city != null) _cityController.text = loc.city!;
+        if (loc.street != null) _streetController.text = loc.street!;
+        if (loc.house != null && _houseController.text.trim().isEmpty) {
+          _houseController.text = loc.house!;
+        }
+      });
+    } on LocationException catch (e) {
+      if (!mounted) return;
+      final message = switch (e.reason) {
+        LocationFailure.serviceDisabled => l10n.locationServiceDisabled,
+        LocationFailure.permissionDenied => l10n.locationPermissionDenied,
+        LocationFailure.permissionDeniedForever => l10n.locationPermissionDeniedForever,
+        LocationFailure.lookupFailed => l10n.locationLookupFailed,
+      };
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    } finally {
+      if (mounted) setState(() => _isLocating = false);
+    }
+  }
+
   Future<void> _submit() async {
     if (_cityController.text.trim().isEmpty || _streetController.text.trim().isEmpty) return;
     setState(() => _isSaving = true);
@@ -190,6 +232,8 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
           apartment:
               _apartmentController.text.trim().isEmpty ? null : _apartmentController.text.trim(),
           comment: _commentController.text.trim().isEmpty ? null : _commentController.text.trim(),
+          lat: _lat,
+          lng: _lng,
         ));
     if (mounted) Navigator.of(context).pop();
   }

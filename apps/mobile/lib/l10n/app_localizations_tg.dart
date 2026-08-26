@@ -917,6 +917,18 @@ class AppLocalizationsTg extends AppLocalizations {
   String get sellerLocationCaptured => 'Ҷойгиршавӣ нигоҳ дошта шуд';
 
   @override
+  String get locationServiceDisabled => 'GPS хомӯш аст. Лутфан ҷойгиршавиро фаъол кунед.';
+
+  @override
+  String get locationPermissionDenied => 'Иҷозати ҷойгиршавӣ дода нашуд.';
+
+  @override
+  String get locationPermissionDeniedForever => 'Иҷозати ҷойгиршавӣ баста шудааст. Онро дар танзимот фаъол кунед.';
+
+  @override
+  String get locationLookupFailed => 'Ҷойгиршавиро муайян карда нашуд. Дубора кӯшиш кунед.';
+
+  @override
   String get sellerWebsiteLabel => 'Вебсайт';
 
   @override

@@ -55,6 +55,10 @@ dependencies:
   # GPS + vendor-neutral map (OpenStreetMap tiles, no paid API key —
   # mirrors the backend's vendor-agnostic geo.Provider principle)
   geolocator: ^14.0.3
+  # Reverse-geocoding (lat/lng -> city/street) for auto-filling a delivery
+  # address from the device's current location. Uses the platform's own
+  # geocoder (Android Geocoder / Apple CLGeocoder), no paid API key.
+  geocoding: ^3.0.0
   flutter_map: ^8.3.1
   latlong2: ^0.10.1
 

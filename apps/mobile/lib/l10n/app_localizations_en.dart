@@ -908,6 +908,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellerLocationCaptured => 'Location saved';
 
   @override
+  String get locationServiceDisabled => 'Location is turned off. Please enable GPS.';
+
+  @override
+  String get locationPermissionDenied => 'Location permission was denied.';
+
+  @override
+  String get locationPermissionDeniedForever => 'Location permission is blocked. Enable it in Settings.';
+
+  @override
+  String get locationLookupFailed => 'Could not determine your location. Please try again.';
+
+  @override
   String get sellerWebsiteLabel => 'Website';
 
   @override

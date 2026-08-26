@@ -1795,6 +1795,18 @@ abstract class AppLocalizations {
   /// No description provided for @sellerLocationCaptured.
   String get sellerLocationCaptured;
 
+  /// No description provided for @locationServiceDisabled.
+  String get locationServiceDisabled;
+
+  /// No description provided for @locationPermissionDenied.
+  String get locationPermissionDenied;
+
+  /// No description provided for @locationPermissionDeniedForever.
+  String get locationPermissionDeniedForever;
+
+  /// No description provided for @locationLookupFailed.
+  String get locationLookupFailed;
+
   /// No description provided for @sellerWebsiteLabel.
   String get sellerWebsiteLabel;
 

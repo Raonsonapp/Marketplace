@@ -907,6 +907,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerLocationCaptured => 'Местоположение сохранено';
 
   @override
+  String get locationServiceDisabled => 'GPS выключен. Пожалуйста, включите геолокацию.';
+
+  @override
+  String get locationPermissionDenied => 'Доступ к геолокации не предоставлен.';
+
+  @override
+  String get locationPermissionDeniedForever => 'Доступ к геолокации заблокирован. Включите его в настройках.';
+
+  @override
+  String get locationLookupFailed => 'Не удалось определить местоположение. Попробуйте ещё раз.';
+
+  @override
   String get sellerWebsiteLabel => 'Веб-сайт';
 
   @override
