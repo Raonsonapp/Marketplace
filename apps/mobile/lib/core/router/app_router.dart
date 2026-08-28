@@ -20,6 +20,7 @@ import '../../features/orders/presentation/orders_screen.dart';
 import '../../features/product/presentation/product_detail_screen.dart';
 import '../../features/cargo/presentation/cargo_screen.dart';
 import '../../features/profile/presentation/addresses_screen.dart';
+import '../../features/profile/presentation/legal_screen.dart';
 import '../../features/profile/presentation/language_selection_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
@@ -195,6 +196,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.cargo,
         builder: (context, state) => const CargoScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.legal,
+        builder: (context, state) => const LegalScreen(),
       ),
       GoRoute(
         path: RoutePaths.languageSelection,

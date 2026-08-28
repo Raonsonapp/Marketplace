@@ -2211,6 +2211,60 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Вазн: {weight} кг'**
   String cargoWeightKg(String weight);
+
+  /// No description provided for @legalTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳуҷҷатҳои ҳуқуқӣ'**
+  String get legalTitle;
+
+  /// No description provided for @legalSubtitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Сиёсати махфият, шартҳо, нест кардани ҳисоб'**
+  String get legalSubtitle;
+
+  /// No description provided for @legalPrivacyPolicy.
+  ///
+  /// In tg, this message translates to:
+  /// **'Сиёсати махфият'**
+  String get legalPrivacyPolicy;
+
+  /// No description provided for @legalTerms.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шартҳои истифода'**
+  String get legalTerms;
+
+  /// No description provided for @legalDeleteAccountPage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дархости нест кардани ҳисоб'**
+  String get legalDeleteAccountPage;
+
+  /// No description provided for @legalOpenFailed.
+  ///
+  /// In tg, this message translates to:
+  /// **'Саҳифаро кушода натавонистем'**
+  String get legalOpenFailed;
+
+  /// No description provided for @accountDeleteTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Нест кардани ҳисоб'**
+  String get accountDeleteTitle;
+
+  /// No description provided for @accountDeleteWarning.
+  ///
+  /// In tg, this message translates to:
+  /// **'Профил, суроғаҳо, сабад ва интихобҳои шумо нест мешаванд. Сабтҳои фармоиш барои ҳисоботи андоз нигоҳ дошта мешаванд, вале аз ҳисоби шумо ҷудо карда мешаванд. Ин амалро баргардонидан мумкин нест.'**
+  String get accountDeleteWarning;
+
+  /// No description provided for @accountDeleteConfirm.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳа, нест кун'**
+  String get accountDeleteConfirm;
 }
 
 class _AppLocalizationsDelegate

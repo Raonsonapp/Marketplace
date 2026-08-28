@@ -427,5 +427,14 @@
   "cargoWeightKg": "Вазн: {weight} кг",
   "@cargoWeightKg": {
     "placeholders": {"weight": {"type": "String"}}
-  }
+  },
+  "legalTitle": "Ҳуҷҷатҳои ҳуқуқӣ",
+  "legalSubtitle": "Сиёсати махфият, шартҳо, нест кардани ҳисоб",
+  "legalPrivacyPolicy": "Сиёсати махфият",
+  "legalTerms": "Шартҳои истифода",
+  "legalDeleteAccountPage": "Дархости нест кардани ҳисоб",
+  "legalOpenFailed": "Саҳифаро кушода натавонистем",
+  "accountDeleteTitle": "Нест кардани ҳисоб",
+  "accountDeleteWarning": "Профил, суроғаҳо, сабад ва интихобҳои шумо нест мешаванд. Сабтҳои фармоиш барои ҳисоботи андоз нигоҳ дошта мешаванд, вале аз ҳисоби шумо ҷудо карда мешаванд. Ин амалро баргардонидан мумкин нест.",
+  "accountDeleteConfirm": "Ҳа, нест кун"
 }

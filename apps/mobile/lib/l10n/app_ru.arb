@@ -393,5 +393,14 @@
   "cargoStatusCancelled": "Отменена",
   "cargoRatePerKg": "{price} / кг",
   "cargoTransitDays": "{min}–{max} дней в пути",
-  "cargoWeightKg": "Вес: {weight} кг"
+  "cargoWeightKg": "Вес: {weight} кг",
+  "legalTitle": "Правовые документы",
+  "legalSubtitle": "Политика конфиденциальности, условия, удаление аккаунта",
+  "legalPrivacyPolicy": "Политика конфиденциальности",
+  "legalTerms": "Условия использования",
+  "legalDeleteAccountPage": "Запрос на удаление аккаунта",
+  "legalOpenFailed": "Не удалось открыть страницу",
+  "accountDeleteTitle": "Удалить аккаунт",
+  "accountDeleteWarning": "Ваш профиль, адреса, корзина и избранное будут удалены. Записи о заказах сохранятся для налоговой отчётности, но будут отвязаны от вашего аккаунта. Это действие необратимо.",
+  "accountDeleteConfirm": "Да, удалить"
 }

@@ -28,6 +28,11 @@ class ProfileRepository {
     });
     return AppUser.fromJson(json);
   }
+
+  /// `DELETE /profile` — the in-app account deletion Google Play requires.
+  /// The server clears the identifying fields and revokes every session, so
+  /// the caller must drop the local session immediately afterwards.
+  Future<void> deleteAccount() => _client.delete('/profile');
 }
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {

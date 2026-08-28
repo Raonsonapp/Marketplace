@@ -27,6 +27,17 @@ as endpoints are implemented — Phase 2+).
 - Idempotency: `POST /orders` requires an `Idempotency-Key` header to make
   double-submission safe (see Section 38 test case "double order submission").
 
+### Public pages (server root, not under /api/v1 — opened in a browser)
+```
+GET    /privacy                                -> the privacy policy Google Play requires a URL for
+GET    /terms                                  -> terms of use
+GET    /delete-account                         -> how to delete an account, including for someone who
+                                                  can no longer sign in (Play requires a web route)
+```
+The text is embedded from `services/api/internal/legal/*.md`, which is the
+canonical copy — `docs/PRIVACY_POLICY.md` and `docs/TERMS_OF_SERVICE.md`
+point at it rather than duplicating it.
+
 ## Endpoints
 
 ### Auth
@@ -118,6 +129,9 @@ DELETE /addresses/:id
 POST   /addresses/:id/default
 GET    /profile
 PATCH  /profile               { full_name, email, language, country }
+DELETE /profile                                -> in-app account deletion (Play requirement): clears the
+                                                  identifying fields and revokes every session. Order
+                                                  records are retained but detached. 204.
 ```
 
 ### Cargo (parcel forwarding, China -> TJ/RU)

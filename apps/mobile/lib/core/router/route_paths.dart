@@ -26,6 +26,7 @@ class RoutePaths {
   static const languageSelection = '/profile/language';
   static const addresses = '/profile/addresses';
   static const cargo = '/cargo';
+  static const legal = '/profile/legal';
 
   static const loyalty = '/loyalty';
   static const promotions = '/promotions';

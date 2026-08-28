@@ -47,3 +47,13 @@ func (h *ProfileHandler) Update(c *gin.Context) {
 	}
 	ok(c, dto.NewUserResponse(*u))
 }
+
+// Delete handles DELETE /profile — the in-app account deletion Google Play
+// requires. There is no undo, so the app confirms before calling this.
+func (h *ProfileHandler) Delete(c *gin.Context) {
+	if err := h.svc.Delete(c.Request.Context(), httpctx.MustUserID(c)); err != nil {
+		handleErr(c, err)
+		return
+	}
+	noContent(c)
+}

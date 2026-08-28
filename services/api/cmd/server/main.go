@@ -122,7 +122,7 @@ func run() error {
 	addressSvc := service.NewAddressService(pool, addressRepo)
 	regionSvc := service.NewRegionService(pool, regionRepo)
 	cargoSvc := service.NewCargoService(pool, cargoRepo, notificationRepo)
-	profileSvc := service.NewProfileService(pool, userRepo)
+	profileSvc := service.NewProfileService(pool, userRepo, sessionRepo)
 	promotionSvc := service.NewPromotionService(pool, discountRepo, promoRepo)
 	reviewSvc := service.NewReviewService(pool, reviewRepo)
 	notificationSvc := service.NewNotificationService(pool, notificationRepo)
@@ -178,6 +178,7 @@ func run() error {
 		Address:      httpapi.NewAddressHandler(addressSvc),
 		Region:       httpapi.NewRegionHandler(regionSvc),
 		Cargo:        httpapi.NewCargoHandler(cargoSvc),
+		Legal:        httpapi.NewLegalHandler(),
 		Profile:      httpapi.NewProfileHandler(profileSvc),
 		Health:       httpapi.NewHealthHandler(pool, rdb),
 		OrderWS:      httpapi.NewOrderWSHandler(hub, orderSvc, tokenMgr),

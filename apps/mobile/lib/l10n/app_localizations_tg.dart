@@ -1134,4 +1134,31 @@ class AppLocalizationsTg extends AppLocalizations {
   String cargoWeightKg(String weight) {
     return 'Вазн: $weight кг';
   }
+
+  @override
+  String get legalTitle => 'Ҳуҷҷатҳои ҳуқуқӣ';
+
+  @override
+  String get legalSubtitle => 'Сиёсати махфият, шартҳо, нест кардани ҳисоб';
+
+  @override
+  String get legalPrivacyPolicy => 'Сиёсати махфият';
+
+  @override
+  String get legalTerms => 'Шартҳои истифода';
+
+  @override
+  String get legalDeleteAccountPage => 'Дархости нест кардани ҳисоб';
+
+  @override
+  String get legalOpenFailed => 'Саҳифаро кушода натавонистем';
+
+  @override
+  String get accountDeleteTitle => 'Нест кардани ҳисоб';
+
+  @override
+  String get accountDeleteWarning => 'Профил, суроғаҳо, сабад ва интихобҳои шумо нест мешаванд. Сабтҳои фармоиш барои ҳисоботи андоз нигоҳ дошта мешаванд, вале аз ҳисоби шумо ҷудо карда мешаванд. Ин амалро баргардонидан мумкин нест.';
+
+  @override
+  String get accountDeleteConfirm => 'Ҳа, нест кун';
 }

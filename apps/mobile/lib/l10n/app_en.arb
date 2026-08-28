@@ -393,5 +393,14 @@
   "cargoStatusCancelled": "Cancelled",
   "cargoRatePerKg": "{price} / kg",
   "cargoTransitDays": "{min}–{max} days in transit",
-  "cargoWeightKg": "Weight: {weight} kg"
+  "cargoWeightKg": "Weight: {weight} kg",
+  "legalTitle": "Legal",
+  "legalSubtitle": "Privacy policy, terms, account deletion",
+  "legalPrivacyPolicy": "Privacy policy",
+  "legalTerms": "Terms of use",
+  "legalDeleteAccountPage": "Request account deletion",
+  "legalOpenFailed": "Could not open the page",
+  "accountDeleteTitle": "Delete account",
+  "accountDeleteWarning": "Your profile, addresses, cart and favourites will be deleted. Order records are kept for tax reporting but detached from your account. This cannot be undone.",
+  "accountDeleteConfirm": "Yes, delete"
 }

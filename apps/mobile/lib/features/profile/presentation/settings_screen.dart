@@ -12,6 +12,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_controller.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../core/session/session_controller.dart';
+import '../../../core/widgets/error_state_view.dart';
 import '../../auth/application/logout_action.dart';
 import '../application/profile_controller.dart';
 
@@ -31,6 +32,8 @@ class SettingsScreen extends ConsumerWidget {
     };
     final countries = ref.watch(countriesProvider).valueOrNull ?? const <Country>[];
     final activeCountry = ref.watch(activeCountryProvider);
+    final isAuthenticated =
+        ref.watch(sessionControllerProvider).valueOrNull?.isAuthenticated ?? false;
     final themeMode = ref.watch(themeModeControllerProvider);
     final themeLabel = switch (themeMode) {
       ThemeMode.light => l10n.themeLight,
@@ -79,12 +82,35 @@ class SettingsScreen extends ConsumerWidget {
               onTap: () => _pickThemeMode(context, ref, themeMode),
             ),
           ),
+          const SizedBox(height: AppSpacing.sm),
+          Card(
+            child: ListTile(
+              leading: const Icon(LucideIcons.shieldCheck),
+              title: Text(l10n.legalTitle),
+              subtitle: Text(l10n.legalSubtitle),
+              trailing: const Icon(LucideIcons.chevronRight),
+              onTap: () => context.push(RoutePaths.legal),
+            ),
+          ),
           const SizedBox(height: AppSpacing.lg),
           OutlinedButton.icon(
             onPressed: () => _confirmLogout(context, ref),
             icon: const Icon(LucideIcons.logOut, color: AppColors.error),
             label: Text(l10n.authLogout, style: const TextStyle(color: AppColors.error)),
           ),
+          const SizedBox(height: AppSpacing.sm),
+          // Required by Google Play for any app that lets people create an
+          // account. Kept visually quiet and behind a typed confirmation:
+          // it is irreversible and sits one tap from "log out".
+          if (isAuthenticated)
+            TextButton.icon(
+              onPressed: () => _confirmDeleteAccount(context, ref),
+              icon: const Icon(LucideIcons.trash2, size: 18, color: AppColors.error),
+              label: Text(
+                l10n.accountDeleteTitle,
+                style: const TextStyle(color: AppColors.error),
+              ),
+            ),
         ],
       ),
     );
@@ -150,6 +176,49 @@ class SettingsScreen extends ConsumerWidget {
     );
     if (confirmed != true) return;
     await performLogout(ref);
+    if (context.mounted) context.go(RoutePaths.home);
+  }
+
+  /// Deleting an account cannot be undone, so this asks twice over: a
+  /// dialog that spells out what goes and what is kept, and then the
+  /// destructive action only on an explicit second tap.
+  Future<void> _confirmDeleteAccount(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.accountDeleteTitle),
+        content: Text(l10n.accountDeleteWarning),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.commonCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(
+              l10n.accountDeleteConfirm,
+              style: const TextStyle(color: AppColors.error),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await ref.read(profileControllerProvider.notifier).deleteAccount();
+    } catch (error) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(
+        SnackBar(content: Text(ErrorStateView.messageFor(context, error))),
+      );
+      return;
+    }
+    // The server has already revoked every session; clear the local one so
+    // the app doesn't keep using a token that no longer resolves.
+    await ref.read(sessionControllerProvider.notifier).logout();
     if (context.mounted) context.go(RoutePaths.home);
   }
 

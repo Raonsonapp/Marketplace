@@ -1123,4 +1123,31 @@ class AppLocalizationsRu extends AppLocalizations {
   String cargoWeightKg(String weight) {
     return 'Вес: $weight кг';
   }
+
+  @override
+  String get legalTitle => 'Правовые документы';
+
+  @override
+  String get legalSubtitle => 'Политика конфиденциальности, условия, удаление аккаунта';
+
+  @override
+  String get legalPrivacyPolicy => 'Политика конфиденциальности';
+
+  @override
+  String get legalTerms => 'Условия использования';
+
+  @override
+  String get legalDeleteAccountPage => 'Запрос на удаление аккаунта';
+
+  @override
+  String get legalOpenFailed => 'Не удалось открыть страницу';
+
+  @override
+  String get accountDeleteTitle => 'Удалить аккаунт';
+
+  @override
+  String get accountDeleteWarning => 'Ваш профиль, адреса, корзина и избранное будут удалены. Записи о заказах сохранятся для налоговой отчётности, но будут отвязаны от вашего аккаунта. Это действие необратимо.';
+
+  @override
+  String get accountDeleteConfirm => 'Да, удалить';
 }

@@ -12,6 +12,7 @@ type Handlers struct {
 	Address      *AddressHandler
 	Region       *RegionHandler
 	Cargo        *CargoHandler
+	Legal        *LegalHandler
 	Profile      *ProfileHandler
 	Health       *HealthHandler
 	OrderWS      *OrderWSHandler

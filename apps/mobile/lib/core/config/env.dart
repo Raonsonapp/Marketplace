@@ -36,6 +36,12 @@ class Env {
     return origin.replaceFirst(RegExp('^http'), 'ws');
   }
 
+  /// Base URL for the public legal pages (`/privacy`, `/terms`,
+  /// `/delete-account`). They are served at the Gin engine's root, not
+  /// under `/api/v1`, because they are pages a person opens in a browser —
+  /// so this is the bare origin, same reasoning as [wsBaseUrl].
+  static String get legalBaseUrl => Uri.parse(apiBaseUrl).origin;
+
   /// Whether verbose network/debug logging should be enabled. Defaults to
   /// the debug-mode assert flag but can be forced via `--dart-define`.
   static const bool verboseLogging = bool.fromEnvironment(

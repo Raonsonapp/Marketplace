@@ -32,6 +32,13 @@ class ProfileController extends AsyncNotifier<AppUser?> {
     return profile;
   }
 
+  /// Deletes the account server-side. The caller clears the local session
+  /// afterwards; this deliberately does not, so the screen stays in control
+  /// of the navigation that follows.
+  Future<void> deleteAccount() async {
+    await ref.read(profileRepositoryProvider).deleteAccount();
+  }
+
   Future<void> updateProfile({String? fullName, String? email, String? country}) async {
     state = const AsyncLoading<AppUser?>().copyWithPrevious(state);
     state = await AsyncValue.guard(() async {

@@ -26,6 +26,14 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 	r.Use(middleware.Language())
 
 	r.GET("/healthz", h.Health.Check)
+
+	// Public legal pages, at the root rather than under /api/v1: these are
+	// URLs a person opens in a browser, and Google Play requires a reachable
+	// privacy-policy URL and an account-deletion page that works without
+	// signing in.
+	r.GET("/privacy", h.Legal.Privacy)
+	r.GET("/terms", h.Legal.Terms)
+	r.GET("/delete-account", h.Legal.DeleteAccount)
 	if h.OrderWS != nil {
 		r.GET("/ws/orders/:id", h.OrderWS.Serve)
 	}
@@ -102,6 +110,7 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 
 			authed.GET("/profile", h.Profile.Get)
 			authed.PATCH("/profile", h.Profile.Update)
+			authed.DELETE("/profile", h.Profile.Delete)
 
 			authed.POST("/promo-codes/validate", h.Promotion.Validate)
 			authed.POST("/reviews", h.Review.Create)

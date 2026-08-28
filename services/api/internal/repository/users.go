@@ -141,3 +141,34 @@ func (r *UserRepository) UpdateProfile(ctx context.Context, q Querier, id uuid.U
 	}
 	return u, nil
 }
+
+// SoftDelete anonymizes and retires an account.
+//
+// Order rows are deliberately left intact: they are accounting records the
+// business is required to keep, and they reference the user by id. What is
+// removed is everything that identifies the person — email, phone, name,
+// avatar — so the retained records can no longer be tied back to them,
+// which is what the privacy policy promises.
+//
+// The email is nulled rather than kept, so the address is free to register
+// a fresh account later; the unique index on it only covers live rows.
+func (r *UserRepository) SoftDelete(ctx context.Context, q Querier, id uuid.UUID) error {
+	tag, err := q.Exec(ctx, `
+		UPDATE users SET
+			email = NULL,
+			phone = NULL,
+			full_name = NULL,
+			avatar_url = NULL,
+			google_id = NULL,
+			is_active = false,
+			deleted_at = now(),
+			updated_at = now()
+		WHERE id = $1::uuid AND deleted_at IS NULL`, id)
+	if err != nil {
+		return fmt.Errorf("repository: soft delete user: %w", err)
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrNotFound
+	}
+	return nil
+}

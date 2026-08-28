@@ -1124,4 +1124,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String cargoWeightKg(String weight) {
     return 'Weight: $weight kg';
   }
+
+  @override
+  String get legalTitle => 'Legal';
+
+  @override
+  String get legalSubtitle => 'Privacy policy, terms, account deletion';
+
+  @override
+  String get legalPrivacyPolicy => 'Privacy policy';
+
+  @override
+  String get legalTerms => 'Terms of use';
+
+  @override
+  String get legalDeleteAccountPage => 'Request account deletion';
+
+  @override
+  String get legalOpenFailed => 'Could not open the page';
+
+  @override
+  String get accountDeleteTitle => 'Delete account';
+
+  @override
+  String get accountDeleteWarning => 'Your profile, addresses, cart and favourites will be deleted. Order records are kept for tax reporting but detached from your account. This cannot be undone.';
+
+  @override
+  String get accountDeleteConfirm => 'Yes, delete';
 }
