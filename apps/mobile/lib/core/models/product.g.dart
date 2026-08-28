@@ -10,14 +10,14 @@ _Product _$ProductFromJson(Map<String, dynamic> json) => _Product(
   id: json['id'] as String,
   name: json['name'] as String,
   description: json['description'] as String?,
-  imageUrl: json['image_url'] as String,
   images:
       (json['images'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const <String>[],
   price: json['price'] as String,
   oldPrice: json['old_price'] as String?,
-  discountPercent: (json['discount_percent'] as num?)?.toInt() ?? 0,
-  ratingAvg: (json['rating_avg'] as num?)?.toDouble() ?? 0.0,
+  ratingAvg: json['rating_avg'] == null
+      ? 0.0
+      : _ratingFromJson(json['rating_avg']),
   ratingCount: (json['rating_count'] as num?)?.toInt() ?? 0,
   inStock: json['in_stock'] as bool? ?? true,
   stockQuantity: (json['stock_quantity'] as num?)?.toInt(),
@@ -33,11 +33,9 @@ Map<String, dynamic> _$ProductToJson(_Product instance) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
   'description': ?instance.description,
-  'image_url': instance.imageUrl,
   'images': instance.images,
   'price': instance.price,
   'old_price': ?instance.oldPrice,
-  'discount_percent': instance.discountPercent,
   'rating_avg': instance.ratingAvg,
   'rating_count': instance.ratingCount,
   'in_stock': instance.inStock,

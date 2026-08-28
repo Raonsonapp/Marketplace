@@ -35,11 +35,11 @@ func (h *AuthHandler) SendOTP(c *gin.Context) {
 		handleErr(c, apperr.New(apperr.CodeValidation, nil))
 		return
 	}
-	if !dto.ValidPhone(req.Phone) {
-		handleErr(c, apperr.New(apperr.CodePhoneInvalid, map[string]any{"field": "phone"}))
+	if !dto.ValidEmail(req.Email) {
+		handleErr(c, apperr.New(apperr.CodeEmailInvalid, map[string]any{"field": "email"}))
 		return
 	}
-	retryAfter, err := h.svc.SendOTP(c.Request.Context(), req.Phone, c.ClientIP())
+	retryAfter, err := h.svc.SendOTP(c.Request.Context(), req.Email, c.ClientIP())
 	if err != nil {
 		handleErr(c, err)
 		return
@@ -54,15 +54,15 @@ func (h *AuthHandler) VerifyOTP(c *gin.Context) {
 		handleErr(c, apperr.New(apperr.CodeValidation, nil))
 		return
 	}
-	if !dto.ValidPhone(req.Phone) {
-		handleErr(c, apperr.New(apperr.CodePhoneInvalid, map[string]any{"field": "phone"}))
+	if !dto.ValidEmail(req.Email) {
+		handleErr(c, apperr.New(apperr.CodeEmailInvalid, map[string]any{"field": "email"}))
 		return
 	}
 	if !dto.ValidOTPCode(req.Code) {
 		handleErr(c, apperr.New(apperr.CodeOTPInvalid, nil))
 		return
 	}
-	res, err := h.svc.VerifyOTP(c.Request.Context(), req.Phone, req.Code, deviceInfo(c))
+	res, err := h.svc.VerifyOTP(c.Request.Context(), req.Email, req.Code, deviceInfo(c))
 	if err != nil {
 		handleErr(c, err)
 		return

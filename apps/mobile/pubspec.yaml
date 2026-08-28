@@ -49,8 +49,6 @@ dependencies:
   url_launcher: ^6.3.1
 
   # Firebase Phone Auth (real SMS delivery — see docs/FIREBASE_SETUP.md)
-  firebase_core: ^4.13.0
-  firebase_auth: ^6.5.7
 
   # GPS + vendor-neutral map (OpenStreetMap tiles, no paid API key —
   # mirrors the backend's vendor-agnostic geo.Provider principle)

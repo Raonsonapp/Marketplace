@@ -6,9 +6,11 @@ import (
 	"tajikshop/api/internal/models"
 )
 
-// SendOTPRequest is the body for POST /auth/send-otp.
+// SendOTPRequest is the body for POST /auth/send-otp. The identifier is an
+// email address — codes are delivered by mail, not SMS
+// (internal/pkg/otp/email.go).
 type SendOTPRequest struct {
-	Phone string `json:"phone" binding:"required"`
+	Email string `json:"email" binding:"required"`
 }
 
 // SendOTPResponse is the response for POST /auth/send-otp.
@@ -18,7 +20,7 @@ type SendOTPResponse struct {
 
 // VerifyOTPRequest is the body for POST /auth/verify-otp.
 type VerifyOTPRequest struct {
-	Phone string `json:"phone" binding:"required"`
+	Email string `json:"email" binding:"required"`
 	Code  string `json:"code" binding:"required"`
 }
 

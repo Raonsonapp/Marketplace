@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CheckoutState {
 
- AsyncValue<List<Address>> get addresses; String? get selectedAddressId; DeliveryMethod get deliveryMethod; bool get isAsap; DateTime? get scheduledAt; String get paymentMethod; AsyncValue<CheckoutQuote> get quote; bool get isPlacingOrder; AppException? get placeOrderError; PlacedOrder? get placedOrder; String? get idempotencyKey;
+ AsyncValue<List<Address>> get addresses; String? get selectedAddressId; DeliveryMethod get deliveryMethod; bool get isAsap; DateTime? get scheduledAt; String get paymentMethod; String? get promoCode; AsyncValue<CheckoutQuote> get quote; bool get isPlacingOrder; AppException? get placeOrderError; PlacedOrder? get placedOrder; String? get idempotencyKey;
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $CheckoutStateCopyWith<CheckoutState> get copyWith => _$CheckoutStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutState&&(identical(other.addresses, addresses) || other.addresses == addresses)&&(identical(other.selectedAddressId, selectedAddressId) || other.selectedAddressId == selectedAddressId)&&(identical(other.deliveryMethod, deliveryMethod) || other.deliveryMethod == deliveryMethod)&&(identical(other.isAsap, isAsap) || other.isAsap == isAsap)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.quote, quote) || other.quote == quote)&&(identical(other.isPlacingOrder, isPlacingOrder) || other.isPlacingOrder == isPlacingOrder)&&(identical(other.placeOrderError, placeOrderError) || other.placeOrderError == placeOrderError)&&(identical(other.placedOrder, placedOrder) || other.placedOrder == placedOrder)&&(identical(other.idempotencyKey, idempotencyKey) || other.idempotencyKey == idempotencyKey));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CheckoutState&&(identical(other.addresses, addresses) || other.addresses == addresses)&&(identical(other.selectedAddressId, selectedAddressId) || other.selectedAddressId == selectedAddressId)&&(identical(other.deliveryMethod, deliveryMethod) || other.deliveryMethod == deliveryMethod)&&(identical(other.isAsap, isAsap) || other.isAsap == isAsap)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.quote, quote) || other.quote == quote)&&(identical(other.isPlacingOrder, isPlacingOrder) || other.isPlacingOrder == isPlacingOrder)&&(identical(other.placeOrderError, placeOrderError) || other.placeOrderError == placeOrderError)&&(identical(other.placedOrder, placedOrder) || other.placedOrder == placedOrder)&&(identical(other.idempotencyKey, idempotencyKey) || other.idempotencyKey == idempotencyKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,addresses,selectedAddressId,deliveryMethod,isAsap,scheduledAt,paymentMethod,quote,isPlacingOrder,placeOrderError,placedOrder,idempotencyKey);
+int get hashCode => Object.hash(runtimeType,addresses,selectedAddressId,deliveryMethod,isAsap,scheduledAt,paymentMethod,promoCode,quote,isPlacingOrder,placeOrderError,placedOrder,idempotencyKey);
 
 @override
 String toString() {
-  return 'CheckoutState(addresses: $addresses, selectedAddressId: $selectedAddressId, deliveryMethod: $deliveryMethod, isAsap: $isAsap, scheduledAt: $scheduledAt, paymentMethod: $paymentMethod, quote: $quote, isPlacingOrder: $isPlacingOrder, placeOrderError: $placeOrderError, placedOrder: $placedOrder, idempotencyKey: $idempotencyKey)';
+  return 'CheckoutState(addresses: $addresses, selectedAddressId: $selectedAddressId, deliveryMethod: $deliveryMethod, isAsap: $isAsap, scheduledAt: $scheduledAt, paymentMethod: $paymentMethod, promoCode: $promoCode, quote: $quote, isPlacingOrder: $isPlacingOrder, placeOrderError: $placeOrderError, placedOrder: $placedOrder, idempotencyKey: $idempotencyKey)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $CheckoutStateCopyWith<$Res>  {
   factory $CheckoutStateCopyWith(CheckoutState value, $Res Function(CheckoutState) _then) = _$CheckoutStateCopyWithImpl;
 @useResult
 $Res call({
- AsyncValue<List<Address>> addresses, String? selectedAddressId, DeliveryMethod deliveryMethod, bool isAsap, DateTime? scheduledAt, String paymentMethod, AsyncValue<CheckoutQuote> quote, bool isPlacingOrder, AppException? placeOrderError, PlacedOrder? placedOrder, String? idempotencyKey
+ AsyncValue<List<Address>> addresses, String? selectedAddressId, DeliveryMethod deliveryMethod, bool isAsap, DateTime? scheduledAt, String paymentMethod, String? promoCode, AsyncValue<CheckoutQuote> quote, bool isPlacingOrder, AppException? placeOrderError, PlacedOrder? placedOrder, String? idempotencyKey
 });
 
 
@@ -63,7 +63,7 @@ class _$CheckoutStateCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? addresses = null,Object? selectedAddressId = freezed,Object? deliveryMethod = null,Object? isAsap = null,Object? scheduledAt = freezed,Object? paymentMethod = null,Object? quote = null,Object? isPlacingOrder = null,Object? placeOrderError = freezed,Object? placedOrder = freezed,Object? idempotencyKey = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? addresses = null,Object? selectedAddressId = freezed,Object? deliveryMethod = null,Object? isAsap = null,Object? scheduledAt = freezed,Object? paymentMethod = null,Object? promoCode = freezed,Object? quote = null,Object? isPlacingOrder = null,Object? placeOrderError = freezed,Object? placedOrder = freezed,Object? idempotencyKey = freezed,}) {
   return _then(CheckoutState(
 addresses: null == addresses ? _self.addresses : addresses // ignore: cast_nullable_to_non_nullable
 as AsyncValue<List<Address>>,selectedAddressId: freezed == selectedAddressId ? _self.selectedAddressId : selectedAddressId // ignore: cast_nullable_to_non_nullable
@@ -71,7 +71,8 @@ as String?,deliveryMethod: null == deliveryMethod ? _self.deliveryMethod : deliv
 as DeliveryMethod,isAsap: null == isAsap ? _self.isAsap : isAsap // ignore: cast_nullable_to_non_nullable
 as bool,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,quote: null == quote ? _self.quote : quote // ignore: cast_nullable_to_non_nullable
+as String,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
+as String?,quote: null == quote ? _self.quote : quote // ignore: cast_nullable_to_non_nullable
 as AsyncValue<CheckoutQuote>,isPlacingOrder: null == isPlacingOrder ? _self.isPlacingOrder : isPlacingOrder // ignore: cast_nullable_to_non_nullable
 as bool,placeOrderError: freezed == placeOrderError ? _self.placeOrderError : placeOrderError // ignore: cast_nullable_to_non_nullable
 as AppException?,placedOrder: freezed == placedOrder ? _self.placedOrder : placedOrder // ignore: cast_nullable_to_non_nullable
@@ -173,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AsyncValue<List<Address>> addresses,  String? selectedAddressId,  DeliveryMethod deliveryMethod,  bool isAsap,  DateTime? scheduledAt,  String paymentMethod,  AsyncValue<CheckoutQuote> quote,  bool isPlacingOrder,  AppException? placeOrderError,  PlacedOrder? placedOrder,  String? idempotencyKey)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( AsyncValue<List<Address>> addresses,  String? selectedAddressId,  DeliveryMethod deliveryMethod,  bool isAsap,  DateTime? scheduledAt,  String paymentMethod,  String? promoCode,  AsyncValue<CheckoutQuote> quote,  bool isPlacingOrder,  AppException? placeOrderError,  PlacedOrder? placedOrder,  String? idempotencyKey)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CheckoutState() when $default != null:
-return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_that.isAsap,_that.scheduledAt,_that.paymentMethod,_that.quote,_that.isPlacingOrder,_that.placeOrderError,_that.placedOrder,_that.idempotencyKey);case _:
+return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_that.isAsap,_that.scheduledAt,_that.paymentMethod,_that.promoCode,_that.quote,_that.isPlacingOrder,_that.placeOrderError,_that.placedOrder,_that.idempotencyKey);case _:
   return orElse();
 
 }
@@ -194,10 +195,10 @@ return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AsyncValue<List<Address>> addresses,  String? selectedAddressId,  DeliveryMethod deliveryMethod,  bool isAsap,  DateTime? scheduledAt,  String paymentMethod,  AsyncValue<CheckoutQuote> quote,  bool isPlacingOrder,  AppException? placeOrderError,  PlacedOrder? placedOrder,  String? idempotencyKey)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( AsyncValue<List<Address>> addresses,  String? selectedAddressId,  DeliveryMethod deliveryMethod,  bool isAsap,  DateTime? scheduledAt,  String paymentMethod,  String? promoCode,  AsyncValue<CheckoutQuote> quote,  bool isPlacingOrder,  AppException? placeOrderError,  PlacedOrder? placedOrder,  String? idempotencyKey)  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutState():
-return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_that.isAsap,_that.scheduledAt,_that.paymentMethod,_that.quote,_that.isPlacingOrder,_that.placeOrderError,_that.placedOrder,_that.idempotencyKey);case _:
+return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_that.isAsap,_that.scheduledAt,_that.paymentMethod,_that.promoCode,_that.quote,_that.isPlacingOrder,_that.placeOrderError,_that.placedOrder,_that.idempotencyKey);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -214,10 +215,10 @@ return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AsyncValue<List<Address>> addresses,  String? selectedAddressId,  DeliveryMethod deliveryMethod,  bool isAsap,  DateTime? scheduledAt,  String paymentMethod,  AsyncValue<CheckoutQuote> quote,  bool isPlacingOrder,  AppException? placeOrderError,  PlacedOrder? placedOrder,  String? idempotencyKey)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( AsyncValue<List<Address>> addresses,  String? selectedAddressId,  DeliveryMethod deliveryMethod,  bool isAsap,  DateTime? scheduledAt,  String paymentMethod,  String? promoCode,  AsyncValue<CheckoutQuote> quote,  bool isPlacingOrder,  AppException? placeOrderError,  PlacedOrder? placedOrder,  String? idempotencyKey)?  $default,) {final _that = this;
 switch (_that) {
 case _CheckoutState() when $default != null:
-return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_that.isAsap,_that.scheduledAt,_that.paymentMethod,_that.quote,_that.isPlacingOrder,_that.placeOrderError,_that.placedOrder,_that.idempotencyKey);case _:
+return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_that.isAsap,_that.scheduledAt,_that.paymentMethod,_that.promoCode,_that.quote,_that.isPlacingOrder,_that.placeOrderError,_that.placedOrder,_that.idempotencyKey);case _:
   return null;
 
 }
@@ -229,7 +230,7 @@ return $default(_that.addresses,_that.selectedAddressId,_that.deliveryMethod,_th
 
 
 class _CheckoutState implements CheckoutState {
-  const _CheckoutState({this.addresses = const AsyncValue.loading(), this.selectedAddressId, this.deliveryMethod = DeliveryMethod.delivery, this.isAsap = true, this.scheduledAt, this.paymentMethod = kCashOnDeliveryMethod, this.quote = const AsyncValue<CheckoutQuote>.loading(), this.isPlacingOrder = false, this.placeOrderError, this.placedOrder, this.idempotencyKey});
+  const _CheckoutState({this.addresses = const AsyncValue.loading(), this.selectedAddressId, this.deliveryMethod = DeliveryMethod.delivery, this.isAsap = true, this.scheduledAt, this.paymentMethod = kCashOnDeliveryMethod, this.promoCode, this.quote = const AsyncValue<CheckoutQuote>.loading(), this.isPlacingOrder = false, this.placeOrderError, this.placedOrder, this.idempotencyKey});
   
 
 @override@JsonKey() final  AsyncValue<List<Address>> addresses;
@@ -238,6 +239,7 @@ class _CheckoutState implements CheckoutState {
 @override@JsonKey() final  bool isAsap;
 @override final  DateTime? scheduledAt;
 @override@JsonKey() final  String paymentMethod;
+@override final  String? promoCode;
 @override@JsonKey() final  AsyncValue<CheckoutQuote> quote;
 @override@JsonKey() final  bool isPlacingOrder;
 @override final  AppException? placeOrderError;
@@ -254,16 +256,16 @@ _$CheckoutStateCopyWith<_CheckoutState> get copyWith => __$CheckoutStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutState&&(identical(other.addresses, addresses) || other.addresses == addresses)&&(identical(other.selectedAddressId, selectedAddressId) || other.selectedAddressId == selectedAddressId)&&(identical(other.deliveryMethod, deliveryMethod) || other.deliveryMethod == deliveryMethod)&&(identical(other.isAsap, isAsap) || other.isAsap == isAsap)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.quote, quote) || other.quote == quote)&&(identical(other.isPlacingOrder, isPlacingOrder) || other.isPlacingOrder == isPlacingOrder)&&(identical(other.placeOrderError, placeOrderError) || other.placeOrderError == placeOrderError)&&(identical(other.placedOrder, placedOrder) || other.placedOrder == placedOrder)&&(identical(other.idempotencyKey, idempotencyKey) || other.idempotencyKey == idempotencyKey));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CheckoutState&&(identical(other.addresses, addresses) || other.addresses == addresses)&&(identical(other.selectedAddressId, selectedAddressId) || other.selectedAddressId == selectedAddressId)&&(identical(other.deliveryMethod, deliveryMethod) || other.deliveryMethod == deliveryMethod)&&(identical(other.isAsap, isAsap) || other.isAsap == isAsap)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.paymentMethod, paymentMethod) || other.paymentMethod == paymentMethod)&&(identical(other.promoCode, promoCode) || other.promoCode == promoCode)&&(identical(other.quote, quote) || other.quote == quote)&&(identical(other.isPlacingOrder, isPlacingOrder) || other.isPlacingOrder == isPlacingOrder)&&(identical(other.placeOrderError, placeOrderError) || other.placeOrderError == placeOrderError)&&(identical(other.placedOrder, placedOrder) || other.placedOrder == placedOrder)&&(identical(other.idempotencyKey, idempotencyKey) || other.idempotencyKey == idempotencyKey));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,addresses,selectedAddressId,deliveryMethod,isAsap,scheduledAt,paymentMethod,quote,isPlacingOrder,placeOrderError,placedOrder,idempotencyKey);
+int get hashCode => Object.hash(runtimeType,addresses,selectedAddressId,deliveryMethod,isAsap,scheduledAt,paymentMethod,promoCode,quote,isPlacingOrder,placeOrderError,placedOrder,idempotencyKey);
 
 @override
 String toString() {
-  return 'CheckoutState(addresses: $addresses, selectedAddressId: $selectedAddressId, deliveryMethod: $deliveryMethod, isAsap: $isAsap, scheduledAt: $scheduledAt, paymentMethod: $paymentMethod, quote: $quote, isPlacingOrder: $isPlacingOrder, placeOrderError: $placeOrderError, placedOrder: $placedOrder, idempotencyKey: $idempotencyKey)';
+  return 'CheckoutState(addresses: $addresses, selectedAddressId: $selectedAddressId, deliveryMethod: $deliveryMethod, isAsap: $isAsap, scheduledAt: $scheduledAt, paymentMethod: $paymentMethod, promoCode: $promoCode, quote: $quote, isPlacingOrder: $isPlacingOrder, placeOrderError: $placeOrderError, placedOrder: $placedOrder, idempotencyKey: $idempotencyKey)';
 }
 
 
@@ -274,7 +276,7 @@ abstract mixin class _$CheckoutStateCopyWith<$Res> implements $CheckoutStateCopy
   factory _$CheckoutStateCopyWith(_CheckoutState value, $Res Function(_CheckoutState) _then) = __$CheckoutStateCopyWithImpl;
 @override @useResult
 $Res call({
- AsyncValue<List<Address>> addresses, String? selectedAddressId, DeliveryMethod deliveryMethod, bool isAsap, DateTime? scheduledAt, String paymentMethod, AsyncValue<CheckoutQuote> quote, bool isPlacingOrder, AppException? placeOrderError, PlacedOrder? placedOrder, String? idempotencyKey
+ AsyncValue<List<Address>> addresses, String? selectedAddressId, DeliveryMethod deliveryMethod, bool isAsap, DateTime? scheduledAt, String paymentMethod, String? promoCode, AsyncValue<CheckoutQuote> quote, bool isPlacingOrder, AppException? placeOrderError, PlacedOrder? placedOrder, String? idempotencyKey
 });
 
 
@@ -291,7 +293,7 @@ class __$CheckoutStateCopyWithImpl<$Res>
 
 /// Create a copy of CheckoutState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? addresses = null,Object? selectedAddressId = freezed,Object? deliveryMethod = null,Object? isAsap = null,Object? scheduledAt = freezed,Object? paymentMethod = null,Object? quote = null,Object? isPlacingOrder = null,Object? placeOrderError = freezed,Object? placedOrder = freezed,Object? idempotencyKey = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? addresses = null,Object? selectedAddressId = freezed,Object? deliveryMethod = null,Object? isAsap = null,Object? scheduledAt = freezed,Object? paymentMethod = null,Object? promoCode = freezed,Object? quote = null,Object? isPlacingOrder = null,Object? placeOrderError = freezed,Object? placedOrder = freezed,Object? idempotencyKey = freezed,}) {
   return _then(_CheckoutState(
 addresses: null == addresses ? _self.addresses : addresses // ignore: cast_nullable_to_non_nullable
 as AsyncValue<List<Address>>,selectedAddressId: freezed == selectedAddressId ? _self.selectedAddressId : selectedAddressId // ignore: cast_nullable_to_non_nullable
@@ -299,7 +301,8 @@ as String?,deliveryMethod: null == deliveryMethod ? _self.deliveryMethod : deliv
 as DeliveryMethod,isAsap: null == isAsap ? _self.isAsap : isAsap // ignore: cast_nullable_to_non_nullable
 as bool,scheduledAt: freezed == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,paymentMethod: null == paymentMethod ? _self.paymentMethod : paymentMethod // ignore: cast_nullable_to_non_nullable
-as String,quote: null == quote ? _self.quote : quote // ignore: cast_nullable_to_non_nullable
+as String,promoCode: freezed == promoCode ? _self.promoCode : promoCode // ignore: cast_nullable_to_non_nullable
+as String?,quote: null == quote ? _self.quote : quote // ignore: cast_nullable_to_non_nullable
 as AsyncValue<CheckoutQuote>,isPlacingOrder: null == isPlacingOrder ? _self.isPlacingOrder : isPlacingOrder // ignore: cast_nullable_to_non_nullable
 as bool,placeOrderError: freezed == placeOrderError ? _self.placeOrderError : placeOrderError // ignore: cast_nullable_to_non_nullable
 as AppException?,placedOrder: freezed == placedOrder ? _self.placedOrder : placedOrder // ignore: cast_nullable_to_non_nullable

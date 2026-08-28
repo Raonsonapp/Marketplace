@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Review {
 
- String get id; String get productId; int get rating; String? get text; List<String> get images; DateTime get createdAt; String? get reviewerName;
+ String get id; String get productId; int get rating; String? get text; List<String> get images; DateTime get createdAt; String? get reviewerName; int get helpfulCount; bool get viewerVoted;
 /// Create a copy of Review
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $ReviewCopyWith<Review> get copyWith => _$ReviewCopyWithImpl<Review>(this as Rev
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Review&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.text, text) || other.text == text)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.reviewerName, reviewerName) || other.reviewerName == reviewerName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Review&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.text, text) || other.text == text)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.reviewerName, reviewerName) || other.reviewerName == reviewerName)&&(identical(other.helpfulCount, helpfulCount) || other.helpfulCount == helpfulCount)&&(identical(other.viewerVoted, viewerVoted) || other.viewerVoted == viewerVoted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productId,rating,text,const DeepCollectionEquality().hash(images),createdAt,reviewerName);
+int get hashCode => Object.hash(runtimeType,id,productId,rating,text,const DeepCollectionEquality().hash(images),createdAt,reviewerName,helpfulCount,viewerVoted);
 
 @override
 String toString() {
-  return 'Review(id: $id, productId: $productId, rating: $rating, text: $text, images: $images, createdAt: $createdAt, reviewerName: $reviewerName)';
+  return 'Review(id: $id, productId: $productId, rating: $rating, text: $text, images: $images, createdAt: $createdAt, reviewerName: $reviewerName, helpfulCount: $helpfulCount, viewerVoted: $viewerVoted)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $ReviewCopyWith<$Res>  {
   factory $ReviewCopyWith(Review value, $Res Function(Review) _then) = _$ReviewCopyWithImpl;
 @useResult
 $Res call({
- String id, String productId, int rating, String? text, List<String> images, DateTime createdAt, String? reviewerName
+ String id, String productId, int rating, String? text, List<String> images, DateTime createdAt, String? reviewerName, int helpfulCount, bool viewerVoted
 });
 
 
@@ -66,7 +66,7 @@ class _$ReviewCopyWithImpl<$Res>
 
 /// Create a copy of Review
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = null,Object? rating = null,Object? text = freezed,Object? images = null,Object? createdAt = null,Object? reviewerName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? productId = null,Object? rating = null,Object? text = freezed,Object? images = null,Object? createdAt = null,Object? reviewerName = freezed,Object? helpfulCount = null,Object? viewerVoted = null,}) {
   return _then(Review(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,9 @@ as int,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non
 as String?,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,reviewerName: freezed == reviewerName ? _self.reviewerName : reviewerName // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,helpfulCount: null == helpfulCount ? _self.helpfulCount : helpfulCount // ignore: cast_nullable_to_non_nullable
+as int,viewerVoted: null == viewerVoted ? _self.viewerVoted : viewerVoted // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -160,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  int rating,  String? text,  List<String> images,  DateTime createdAt,  String? reviewerName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  int rating,  String? text,  List<String> images,  DateTime createdAt,  String? reviewerName,  int helpfulCount,  bool viewerVoted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Review() when $default != null:
-return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_that.createdAt,_that.reviewerName);case _:
+return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_that.createdAt,_that.reviewerName,_that.helpfulCount,_that.viewerVoted);case _:
   return orElse();
 
 }
@@ -181,10 +183,10 @@ return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  int rating,  String? text,  List<String> images,  DateTime createdAt,  String? reviewerName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  int rating,  String? text,  List<String> images,  DateTime createdAt,  String? reviewerName,  int helpfulCount,  bool viewerVoted)  $default,) {final _that = this;
 switch (_that) {
 case _Review():
-return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_that.createdAt,_that.reviewerName);case _:
+return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_that.createdAt,_that.reviewerName,_that.helpfulCount,_that.viewerVoted);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +203,10 @@ return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  int rating,  String? text,  List<String> images,  DateTime createdAt,  String? reviewerName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  int rating,  String? text,  List<String> images,  DateTime createdAt,  String? reviewerName,  int helpfulCount,  bool viewerVoted)?  $default,) {final _that = this;
 switch (_that) {
 case _Review() when $default != null:
-return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_that.createdAt,_that.reviewerName);case _:
+return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_that.createdAt,_that.reviewerName,_that.helpfulCount,_that.viewerVoted);case _:
   return null;
 
 }
@@ -216,7 +218,7 @@ return $default(_that.id,_that.productId,_that.rating,_that.text,_that.images,_t
 @JsonSerializable()
 
 class _Review implements Review {
-  const _Review({required this.id, required this.productId, required this.rating, this.text,  List<String> images = const <String>[], required this.createdAt, this.reviewerName}): _images = images;
+  const _Review({required this.id, required this.productId, required this.rating, this.text,  List<String> images = const <String>[], required this.createdAt, this.reviewerName, this.helpfulCount = 0, this.viewerVoted = false}): _images = images;
   factory _Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
 
 @override final  String id;
@@ -232,6 +234,8 @@ class _Review implements Review {
 
 @override final  DateTime createdAt;
 @override final  String? reviewerName;
+@override@JsonKey() final  int helpfulCount;
+@override@JsonKey() final  bool viewerVoted;
 
 /// Create a copy of Review
 /// with the given fields replaced by the non-null parameter values.
@@ -246,16 +250,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Review&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.text, text) || other.text == text)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.reviewerName, reviewerName) || other.reviewerName == reviewerName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Review&&(identical(other.id, id) || other.id == id)&&(identical(other.productId, productId) || other.productId == productId)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.text, text) || other.text == text)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.reviewerName, reviewerName) || other.reviewerName == reviewerName)&&(identical(other.helpfulCount, helpfulCount) || other.helpfulCount == helpfulCount)&&(identical(other.viewerVoted, viewerVoted) || other.viewerVoted == viewerVoted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,productId,rating,text,const DeepCollectionEquality().hash(_images),createdAt,reviewerName);
+int get hashCode => Object.hash(runtimeType,id,productId,rating,text,const DeepCollectionEquality().hash(_images),createdAt,reviewerName,helpfulCount,viewerVoted);
 
 @override
 String toString() {
-  return 'Review(id: $id, productId: $productId, rating: $rating, text: $text, images: $images, createdAt: $createdAt, reviewerName: $reviewerName)';
+  return 'Review(id: $id, productId: $productId, rating: $rating, text: $text, images: $images, createdAt: $createdAt, reviewerName: $reviewerName, helpfulCount: $helpfulCount, viewerVoted: $viewerVoted)';
 }
 
 
@@ -266,7 +270,7 @@ abstract mixin class _$ReviewCopyWith<$Res> implements $ReviewCopyWith<$Res> {
   factory _$ReviewCopyWith(_Review value, $Res Function(_Review) _then) = __$ReviewCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String productId, int rating, String? text, List<String> images, DateTime createdAt, String? reviewerName
+ String id, String productId, int rating, String? text, List<String> images, DateTime createdAt, String? reviewerName, int helpfulCount, bool viewerVoted
 });
 
 
@@ -283,7 +287,7 @@ class __$ReviewCopyWithImpl<$Res>
 
 /// Create a copy of Review
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = null,Object? rating = null,Object? text = freezed,Object? images = null,Object? createdAt = null,Object? reviewerName = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? productId = null,Object? rating = null,Object? text = freezed,Object? images = null,Object? createdAt = null,Object? reviewerName = freezed,Object? helpfulCount = null,Object? viewerVoted = null,}) {
   return _then(_Review(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,productId: null == productId ? _self.productId : productId // ignore: cast_nullable_to_non_nullable
@@ -292,7 +296,9 @@ as int,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non
 as String?,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,reviewerName: freezed == reviewerName ? _self.reviewerName : reviewerName // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,helpfulCount: null == helpfulCount ? _self.helpfulCount : helpfulCount // ignore: cast_nullable_to_non_nullable
+as int,viewerVoted: null == viewerVoted ? _self.viewerVoted : viewerVoted // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

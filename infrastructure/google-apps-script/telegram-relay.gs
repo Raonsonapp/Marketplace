@@ -48,6 +48,29 @@ function doPost(e) {
     return jsonResponse({ ok: false, error: "relay: unauthorized" });
   }
 
+  // kind="email": an OTP code (or any transactional mail) sent with Apps
+  // Script's built-in MailApp, i.e. from the Google account that owns this
+  // script — free, no API key, no SMTP port (which this backend's host
+  // blocks). Quota: ~100 recipients/day on a consumer Gmail account,
+  // 1500/day on Workspace.
+  if (body.kind === "email") {
+    if (!body.to) {
+      return jsonResponse({ ok: false, error: "relay: missing 'to'" });
+    }
+    try {
+      MailApp.sendEmail({
+        to: body.to,
+        subject: body.subject || "Verification code",
+        body: body.body || "",
+        name: body.from_name || "YouShop",
+      });
+      return jsonResponse({ ok: true });
+    } catch (err) {
+      // Most commonly the daily MailApp quota being exhausted.
+      return jsonResponse({ ok: false, error: "relay: sendEmail failed: " + String(err) });
+    }
+  }
+
   // kind="bot_message": a plain owner-alert (new seller application, new
   // support message) sent via the Bot API. Needs a TELEGRAM_BOT_TOKEN
   // script property; the target chat is the owner's TELEGRAM_ADMIN_CHAT_ID

@@ -37,16 +37,6 @@ class ErrorStateView extends StatelessWidget {
           return l10n.networkErrorUnknown;
       }
     }
-    if (error is FirebaseAuthAppException) {
-      return switch (error.code) {
-        'invalid-phone-number' => l10n.authPhoneInvalid,
-        'invalid-verification-code' => l10n.authOtpInvalid,
-        'session-expired' || 'code-expired' => l10n.authOtpExpired,
-        'too-many-requests' || 'quota-exceeded' => l10n.networkErrorUnknown,
-        'network-request-failed' => l10n.networkErrorNoConnection,
-        _ => error.rawMessage ?? l10n.commonErrorGeneric,
-      };
-    }
     return l10n.commonErrorGeneric;
   }
 

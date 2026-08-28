@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OrderItemLine {
 
- String get id; String get productId; String get nameSnapshot; String get unitPrice; int get quantity; String get totalPrice;
+ String get id; String get productId;@JsonKey(name: 'name') String get nameSnapshot; String get unitPrice; int get quantity; String get totalPrice;
 /// Create a copy of OrderItemLine
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $OrderItemLineCopyWith<$Res>  {
   factory $OrderItemLineCopyWith(OrderItemLine value, $Res Function(OrderItemLine) _then) = _$OrderItemLineCopyWithImpl;
 @useResult
 $Res call({
- String id, String productId, String nameSnapshot, String unitPrice, int quantity, String totalPrice
+ String id, String productId,@JsonKey(name: 'name') String nameSnapshot, String unitPrice, int quantity, String totalPrice
 });
 
 
@@ -159,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String productId, @JsonKey(name: 'name')  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OrderItemLine() when $default != null:
 return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
@@ -180,7 +180,7 @@ return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String productId, @JsonKey(name: 'name')  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)  $default,) {final _that = this;
 switch (_that) {
 case _OrderItemLine():
 return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
@@ -200,7 +200,7 @@ return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId,  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String productId, @JsonKey(name: 'name')  String nameSnapshot,  String unitPrice,  int quantity,  String totalPrice)?  $default,) {final _that = this;
 switch (_that) {
 case _OrderItemLine() when $default != null:
 return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_that.quantity,_that.totalPrice);case _:
@@ -215,12 +215,12 @@ return $default(_that.id,_that.productId,_that.nameSnapshot,_that.unitPrice,_tha
 @JsonSerializable()
 
 class _OrderItemLine implements OrderItemLine {
-  const _OrderItemLine({required this.id, required this.productId, required this.nameSnapshot, required this.unitPrice, required this.quantity, required this.totalPrice});
+  const _OrderItemLine({required this.id, required this.productId, @JsonKey(name: 'name') required this.nameSnapshot, required this.unitPrice, required this.quantity, required this.totalPrice});
   factory _OrderItemLine.fromJson(Map<String, dynamic> json) => _$OrderItemLineFromJson(json);
 
 @override final  String id;
 @override final  String productId;
-@override final  String nameSnapshot;
+@override@JsonKey(name: 'name') final  String nameSnapshot;
 @override final  String unitPrice;
 @override final  int quantity;
 @override final  String totalPrice;
@@ -258,7 +258,7 @@ abstract mixin class _$OrderItemLineCopyWith<$Res> implements $OrderItemLineCopy
   factory _$OrderItemLineCopyWith(_OrderItemLine value, $Res Function(_OrderItemLine) _then) = __$OrderItemLineCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String productId, String nameSnapshot, String unitPrice, int quantity, String totalPrice
+ String id, String productId,@JsonKey(name: 'name') String nameSnapshot, String unitPrice, int quantity, String totalPrice
 });
 
 

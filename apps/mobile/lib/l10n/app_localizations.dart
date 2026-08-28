@@ -304,6 +304,18 @@ abstract class AppLocalizations {
   /// **'Барои идома додан рақами телефони худро ворид кунед'**
   String get authWelcomeSubtitle;
 
+  /// No description provided for @authWelcomeSubtitleEmail.
+  ///
+  /// In tg, this message translates to:
+  /// **'Барои идома почтаи электронии худро ворид кунед'**
+  String get authWelcomeSubtitleEmail;
+
+  /// No description provided for @authEmailLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Почтаи электронӣ'**
+  String get authEmailLabel;
+
   /// No description provided for @authPhoneLabel.
   ///
   /// In tg, this message translates to:
@@ -343,8 +355,8 @@ abstract class AppLocalizations {
   /// No description provided for @authOtpSubtitle.
   ///
   /// In tg, this message translates to:
-  /// **'Мо рамзи 6-рақамаро ба рақами {phone} фиристодем'**
-  String authOtpSubtitle(String phone);
+  /// **'Мо рамзи тасдиқро ба почтаи электронии {email} фиристодем. Қуттии почтаи худро санҷед — агар паём набошад, ба ҷузвдони «Спам» нигаред.'**
+  String authOtpSubtitle(String email);
 
   /// No description provided for @authOtpInvalid.
   ///
@@ -379,7 +391,7 @@ abstract class AppLocalizations {
   /// No description provided for @authChangeNumber.
   ///
   /// In tg, this message translates to:
-  /// **'Тағйир додани рақам'**
+  /// **'Тағйир додани почта'**
   String get authChangeNumber;
 
   /// No description provided for @authLogout.
@@ -387,12 +399,6 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Баромадан'**
   String get authLogout;
-
-  /// No description provided for @authLogoutConfirm.
-  ///
-  /// In tg, this message translates to:
-  /// **'Шумо мутмаин ҳастед, ки мехоҳед бароед?'**
-  String get authLogoutConfirm;
 
   /// No description provided for @authCompleteRegTitle.
   ///
@@ -417,6 +423,12 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Почтаи электронӣ нодуруст аст'**
   String get authEmailInvalid;
+
+  /// No description provided for @authLogoutConfirm.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шумо мутмаин ҳастед, ки мехоҳед бароед?'**
+  String get authLogoutConfirm;
 
   /// No description provided for @authSignInRequiredTitle.
   ///
@@ -733,7 +745,7 @@ abstract class AppLocalizations {
   /// No description provided for @cartMoveToCart.
   ///
   /// In tg, this message translates to:
-  /// **'Ба сабад гузарондан'**
+  /// **'Ба сабад баргардонед'**
   String get cartMoveToCart;
 
   /// No description provided for @cartSavedForLaterTitle.
@@ -1775,117 +1787,231 @@ abstract class AppLocalizations {
   String get supportChatInputHint;
 
   /// No description provided for @sellerMenuTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шудан ба фурӯшанда'**
   String get sellerMenuTitle;
 
   /// No description provided for @sellerIntroBody.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар YouShop фурӯш кунед: ҷойгиршавии GPS-и мағозаатонро ё истиноде, ки харидорон шуморо ёбанд, гузоред, шиносномаатонро тасдиқ кунед ва бо санҷиши зуди чеҳра шахсияти худро исбот кунед — ҳама ройгон, дар дохили барнома.'**
   String get sellerIntroBody;
 
   /// No description provided for @sellerIntroStart.
+  ///
+  /// In tg, this message translates to:
+  /// **'Оғоз кардан'**
   String get sellerIntroStart;
 
   /// No description provided for @sellerStoreInfoTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мағозаи шумо'**
   String get sellerStoreInfoTitle;
 
   /// No description provided for @sellerStoreInfoSubtitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҷойгиршавии GPS-и мағозаатонро гузоред ё — агар мағозаи воқеӣ надошта бошед — истиноди вебсайт, Instagram, Telegram ё WhatsApp-и худро.'**
   String get sellerStoreInfoSubtitle;
 
   /// No description provided for @sellerUseMyLocation.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҷойгиршавии ҳозираи худро истифода баред'**
   String get sellerUseMyLocation;
 
   /// No description provided for @sellerLocationCaptured.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҷойгиршавӣ нигоҳ дошта шуд'**
   String get sellerLocationCaptured;
 
   /// No description provided for @locationServiceDisabled.
+  ///
+  /// In tg, this message translates to:
+  /// **'GPS хомӯш аст. Лутфан ҷойгиршавиро фаъол кунед.'**
   String get locationServiceDisabled;
 
   /// No description provided for @locationPermissionDenied.
+  ///
+  /// In tg, this message translates to:
+  /// **'Иҷозати ҷойгиршавӣ дода нашуд.'**
   String get locationPermissionDenied;
 
   /// No description provided for @locationPermissionDeniedForever.
+  ///
+  /// In tg, this message translates to:
+  /// **'Иҷозати ҷойгиршавӣ баста шудааст. Онро дар танзимот фаъол кунед.'**
   String get locationPermissionDeniedForever;
 
   /// No description provided for @locationLookupFailed.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҷойгиршавиро муайян карда нашуд. Дубора кӯшиш кунед.'**
   String get locationLookupFailed;
 
   /// No description provided for @sellerWebsiteLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Вебсайт'**
   String get sellerWebsiteLabel;
 
   /// No description provided for @sellerInstagramLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Instagram'**
   String get sellerInstagramLabel;
 
   /// No description provided for @sellerTelegramLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Telegram'**
   String get sellerTelegramLabel;
 
   /// No description provided for @sellerWhatsappLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'WhatsApp'**
   String get sellerWhatsappLabel;
 
   /// No description provided for @sellerStoreInfoRequiredError.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҷойгиршавии мағоза ё ҳадди ақал як истиноди тамос гузоред'**
   String get sellerStoreInfoRequiredError;
 
   /// No description provided for @sellerDocumentsTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳуҷҷатҳо'**
   String get sellerDocumentsTitle;
 
   /// No description provided for @sellerBirthDateLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Санаи таваллуд'**
   String get sellerBirthDateLabel;
 
   /// No description provided for @sellerBirthDateNotSet.
+  ///
+  /// In tg, this message translates to:
+  /// **'Гузошта нашудааст'**
   String get sellerBirthDateNotSet;
 
   /// No description provided for @sellerPassportFrontLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шиноснома — саҳифаи пеш'**
   String get sellerPassportFrontLabel;
 
   /// No description provided for @sellerPassportBackLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шиноснома — саҳифаи пас'**
   String get sellerPassportBackLabel;
 
   /// No description provided for @sellerSelfieWithPassportLabel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Селфӣ бо шиноснома дар даст'**
   String get sellerSelfieWithPassportLabel;
 
   /// No description provided for @sellerCapturePhoto.
+  ///
+  /// In tg, this message translates to:
+  /// **'Акс гирифтан'**
   String get sellerCapturePhoto;
 
   /// No description provided for @sellerRetakePhoto.
+  ///
+  /// In tg, this message translates to:
+  /// **'Аз нав гирифтан'**
   String get sellerRetakePhoto;
 
   /// No description provided for @sellerDocumentsIncompleteError.
+  ///
+  /// In tg, this message translates to:
+  /// **'Лутфан ҳар се аксро ва санаи таваллудро гузоред'**
   String get sellerDocumentsIncompleteError;
 
   /// No description provided for @sellerFaceTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Санҷиши чеҳра'**
   String get sellerFaceTitle;
 
   /// No description provided for @sellerFaceInstructionLookNormal.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ба камера оромона нигоҳ кунед, баъд тугмаи аксбардориро пахш кунед'**
   String get sellerFaceInstructionLookNormal;
 
   /// No description provided for @sellerFaceInstructionBlink.
+  ///
+  /// In tg, this message translates to:
+  /// **'Акнун чашмакашед ва боз тугмаро пахш кунед'**
   String get sellerFaceInstructionBlink;
 
   /// No description provided for @sellerFaceCapture.
+  ///
+  /// In tg, this message translates to:
+  /// **'Аксбардорӣ'**
   String get sellerFaceCapture;
 
   /// No description provided for @sellerFaceProcessing.
+  ///
+  /// In tg, this message translates to:
+  /// **'Тафтиш шуда истодааст…'**
   String get sellerFaceProcessing;
 
   /// No description provided for @sellerFaceFailed.
+  ///
+  /// In tg, this message translates to:
+  /// **'Тасдиқ карда натавонистем, ки ин шумоед. Мутмаин шавед, ки чеҳраатон хуб равшан ва пурра дида мешавад, ва аз нав кӯшиш кунед.'**
   String get sellerFaceFailed;
 
   /// No description provided for @sellerSubmitApplication.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дархостро фиристодан'**
   String get sellerSubmitApplication;
 
   /// No description provided for @sellerUnderageError.
+  ///
+  /// In tg, this message translates to:
+  /// **'Синну соли фурушанда бояд на камтар аз 18 сол бошад'**
   String get sellerUnderageError;
 
   /// No description provided for @sellerApplicationExistsError.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шумо аллакай дархости фурушандашавӣ фиристодаед'**
   String get sellerApplicationExistsError;
 
   /// No description provided for @sellerStatusTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дархости фурушандашавӣ'**
   String get sellerStatusTitle;
 
   /// No description provided for @sellerStatusPending.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дархости шумо дар ҳоли баррасӣ аст. Пас аз тасдиқ ба шумо хабар медиҳем.'**
   String get sellerStatusPending;
 
   /// No description provided for @sellerStatusApproved.
+  ///
+  /// In tg, this message translates to:
+  /// **'Табрик! Шумо ҳоло фурӯшанда дар YouShop ҳастед.'**
   String get sellerStatusApproved;
 
   /// No description provided for @sellerStatusRejected.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дархости шумо тасдиқ карда нашуд.'**
   String get sellerStatusRejected;
 }
 

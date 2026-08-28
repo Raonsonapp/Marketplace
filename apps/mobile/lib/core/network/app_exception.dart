@@ -46,22 +46,6 @@ final class NetworkException extends AppException {
   String toString() => 'NetworkException(kind: $kind)';
 }
 
-/// A failure from the Firebase Phone Auth SDK itself (docs/FIREBASE_SETUP.md)
-/// — distinct from [ApiException] because it never reaches our backend
-/// (Firebase rejects the phone number/code/etc. client-side). Carries no
-/// pre-localized message; the UI maps [code] to a localized string via
-/// `AppLocalizations`, falling back to [rawMessage] for codes it doesn't
-/// specifically recognize.
-final class FirebaseAuthAppException extends AppException {
-  const FirebaseAuthAppException(this.code, this.rawMessage);
-
-  final String code;
-  final String? rawMessage;
-
-  @override
-  String toString() => 'FirebaseAuthAppException(code: $code)';
-}
-
 /// Anything else unexpected (malformed response, programmer error surfaced
 /// through the repository layer, etc.).
 final class UnknownException extends AppException {

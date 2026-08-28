@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/otp_verification_screen.dart';
-import '../../features/auth/presentation/phone_entry_screen.dart';
+import '../../features/auth/presentation/email_entry_screen.dart';
 import '../../features/barcode/presentation/barcode_scanner_screen.dart';
 import '../../features/cart/presentation/cart_screen.dart';
 import '../../features/catalog/presentation/catalog_screen.dart';
@@ -106,22 +106,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: RoutePaths.login,
-        builder: (context, state) => const PhoneEntryScreen(),
+        builder: (context, state) => const EmailEntryScreen(),
       ),
       GoRoute(
         path: RoutePaths.otp,
         builder: (context, state) {
           final extra = state.extra;
           if (extra is OtpRouteArgs) {
-            return OtpVerificationScreen(
-              phone: extra.phone,
-              firebaseVerificationId: extra.firebaseVerificationId,
-            );
+            return OtpVerificationScreen(email: extra.email);
           }
           // Fallback for a deep link / restored route with no `extra`
-          // (e.g. `?phone=...` only) — always uses the console-OTP path.
-          final phone = state.uri.queryParameters['phone'] ?? '';
-          return OtpVerificationScreen(phone: phone);
+          // (e.g. `?email=...` only).
+          final email = state.uri.queryParameters['email'] ?? '';
+          return OtpVerificationScreen(email: email);
         },
       ),
       StatefulShellRoute.indexedStack(

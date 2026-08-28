@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Product {
 
- String get id; String get name; String? get description; String get imageUrl; List<String> get images; String get price; String? get oldPrice; int get discountPercent; double get ratingAvg; int get ratingCount; bool get inStock; int? get stockQuantity; String? get categoryId; String? get brandId; String? get brandName; String? get storeId; String get unit; bool get isFavorite;
+ String get id; String get name; String? get description; List<String> get images; String get price; String? get oldPrice;@JsonKey(fromJson: _ratingFromJson) double get ratingAvg; int get ratingCount; bool get inStock; int? get stockQuantity; String? get categoryId; String? get brandId; String? get brandName; String? get storeId; String get unit; bool get isFavorite;
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $ProductCopyWith<Product> get copyWith => _$ProductCopyWithImpl<Product>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.price, price) || other.price == price)&&(identical(other.oldPrice, oldPrice) || other.oldPrice == oldPrice)&&(identical(other.discountPercent, discountPercent) || other.discountPercent == discountPercent)&&(identical(other.ratingAvg, ratingAvg) || other.ratingAvg == ratingAvg)&&(identical(other.ratingCount, ratingCount) || other.ratingCount == ratingCount)&&(identical(other.inStock, inStock) || other.inStock == inStock)&&(identical(other.stockQuantity, stockQuantity) || other.stockQuantity == stockQuantity)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.brandId, brandId) || other.brandId == brandId)&&(identical(other.brandName, brandName) || other.brandName == brandName)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.price, price) || other.price == price)&&(identical(other.oldPrice, oldPrice) || other.oldPrice == oldPrice)&&(identical(other.ratingAvg, ratingAvg) || other.ratingAvg == ratingAvg)&&(identical(other.ratingCount, ratingCount) || other.ratingCount == ratingCount)&&(identical(other.inStock, inStock) || other.inStock == inStock)&&(identical(other.stockQuantity, stockQuantity) || other.stockQuantity == stockQuantity)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.brandId, brandId) || other.brandId == brandId)&&(identical(other.brandName, brandName) || other.brandName == brandName)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,imageUrl,const DeepCollectionEquality().hash(images),price,oldPrice,discountPercent,ratingAvg,ratingCount,inStock,stockQuantity,categoryId,brandId,brandName,storeId,unit,isFavorite);
+int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(images),price,oldPrice,ratingAvg,ratingCount,inStock,stockQuantity,categoryId,brandId,brandName,storeId,unit,isFavorite);
 
 @override
 String toString() {
-  return 'Product(id: $id, name: $name, description: $description, imageUrl: $imageUrl, images: $images, price: $price, oldPrice: $oldPrice, discountPercent: $discountPercent, ratingAvg: $ratingAvg, ratingCount: $ratingCount, inStock: $inStock, stockQuantity: $stockQuantity, categoryId: $categoryId, brandId: $brandId, brandName: $brandName, storeId: $storeId, unit: $unit, isFavorite: $isFavorite)';
+  return 'Product(id: $id, name: $name, description: $description, images: $images, price: $price, oldPrice: $oldPrice, ratingAvg: $ratingAvg, ratingCount: $ratingCount, inStock: $inStock, stockQuantity: $stockQuantity, categoryId: $categoryId, brandId: $brandId, brandName: $brandName, storeId: $storeId, unit: $unit, isFavorite: $isFavorite)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $ProductCopyWith<$Res>  {
   factory $ProductCopyWith(Product value, $Res Function(Product) _then) = _$ProductCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String? description, String imageUrl, List<String> images, String price, String? oldPrice, int discountPercent, double ratingAvg, int ratingCount, bool inStock, int? stockQuantity, String? categoryId, String? brandId, String? brandName, String? storeId, String unit, bool isFavorite
+ String id, String name, String? description, List<String> images, String price, String? oldPrice,@JsonKey(fromJson: _ratingFromJson) double ratingAvg, int ratingCount, bool inStock, int? stockQuantity, String? categoryId, String? brandId, String? brandName, String? storeId, String unit, bool isFavorite
 });
 
 
@@ -66,17 +66,15 @@ class _$ProductCopyWithImpl<$Res>
 
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? imageUrl = null,Object? images = null,Object? price = null,Object? oldPrice = freezed,Object? discountPercent = null,Object? ratingAvg = null,Object? ratingCount = null,Object? inStock = null,Object? stockQuantity = freezed,Object? categoryId = freezed,Object? brandId = freezed,Object? brandName = freezed,Object? storeId = freezed,Object? unit = null,Object? isFavorite = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? images = null,Object? price = null,Object? oldPrice = freezed,Object? ratingAvg = null,Object? ratingCount = null,Object? inStock = null,Object? stockQuantity = freezed,Object? categoryId = freezed,Object? brandId = freezed,Object? brandName = freezed,Object? storeId = freezed,Object? unit = null,Object? isFavorite = null,}) {
   return _then(Product(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
+as String?,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
 as List<String>,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as String,oldPrice: freezed == oldPrice ? _self.oldPrice : oldPrice // ignore: cast_nullable_to_non_nullable
-as String?,discountPercent: null == discountPercent ? _self.discountPercent : discountPercent // ignore: cast_nullable_to_non_nullable
-as int,ratingAvg: null == ratingAvg ? _self.ratingAvg : ratingAvg // ignore: cast_nullable_to_non_nullable
+as String?,ratingAvg: null == ratingAvg ? _self.ratingAvg : ratingAvg // ignore: cast_nullable_to_non_nullable
 as double,ratingCount: null == ratingCount ? _self.ratingCount : ratingCount // ignore: cast_nullable_to_non_nullable
 as int,inStock: null == inStock ? _self.inStock : inStock // ignore: cast_nullable_to_non_nullable
 as bool,stockQuantity: freezed == stockQuantity ? _self.stockQuantity : stockQuantity // ignore: cast_nullable_to_non_nullable
@@ -171,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  String imageUrl,  List<String> images,  String price,  String? oldPrice,  int discountPercent,  double ratingAvg,  int ratingCount,  bool inStock,  int? stockQuantity,  String? categoryId,  String? brandId,  String? brandName,  String? storeId,  String unit,  bool isFavorite)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  List<String> images,  String price,  String? oldPrice, @JsonKey(fromJson: _ratingFromJson)  double ratingAvg,  int ratingCount,  bool inStock,  int? stockQuantity,  String? categoryId,  String? brandId,  String? brandName,  String? storeId,  String unit,  bool isFavorite)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Product() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.images,_that.price,_that.oldPrice,_that.discountPercent,_that.ratingAvg,_that.ratingCount,_that.inStock,_that.stockQuantity,_that.categoryId,_that.brandId,_that.brandName,_that.storeId,_that.unit,_that.isFavorite);case _:
+return $default(_that.id,_that.name,_that.description,_that.images,_that.price,_that.oldPrice,_that.ratingAvg,_that.ratingCount,_that.inStock,_that.stockQuantity,_that.categoryId,_that.brandId,_that.brandName,_that.storeId,_that.unit,_that.isFavorite);case _:
   return orElse();
 
 }
@@ -192,10 +190,10 @@ return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.image
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  String imageUrl,  List<String> images,  String price,  String? oldPrice,  int discountPercent,  double ratingAvg,  int ratingCount,  bool inStock,  int? stockQuantity,  String? categoryId,  String? brandId,  String? brandName,  String? storeId,  String unit,  bool isFavorite)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  List<String> images,  String price,  String? oldPrice, @JsonKey(fromJson: _ratingFromJson)  double ratingAvg,  int ratingCount,  bool inStock,  int? stockQuantity,  String? categoryId,  String? brandId,  String? brandName,  String? storeId,  String unit,  bool isFavorite)  $default,) {final _that = this;
 switch (_that) {
 case _Product():
-return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.images,_that.price,_that.oldPrice,_that.discountPercent,_that.ratingAvg,_that.ratingCount,_that.inStock,_that.stockQuantity,_that.categoryId,_that.brandId,_that.brandName,_that.storeId,_that.unit,_that.isFavorite);case _:
+return $default(_that.id,_that.name,_that.description,_that.images,_that.price,_that.oldPrice,_that.ratingAvg,_that.ratingCount,_that.inStock,_that.stockQuantity,_that.categoryId,_that.brandId,_that.brandName,_that.storeId,_that.unit,_that.isFavorite);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +210,10 @@ return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.image
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? description,  String imageUrl,  List<String> images,  String price,  String? oldPrice,  int discountPercent,  double ratingAvg,  int ratingCount,  bool inStock,  int? stockQuantity,  String? categoryId,  String? brandId,  String? brandName,  String? storeId,  String unit,  bool isFavorite)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? description,  List<String> images,  String price,  String? oldPrice, @JsonKey(fromJson: _ratingFromJson)  double ratingAvg,  int ratingCount,  bool inStock,  int? stockQuantity,  String? categoryId,  String? brandId,  String? brandName,  String? storeId,  String unit,  bool isFavorite)?  $default,) {final _that = this;
 switch (_that) {
 case _Product() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.images,_that.price,_that.oldPrice,_that.discountPercent,_that.ratingAvg,_that.ratingCount,_that.inStock,_that.stockQuantity,_that.categoryId,_that.brandId,_that.brandName,_that.storeId,_that.unit,_that.isFavorite);case _:
+return $default(_that.id,_that.name,_that.description,_that.images,_that.price,_that.oldPrice,_that.ratingAvg,_that.ratingCount,_that.inStock,_that.stockQuantity,_that.categoryId,_that.brandId,_that.brandName,_that.storeId,_that.unit,_that.isFavorite);case _:
   return null;
 
 }
@@ -226,14 +224,13 @@ return $default(_that.id,_that.name,_that.description,_that.imageUrl,_that.image
 /// @nodoc
 @JsonSerializable()
 
-class _Product implements Product {
-  const _Product({required this.id, required this.name, this.description, required this.imageUrl,  List<String> images = const <String>[], required this.price, this.oldPrice, this.discountPercent = 0, this.ratingAvg = 0.0, this.ratingCount = 0, this.inStock = true, this.stockQuantity, this.categoryId, this.brandId, this.brandName, this.storeId, this.unit = 'pcs', this.isFavorite = false}): _images = images;
+class _Product extends Product {
+  const _Product({required this.id, required this.name, this.description,  List<String> images = const <String>[], required this.price, this.oldPrice, @JsonKey(fromJson: _ratingFromJson) this.ratingAvg = 0.0, this.ratingCount = 0, this.inStock = true, this.stockQuantity, this.categoryId, this.brandId, this.brandName, this.storeId, this.unit = 'pcs', this.isFavorite = false}): _images = images,super._();
   factory _Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
 @override final  String id;
 @override final  String name;
 @override final  String? description;
-@override final  String imageUrl;
  final  List<String> _images;
 @override@JsonKey() List<String> get images {
   if (_images is EqualUnmodifiableListView) return _images;
@@ -243,8 +240,7 @@ class _Product implements Product {
 
 @override final  String price;
 @override final  String? oldPrice;
-@override@JsonKey() final  int discountPercent;
-@override@JsonKey() final  double ratingAvg;
+@override@JsonKey(fromJson: _ratingFromJson) final  double ratingAvg;
 @override@JsonKey() final  int ratingCount;
 @override@JsonKey() final  bool inStock;
 @override final  int? stockQuantity;
@@ -268,16 +264,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.price, price) || other.price == price)&&(identical(other.oldPrice, oldPrice) || other.oldPrice == oldPrice)&&(identical(other.discountPercent, discountPercent) || other.discountPercent == discountPercent)&&(identical(other.ratingAvg, ratingAvg) || other.ratingAvg == ratingAvg)&&(identical(other.ratingCount, ratingCount) || other.ratingCount == ratingCount)&&(identical(other.inStock, inStock) || other.inStock == inStock)&&(identical(other.stockQuantity, stockQuantity) || other.stockQuantity == stockQuantity)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.brandId, brandId) || other.brandId == brandId)&&(identical(other.brandName, brandName) || other.brandName == brandName)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.price, price) || other.price == price)&&(identical(other.oldPrice, oldPrice) || other.oldPrice == oldPrice)&&(identical(other.ratingAvg, ratingAvg) || other.ratingAvg == ratingAvg)&&(identical(other.ratingCount, ratingCount) || other.ratingCount == ratingCount)&&(identical(other.inStock, inStock) || other.inStock == inStock)&&(identical(other.stockQuantity, stockQuantity) || other.stockQuantity == stockQuantity)&&(identical(other.categoryId, categoryId) || other.categoryId == categoryId)&&(identical(other.brandId, brandId) || other.brandId == brandId)&&(identical(other.brandName, brandName) || other.brandName == brandName)&&(identical(other.storeId, storeId) || other.storeId == storeId)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.isFavorite, isFavorite) || other.isFavorite == isFavorite));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,imageUrl,const DeepCollectionEquality().hash(_images),price,oldPrice,discountPercent,ratingAvg,ratingCount,inStock,stockQuantity,categoryId,brandId,brandName,storeId,unit,isFavorite);
+int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(_images),price,oldPrice,ratingAvg,ratingCount,inStock,stockQuantity,categoryId,brandId,brandName,storeId,unit,isFavorite);
 
 @override
 String toString() {
-  return 'Product(id: $id, name: $name, description: $description, imageUrl: $imageUrl, images: $images, price: $price, oldPrice: $oldPrice, discountPercent: $discountPercent, ratingAvg: $ratingAvg, ratingCount: $ratingCount, inStock: $inStock, stockQuantity: $stockQuantity, categoryId: $categoryId, brandId: $brandId, brandName: $brandName, storeId: $storeId, unit: $unit, isFavorite: $isFavorite)';
+  return 'Product(id: $id, name: $name, description: $description, images: $images, price: $price, oldPrice: $oldPrice, ratingAvg: $ratingAvg, ratingCount: $ratingCount, inStock: $inStock, stockQuantity: $stockQuantity, categoryId: $categoryId, brandId: $brandId, brandName: $brandName, storeId: $storeId, unit: $unit, isFavorite: $isFavorite)';
 }
 
 
@@ -288,7 +284,7 @@ abstract mixin class _$ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   factory _$ProductCopyWith(_Product value, $Res Function(_Product) _then) = __$ProductCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String? description, String imageUrl, List<String> images, String price, String? oldPrice, int discountPercent, double ratingAvg, int ratingCount, bool inStock, int? stockQuantity, String? categoryId, String? brandId, String? brandName, String? storeId, String unit, bool isFavorite
+ String id, String name, String? description, List<String> images, String price, String? oldPrice,@JsonKey(fromJson: _ratingFromJson) double ratingAvg, int ratingCount, bool inStock, int? stockQuantity, String? categoryId, String? brandId, String? brandName, String? storeId, String unit, bool isFavorite
 });
 
 
@@ -305,17 +301,15 @@ class __$ProductCopyWithImpl<$Res>
 
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? imageUrl = null,Object? images = null,Object? price = null,Object? oldPrice = freezed,Object? discountPercent = null,Object? ratingAvg = null,Object? ratingCount = null,Object? inStock = null,Object? stockQuantity = freezed,Object? categoryId = freezed,Object? brandId = freezed,Object? brandName = freezed,Object? storeId = freezed,Object? unit = null,Object? isFavorite = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? images = null,Object? price = null,Object? oldPrice = freezed,Object? ratingAvg = null,Object? ratingCount = null,Object? inStock = null,Object? stockQuantity = freezed,Object? categoryId = freezed,Object? brandId = freezed,Object? brandName = freezed,Object? storeId = freezed,Object? unit = null,Object? isFavorite = null,}) {
   return _then(_Product(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
+as String?,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
 as List<String>,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as String,oldPrice: freezed == oldPrice ? _self.oldPrice : oldPrice // ignore: cast_nullable_to_non_nullable
-as String?,discountPercent: null == discountPercent ? _self.discountPercent : discountPercent // ignore: cast_nullable_to_non_nullable
-as int,ratingAvg: null == ratingAvg ? _self.ratingAvg : ratingAvg // ignore: cast_nullable_to_non_nullable
+as String?,ratingAvg: null == ratingAvg ? _self.ratingAvg : ratingAvg // ignore: cast_nullable_to_non_nullable
 as double,ratingCount: null == ratingCount ? _self.ratingCount : ratingCount // ignore: cast_nullable_to_non_nullable
 as int,inStock: null == inStock ? _self.inStock : inStock // ignore: cast_nullable_to_non_nullable
 as bool,stockQuantity: freezed == stockQuantity ? _self.stockQuantity : stockQuantity // ignore: cast_nullable_to_non_nullable

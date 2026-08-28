@@ -41,15 +41,17 @@
 
   "authWelcomeTitle": "Хуш омадед ба YouShop",
   "authWelcomeSubtitle": "Барои идома додан рақами телефони худро ворид кунед",
+  "authWelcomeSubtitleEmail": "Барои идома почтаи электронии худро ворид кунед",
+  "authEmailLabel": "Почтаи электронӣ",
   "authPhoneLabel": "Рақами телефон",
   "authPhoneHint": "90 123 45 67",
   "authPhoneInvalid": "Рақами телефон нодуруст аст. Намуна: +992 90 123 45 67",
   "authSendCode": "Гирифтани рамз",
   "authOpenTelegramBot": "Кушодани бот дар Telegram",
   "authOtpTitle": "Рамзи тасдиқро ворид кунед",
-  "authOtpSubtitle": "Рамзи тасдиқро на бо SMS, балки тавассути хизмати расмии \"Verification Codes\" дар Telegram барои рақами {phone} фиристодем. Telegram-ро кушоед — паём бояд аллакай омада бошад.",
+  "authOtpSubtitle": "Мо рамзи тасдиқро ба почтаи электронии {email} фиристодем. Қуттии почтаи худро санҷед — агар паём набошад, ба ҷузвдони «Спам» нигаред.",
   "@authOtpSubtitle": {
-    "placeholders": {"phone": {"type": "String"}}
+    "placeholders": {"email": {"type": "String"}}
   },
   "authOtpInvalid": "Рамз нодуруст аст. Лутфан аз нав кӯшиш кунед.",
   "authOtpExpired": "Мӯҳлати рамз гузашт. Рамзи нав дархост кунед.",
@@ -59,7 +61,7 @@
     "placeholders": {"seconds": {"type": "int"}}
   },
   "authVerify": "Тасдиқ кардан",
-  "authChangeNumber": "Тағйир додани рақам",
+  "authChangeNumber": "Тағйир додани почта",
   "authLogout": "Баромадан",
   "authCompleteRegTitle": "Почтаи электрониро ворид кунед",
   "authCompleteRegSubtitle": "Марҳилаи охирин: барои огоҳиномаҳо ва барқарорсозии дастрасӣ почтаи электрониатонро гузоред",

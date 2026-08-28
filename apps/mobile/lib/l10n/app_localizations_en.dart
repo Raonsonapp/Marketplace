@@ -114,6 +114,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authWelcomeSubtitle => 'Enter your phone number to continue';
 
   @override
+  String get authWelcomeSubtitleEmail => 'Enter your email to continue';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
   String get authPhoneLabel => 'Phone number';
 
   @override
@@ -133,8 +139,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authOtpTitle => 'Enter the verification code';
 
   @override
-  String authOtpSubtitle(String phone) {
-    return 'We sent the code for $phone via the Telegram bot, not SMS. Open Telegram — the message from the bot should already be there.';
+  String authOtpSubtitle(String email) {
+    return 'We sent the verification code to $email. Check your inbox — if it is not there, look in the Spam folder.';
   }
 
   @override
@@ -155,25 +161,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authVerify => 'Verify';
 
   @override
-  String get authChangeNumber => 'Change number';
+  String get authChangeNumber => 'Change email';
 
   @override
   String get authLogout => 'Log out';
 
   @override
-  String get authLogoutConfirm => 'Are you sure you want to log out?';
-
-  @override
   String get authCompleteRegTitle => 'Enter your email';
 
   @override
-  String get authCompleteRegSubtitle => 'Last step: add your email for notifications and account recovery';
+  String get authCompleteRegSubtitle =>
+      'Last step: add your email for notifications and account recovery';
 
   @override
   String get authEmailHint => 'example@gmail.com';
 
   @override
   String get authEmailInvalid => 'Invalid email address';
+
+  @override
+  String get authLogoutConfirm => 'Are you sure you want to log out?';
 
   @override
   String get authSignInRequiredTitle => 'Sign-in required';
@@ -890,7 +897,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellerMenuTitle => 'Become a seller';
 
   @override
-  String get sellerIntroBody => 'Sell on YouShop: add your store location or a link where customers can find you, verify your passport, and confirm it\'s really you with a quick face check — all free, right in the app.';
+  String get sellerIntroBody =>
+      'Sell on YouShop: add your store location or a link where customers can find you, verify your passport, and confirm it\'s really you with a quick face check — all free, right in the app.';
 
   @override
   String get sellerIntroStart => 'Get started';
@@ -899,7 +907,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellerStoreInfoTitle => 'Your store';
 
   @override
-  String get sellerStoreInfoSubtitle => 'Add your store\'s GPS location, or — if you don\'t have a physical store — a website, Instagram, Telegram, or WhatsApp link.';
+  String get sellerStoreInfoSubtitle =>
+      'Add your store\'s GPS location, or — if you don\'t have a physical store — a website, Instagram, Telegram, or WhatsApp link.';
 
   @override
   String get sellerUseMyLocation => 'Use my current location';
@@ -908,16 +917,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellerLocationCaptured => 'Location saved';
 
   @override
-  String get locationServiceDisabled => 'Location is turned off. Please enable GPS.';
+  String get locationServiceDisabled =>
+      'Location is turned off. Please enable GPS.';
 
   @override
   String get locationPermissionDenied => 'Location permission was denied.';
 
   @override
-  String get locationPermissionDeniedForever => 'Location permission is blocked. Enable it in Settings.';
+  String get locationPermissionDeniedForever =>
+      'Location permission is blocked. Enable it in Settings.';
 
   @override
-  String get locationLookupFailed => 'Could not determine your location. Please try again.';
+  String get locationLookupFailed =>
+      'Could not determine your location. Please try again.';
 
   @override
   String get sellerWebsiteLabel => 'Website';
@@ -932,7 +944,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellerWhatsappLabel => 'WhatsApp';
 
   @override
-  String get sellerStoreInfoRequiredError => 'Add your store\'s location or at least one contact link';
+  String get sellerStoreInfoRequiredError =>
+      'Add your store\'s location or at least one contact link';
 
   @override
   String get sellerDocumentsTitle => 'Documents';
@@ -959,13 +972,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellerRetakePhoto => 'Retake';
 
   @override
-  String get sellerDocumentsIncompleteError => 'Please add all three photos and your date of birth';
+  String get sellerDocumentsIncompleteError =>
+      'Please add all three photos and your date of birth';
 
   @override
   String get sellerFaceTitle => 'Face check';
 
   @override
-  String get sellerFaceInstructionLookNormal => 'Look at the camera normally, then tap capture';
+  String get sellerFaceInstructionLookNormal =>
+      'Look at the camera normally, then tap capture';
 
   @override
   String get sellerFaceInstructionBlink => 'Now blink, then tap capture again';
@@ -977,25 +992,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sellerFaceProcessing => 'Checking…';
 
   @override
-  String get sellerFaceFailed => 'We couldn\'t confirm it\'s you. Make sure your face is well-lit and fully visible, then try again.';
+  String get sellerFaceFailed =>
+      'We couldn\'t confirm it\'s you. Make sure your face is well-lit and fully visible, then try again.';
 
   @override
   String get sellerSubmitApplication => 'Submit application';
 
   @override
-  String get sellerUnderageError => 'You must be at least 18 years old to become a seller';
+  String get sellerUnderageError =>
+      'You must be at least 18 years old to become a seller';
 
   @override
-  String get sellerApplicationExistsError => 'You\'ve already submitted a seller application';
+  String get sellerApplicationExistsError =>
+      'You\'ve already submitted a seller application';
 
   @override
   String get sellerStatusTitle => 'Seller application';
 
   @override
-  String get sellerStatusPending => 'Your application is being reviewed. We\'ll notify you once it\'s approved.';
+  String get sellerStatusPending =>
+      'Your application is being reviewed. We\'ll notify you once it\'s approved.';
 
   @override
-  String get sellerStatusApproved => 'Congratulations! You\'re now a seller on YouShop.';
+  String get sellerStatusApproved =>
+      'Congratulations! You\'re now a seller on YouShop.';
 
   @override
   String get sellerStatusRejected => 'Your application was not approved.';

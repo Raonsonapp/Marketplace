@@ -52,6 +52,7 @@ const (
 	CodeTelegramNotLinked       Code = "TELEGRAM_NOT_LINKED"
 	CodeOTPDeliveryUnavailable  Code = "OTP_DELIVERY_UNAVAILABLE"
 	CodeEmailTaken              Code = "EMAIL_TAKEN"
+	CodeEmailInvalid            Code = "EMAIL_INVALID"
 	CodeSellerUnderage          Code = "SELLER_UNDERAGE"
 	CodeSellerApplicationExists Code = "SELLER_APPLICATION_EXISTS"
 	CodeSellerFaceMismatch      Code = "SELLER_FACE_MISMATCH"
@@ -98,6 +99,7 @@ var httpStatus = map[Code]int{
 	CodeTelegramNotLinked:       http.StatusPreconditionRequired,
 	CodeOTPDeliveryUnavailable:  http.StatusServiceUnavailable,
 	CodeEmailTaken:              http.StatusConflict,
+	CodeEmailInvalid:            http.StatusBadRequest,
 	CodeSellerUnderage:          http.StatusForbidden,
 	CodeSellerApplicationExists: http.StatusConflict,
 	CodeSellerFaceMismatch:      http.StatusUnprocessableEntity,
@@ -144,6 +146,7 @@ var messagesTJ = map[Code]string{
 	CodeTelegramNotLinked:       "Барои гирифтани рамз, аввал бот-ро дар Telegram кушоед ва тугмаи Start-ро пахш кунед",
 	CodeOTPDeliveryUnavailable:  "Хидмати фиристодани рамз айни ҳол дастрас нест. Лутфан баъдтар аз нав кӯшиш кунед",
 	CodeEmailTaken:              "Ин почтаи электронӣ аллакай истифода шудааст",
+	CodeEmailInvalid:            "Почтаи электронӣ нодуруст аст",
 	CodeSellerUnderage:          "Синну соли фурушанда бояд на камтар аз 18 сол бошад",
 	CodeSellerApplicationExists: "Шумо аллакай дархости фурушандашавӣ фиристодаед",
 	CodeSellerFaceMismatch:      "Чеҳраи шумо бо акси шиноснома мувофиқат намекунад",
@@ -189,6 +192,7 @@ var messagesRU = map[Code]string{
 	CodeTelegramNotLinked:       "Чтобы получить код, сначала откройте бота в Telegram и нажмите Start",
 	CodeOTPDeliveryUnavailable:  "Служба отправки кода сейчас недоступна. Попробуйте позже",
 	CodeEmailTaken:              "Этот email уже используется",
+	CodeEmailInvalid:            "Некорректный email",
 	CodeSellerUnderage:          "Продавцу должно быть не менее 18 лет",
 	CodeSellerApplicationExists: "Вы уже подали заявку на статус продавца",
 	CodeSellerFaceMismatch:      "Ваше лицо не совпадает с фото в паспорте",

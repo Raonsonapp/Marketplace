@@ -45,13 +45,10 @@ class RoutePaths {
   static String supportChatPath(String conversationId) => '/support/$conversationId';
 }
 
-/// Passed via `GoRouter`'s `extra` to the OTP screen — carries the Firebase
-/// `verificationId` (docs/FIREBASE_SETUP.md) alongside the phone number
-/// when the phone-entry screen went through Firebase Phone Auth rather
-/// than the console-OTP fallback.
+/// Passed via `GoRouter`'s `extra` to the OTP screen — the email address
+/// the code was mailed to, which is also the account identifier.
 class OtpRouteArgs {
-  const OtpRouteArgs({required this.phone, this.firebaseVerificationId});
+  const OtpRouteArgs({required this.email});
 
-  final String phone;
-  final String? firebaseVerificationId;
+  final String email;
 }

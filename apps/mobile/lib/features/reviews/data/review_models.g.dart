@@ -16,6 +16,8 @@ _Review _$ReviewFromJson(Map<String, dynamic> json) => _Review(
       const <String>[],
   createdAt: DateTime.parse(json['created_at'] as String),
   reviewerName: json['reviewer_name'] as String?,
+  helpfulCount: (json['helpful_count'] as num?)?.toInt() ?? 0,
+  viewerVoted: json['viewer_voted'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$ReviewToJson(_Review instance) => <String, dynamic>{
@@ -26,4 +28,6 @@ Map<String, dynamic> _$ReviewToJson(_Review instance) => <String, dynamic>{
   'images': instance.images,
   'created_at': instance.createdAt.toIso8601String(),
   'reviewer_name': ?instance.reviewerName,
+  'helpful_count': instance.helpfulCount,
+  'viewer_voted': instance.viewerVoted,
 };

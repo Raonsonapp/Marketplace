@@ -15,7 +15,11 @@ type UserRepository struct{}
 // NewUserRepository builds a UserRepository.
 func NewUserRepository() *UserRepository { return &UserRepository{} }
 
-const userColumns = `id, phone, full_name, email, role, avatar_url, language, google_id, is_active, created_at, updated_at`
+// phone is COALESCEd because an email-registered account has none until the
+// user adds one (migration 0006 relaxed users.phone NOT NULL). Reading it as
+// "" keeps models.User.Phone a plain string for every existing caller
+// instead of turning it into a pointer across the whole codebase.
+const userColumns = `id, COALESCE(phone, '') AS phone, full_name, email, role, avatar_url, language, google_id, is_active, created_at, updated_at`
 
 func scanUser(row interface {
 	Scan(dest ...any) error
@@ -40,6 +44,23 @@ func (r *UserRepository) GetByPhone(ctx context.Context, q Querier, phone string
 	return u, nil
 }
 
+// GetByEmail returns the active user with the given email, or ErrNotFound.
+// Email is the login identifier since OTP codes are delivered by mail
+// (internal/pkg/otp/email.go); it is matched case-insensitively because
+// mail addresses are, in practice, not case-sensitive and users type them
+// inconsistently.
+func (r *UserRepository) GetByEmail(ctx context.Context, q Querier, email string) (*models.User, error) {
+	row := q.QueryRow(ctx, `SELECT `+userColumns+` FROM users WHERE lower(email) = lower($1) AND deleted_at IS NULL`, email)
+	u, err := scanUser(row)
+	if isNoRows(err) {
+		return nil, ErrNotFound
+	}
+	if err != nil {
+		return nil, fmt.Errorf("repository: get user by email: %w", err)
+	}
+	return u, nil
+}
+
 // GetByID returns the active user with the given id, or ErrNotFound.
 func (r *UserRepository) GetByID(ctx context.Context, q Querier, id uuid.UUID) (*models.User, error) {
 	row := q.QueryRow(ctx, `SELECT `+userColumns+` FROM users WHERE id = $1::uuid AND deleted_at IS NULL`, id)
@@ -54,7 +75,7 @@ func (r *UserRepository) GetByID(ctx context.Context, q Querier, id uuid.UUID) (
 }
 
 // Create inserts a brand-new customer for phone, used on first-ever OTP
-// verification for a number.
+// verification for a number (the Firebase phone-auth path).
 func (r *UserRepository) Create(ctx context.Context, q Querier, phone string) (*models.User, error) {
 	row := q.QueryRow(ctx, `
 		INSERT INTO users (phone, role, language)
@@ -63,6 +84,22 @@ func (r *UserRepository) Create(ctx context.Context, q Querier, phone string) (*
 	u, err := scanUser(row)
 	if err != nil {
 		return nil, fmt.Errorf("repository: create user: %w", err)
+	}
+	return u, nil
+}
+
+// CreateWithEmail inserts a brand-new customer for email, used on the
+// first-ever OTP verification for an address. phone stays NULL until the
+// user adds one in their profile (migration 0006 relaxed its NOT NULL for
+// exactly this).
+func (r *UserRepository) CreateWithEmail(ctx context.Context, q Querier, email string) (*models.User, error) {
+	row := q.QueryRow(ctx, `
+		INSERT INTO users (email, role, language)
+		VALUES (lower($1), 'customer', 'tj')
+		RETURNING `+userColumns, email)
+	u, err := scanUser(row)
+	if err != nil {
+		return nil, fmt.Errorf("repository: create user by email: %w", err)
 	}
 	return u, nil
 }

@@ -11,8 +11,7 @@ _CartItem _$CartItemFromJson(Map<String, dynamic> json) => _CartItem(
   product: Product.fromJson(json['product'] as Map<String, dynamic>),
   quantity: (json['quantity'] as num).toInt(),
   lineTotal: json['line_total'] as String,
-  isAvailable: json['is_available'] as bool? ?? true,
-  savedForLater: json['saved_for_later'] as bool? ?? false,
+  isAvailable: json['available'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$CartItemToJson(_CartItem instance) => <String, dynamic>{
@@ -20,8 +19,7 @@ Map<String, dynamic> _$CartItemToJson(_CartItem instance) => <String, dynamic>{
   'product': instance.product.toJson(),
   'quantity': instance.quantity,
   'line_total': instance.lineTotal,
-  'is_available': instance.isAvailable,
-  'saved_for_later': instance.savedForLater,
+  'available': instance.isAvailable,
 };
 
 _Cart _$CartFromJson(Map<String, dynamic> json) => _Cart(
@@ -36,18 +34,10 @@ _Cart _$CartFromJson(Map<String, dynamic> json) => _Cart(
           .toList() ??
       const <CartItem>[],
   subtotal: json['subtotal'] as String,
-  discount: json['discount'] as String? ?? '0.00',
-  deliveryFee: json['delivery_fee'] as String? ?? '0.00',
-  total: json['total'] as String,
-  promoCode: json['promo_code'] as String?,
 );
 
 Map<String, dynamic> _$CartToJson(_Cart instance) => <String, dynamic>{
   'items': instance.items.map((e) => e.toJson()).toList(),
   'saved_for_later': instance.savedForLater.map((e) => e.toJson()).toList(),
   'subtotal': instance.subtotal,
-  'discount': instance.discount,
-  'delivery_fee': instance.deliveryFee,
-  'total': instance.total,
-  'promo_code': ?instance.promoCode,
 };

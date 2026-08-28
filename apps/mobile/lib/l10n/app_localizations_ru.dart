@@ -115,6 +115,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authWelcomeSubtitle => 'Введите номер телефона, чтобы продолжить';
 
   @override
+  String get authWelcomeSubtitleEmail => 'Введите свой email, чтобы продолжить';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
   String get authPhoneLabel => 'Номер телефона';
 
   @override
@@ -134,8 +140,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authOtpTitle => 'Введите код подтверждения';
 
   @override
-  String authOtpSubtitle(String phone) {
-    return 'Код подтверждения пришёл не по SMS, а через бота в Telegram для номера $phone. Откройте Telegram — сообщение от бота уже должно быть там.';
+  String authOtpSubtitle(String email) {
+    return 'Мы отправили код подтверждения на $email. Проверьте почту — если письма нет, загляните в папку «Спам».';
   }
 
   @override
@@ -156,25 +162,26 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authVerify => 'Подтвердить';
 
   @override
-  String get authChangeNumber => 'Изменить номер';
+  String get authChangeNumber => 'Изменить email';
 
   @override
   String get authLogout => 'Выйти';
 
   @override
-  String get authLogoutConfirm => 'Вы уверены, что хотите выйти?';
-
-  @override
   String get authCompleteRegTitle => 'Введите email';
 
   @override
-  String get authCompleteRegSubtitle => 'Последний шаг: укажите email для уведомлений и восстановления доступа';
+  String get authCompleteRegSubtitle =>
+      'Последний шаг: укажите email для уведомлений и восстановления доступа';
 
   @override
   String get authEmailHint => 'example@gmail.com';
 
   @override
   String get authEmailInvalid => 'Неверный email';
+
+  @override
+  String get authLogoutConfirm => 'Вы уверены, что хотите выйти?';
 
   @override
   String get authSignInRequiredTitle => 'Требуется вход';
@@ -343,7 +350,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cartSaveForLater => 'Отложить';
 
   @override
-  String get cartMoveToCart => 'Переместить в корзину';
+  String get cartMoveToCart => 'Вернуть в корзину';
 
   @override
   String get cartSavedForLaterTitle => 'Отложенные товары';
@@ -889,7 +896,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerMenuTitle => 'Стать продавцом';
 
   @override
-  String get sellerIntroBody => 'Продавайте на YouShop: укажите местоположение магазина или ссылку, по которой вас найдут покупатели, подтвердите паспорт и личность через быструю проверку лица — всё бесплатно, прямо в приложении.';
+  String get sellerIntroBody =>
+      'Продавайте на YouShop: укажите местоположение магазина или ссылку, по которой вас найдут покупатели, подтвердите паспорт и личность через быструю проверку лица — всё бесплатно, прямо в приложении.';
 
   @override
   String get sellerIntroStart => 'Начать';
@@ -898,7 +906,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerStoreInfoTitle => 'Ваш магазин';
 
   @override
-  String get sellerStoreInfoSubtitle => 'Укажите GPS-координаты вашего магазина или — если у вас нет физического магазина — ссылку на сайт, Instagram, Telegram или WhatsApp.';
+  String get sellerStoreInfoSubtitle =>
+      'Укажите GPS-координаты вашего магазина или — если у вас нет физического магазина — ссылку на сайт, Instagram, Telegram или WhatsApp.';
 
   @override
   String get sellerUseMyLocation => 'Использовать текущее местоположение';
@@ -907,16 +916,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerLocationCaptured => 'Местоположение сохранено';
 
   @override
-  String get locationServiceDisabled => 'GPS выключен. Пожалуйста, включите геолокацию.';
+  String get locationServiceDisabled =>
+      'GPS выключен. Пожалуйста, включите геолокацию.';
 
   @override
   String get locationPermissionDenied => 'Доступ к геолокации не предоставлен.';
 
   @override
-  String get locationPermissionDeniedForever => 'Доступ к геолокации заблокирован. Включите его в настройках.';
+  String get locationPermissionDeniedForever =>
+      'Доступ к геолокации заблокирован. Включите его в настройках.';
 
   @override
-  String get locationLookupFailed => 'Не удалось определить местоположение. Попробуйте ещё раз.';
+  String get locationLookupFailed =>
+      'Не удалось определить местоположение. Попробуйте ещё раз.';
 
   @override
   String get sellerWebsiteLabel => 'Веб-сайт';
@@ -931,7 +943,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerWhatsappLabel => 'WhatsApp';
 
   @override
-  String get sellerStoreInfoRequiredError => 'Укажите местоположение магазина или хотя бы одну контактную ссылку';
+  String get sellerStoreInfoRequiredError =>
+      'Укажите местоположение магазина или хотя бы одну контактную ссылку';
 
   @override
   String get sellerDocumentsTitle => 'Документы';
@@ -958,16 +971,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerRetakePhoto => 'Переснять';
 
   @override
-  String get sellerDocumentsIncompleteError => 'Добавьте все три фото и дату рождения';
+  String get sellerDocumentsIncompleteError =>
+      'Добавьте все три фото и дату рождения';
 
   @override
   String get sellerFaceTitle => 'Проверка лица';
 
   @override
-  String get sellerFaceInstructionLookNormal => 'Смотрите в камеру спокойно, затем нажмите «Снять»';
+  String get sellerFaceInstructionLookNormal =>
+      'Смотрите в камеру спокойно, затем нажмите «Снять»';
 
   @override
-  String get sellerFaceInstructionBlink => 'Теперь моргните и снова нажмите «Снять»';
+  String get sellerFaceInstructionBlink =>
+      'Теперь моргните и снова нажмите «Снять»';
 
   @override
   String get sellerFaceCapture => 'Снять';
@@ -976,7 +992,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerFaceProcessing => 'Проверяем…';
 
   @override
-  String get sellerFaceFailed => 'Не удалось подтвердить, что это вы. Убедитесь, что лицо хорошо освещено и полностью видно, и попробуйте снова.';
+  String get sellerFaceFailed =>
+      'Не удалось подтвердить, что это вы. Убедитесь, что лицо хорошо освещено и полностью видно, и попробуйте снова.';
 
   @override
   String get sellerSubmitApplication => 'Отправить заявку';
@@ -985,16 +1002,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get sellerUnderageError => 'Продавцу должно быть не менее 18 лет';
 
   @override
-  String get sellerApplicationExistsError => 'Вы уже подали заявку на статус продавца';
+  String get sellerApplicationExistsError =>
+      'Вы уже подали заявку на статус продавца';
 
   @override
   String get sellerStatusTitle => 'Заявка продавца';
 
   @override
-  String get sellerStatusPending => 'Ваша заявка на рассмотрении. Мы сообщим вам, когда она будет одобрена.';
+  String get sellerStatusPending =>
+      'Ваша заявка на рассмотрении. Мы сообщим вам, когда она будет одобрена.';
 
   @override
-  String get sellerStatusApproved => 'Поздравляем! Теперь вы продавец на YouShop.';
+  String get sellerStatusApproved =>
+      'Поздравляем! Теперь вы продавец на YouShop.';
 
   @override
   String get sellerStatusRejected => 'Ваша заявка не была одобрена.';

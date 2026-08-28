@@ -19,6 +19,19 @@ func ValidPhone(phone string) bool {
 	return phoneRegex.MatchString(phone)
 }
 
+// emailRegex is a deliberately permissive shape check — "something@
+// something.tld" with no spaces. Real validation of an address is that a
+// code sent to it actually arrives, which the OTP flow already does; a
+// stricter pattern here would only reject legitimate addresses.
+var emailRegex = regexp.MustCompile(`^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$`)
+
+// ValidEmail reports whether email is plausibly an address. Used by the
+// login endpoints, where the address is both the login identifier and where
+// the OTP code is delivered.
+func ValidEmail(email string) bool {
+	return len(email) <= 255 && emailRegex.MatchString(email)
+}
+
 // otpCodeRegex matches a 6-digit OTP code.
 var otpCodeRegex = regexp.MustCompile(`^\d{6}$`)
 

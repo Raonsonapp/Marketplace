@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,17 +11,10 @@ import '../data/auth_repository.dart';
 
 part 'otp_controller.freezed.dart';
 
-/// Identifies one OTP-entry session: the phone number, plus — when the
-/// phone-entry screen went through Firebase Phone Auth rather than the
-/// console-OTP fallback — the `verificationId` Firebase handed back from
-/// `codeSent` (docs/FIREBASE_SETUP.md). Records get structural equality for
-/// free, which is exactly what a Riverpod family key needs.
-typedef OtpSessionKey = ({String phone, String? firebaseVerificationId});
-
 @freezed
 abstract class OtpState with _$OtpState {
   const factory OtpState({
-    required String phone,
+    required String email,
     @Default('') String code,
     @Default(false) bool isVerifying,
     @Default(false) bool isResending,
@@ -33,19 +25,15 @@ abstract class OtpState with _$OtpState {
   }) = _OtpState;
 }
 
-/// Drives the OTP-entry screen for one [OtpSessionKey]: code input, the
-/// resend cooldown countdown, and completing login — via
-/// `POST /auth/verify-otp` for the console-OTP path, or
-/// `FirebaseAuth.signInWithCredential` + `POST /auth/firebase-verify` for
-/// the real-SMS path (docs/API_SPEC.md, docs/FIREBASE_SETUP.md,
-/// docs/SECURITY.md).
-class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
+/// Drives the OTP-entry screen for one email address: code input, the
+/// resend cooldown countdown, and completing login via
+/// `POST /auth/verify-otp` (docs/API_SPEC.md, docs/SECURITY.md). The family
+/// key is the address the code was mailed to.
+class OtpController extends FamilyNotifier<OtpState, String> {
   Timer? _timer;
 
-  bool get _isFirebaseFlow => arg.firebaseVerificationId != null;
-
   @override
-  OtpState build(OtpSessionKey arg) {
+  OtpState build(String arg) {
     ref.onDispose(() => _timer?.cancel());
     // Must not call _startCooldown here: it reads `state` (via copyWith) to
     // arm the timer, but Riverpod's `state` getter throws "Tried to read
@@ -55,7 +43,7 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
     // OtpState instead; _timer only ever reads `state` from its callback,
     // which never fires until after build() has returned.
     _timer = Timer.periodic(const Duration(seconds: 1), _onCooldownTick);
-    return OtpState(phone: arg.phone, cooldownSeconds: AppConstants.defaultOtpCooldownSeconds);
+    return OtpState(email: arg, cooldownSeconds: AppConstants.defaultOtpCooldownSeconds);
   }
 
   void updateCode(String value) {
@@ -80,17 +68,9 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
 
   Future<void> resend() async {
     if (state.cooldownSeconds > 0 || state.isResending) return;
-    if (_isFirebaseFlow) {
-      // Firebase manages its own resend via a fresh `verifyPhoneNumber`
-      // call from the phone-entry screen; there is nothing to resend from
-      // here without a new verificationId, so just re-arm the cooldown UI.
-      // (The user can go back and resubmit their number if truly stuck.)
-      _startCooldown(AppConstants.defaultOtpCooldownSeconds);
-      return;
-    }
     state = state.copyWith(isResending: true, error: null);
     try {
-      final result = await ref.read(authRepositoryProvider).sendOtp(phone: state.phone);
+      final result = await ref.read(authRepositoryProvider).sendOtp(email: state.email);
       state = state.copyWith(isResending: false);
       _startCooldown(result.retryAfterSeconds);
     } on AppException catch (e) {
@@ -102,56 +82,22 @@ class OtpController extends FamilyNotifier<OtpState, OtpSessionKey> {
     if (state.code.length != AppConstants.otpLength) return;
     state = state.copyWith(isVerifying: true, error: null);
     try {
-      final isNewUser = _isFirebaseFlow ? await _verifyViaFirebase() : await _verifyViaConsoleOtp();
-      state = state.copyWith(isVerifying: false, verified: true, isNewUser: isNewUser);
-    } on FirebaseAuthException catch (e) {
-      state = state.copyWith(
-        isVerifying: false,
-        error: FirebaseAuthAppException(e.code, e.message),
-      );
+      final tokens = await ref.read(authRepositoryProvider).verifyOtp(
+            email: state.email,
+            code: state.code,
+          );
+      final user = tokens.user ?? AppUser(id: '', phone: '', email: state.email);
+      await ref.read(sessionControllerProvider.notifier).completeLogin(
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+            user: user,
+          );
+      state = state.copyWith(isVerifying: false, verified: true, isNewUser: tokens.isNewUser);
     } on AppException catch (e) {
       state = state.copyWith(isVerifying: false, error: e);
     }
   }
-
-  /// Returns whether the verified account was just created (see
-  /// AuthTokens.isNewUser) — otp_verification_screen.dart uses this to send
-  /// a brand-new user through the one-time email step
-  /// (complete_registration_screen.dart) instead of straight home.
-  Future<bool> _verifyViaConsoleOtp() async {
-    final tokens = await ref.read(authRepositoryProvider).verifyOtp(
-          phone: state.phone,
-          code: state.code,
-        );
-    final user = tokens.user ?? AppUser(id: '', phone: state.phone);
-    await ref.read(sessionControllerProvider.notifier).completeLogin(
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          user: user,
-        );
-    return tokens.isNewUser;
-  }
-
-  Future<bool> _verifyViaFirebase() async {
-    final credential = PhoneAuthProvider.credential(
-      verificationId: arg.firebaseVerificationId!,
-      smsCode: state.code,
-    );
-    final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-    final idToken = await userCredential.user?.getIdToken();
-    if (idToken == null) {
-      throw const UnknownException('Firebase sign-in returned no ID token');
-    }
-    final tokens = await ref.read(authRepositoryProvider).verifyFirebaseToken(idToken: idToken);
-    final user = tokens.user ?? AppUser(id: '', phone: state.phone);
-    await ref.read(sessionControllerProvider.notifier).completeLogin(
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          user: user,
-        );
-    return tokens.isNewUser;
-  }
 }
 
 final otpControllerProvider =
-    NotifierProvider.family<OtpController, OtpState, OtpSessionKey>(OtpController.new);
+    NotifierProvider.family<OtpController, OtpState, String>(OtpController.new);

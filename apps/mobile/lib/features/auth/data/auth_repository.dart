@@ -10,31 +10,17 @@ class AuthRepository {
 
   final ApiClient _client;
 
-  Future<SendOtpResult> sendOtp({required String phone}) async {
-    final json = await _client.post('/auth/send-otp', data: {'phone': phone});
+  /// Login is email-based: the 6-digit code is mailed to [email], which is
+  /// also the account identifier (docs/SMS_PROVIDERS.md).
+  Future<SendOtpResult> sendOtp({required String email}) async {
+    final json = await _client.post('/auth/send-otp', data: {'email': email});
     return SendOtpResult.fromJson(json);
   }
 
-  Future<AuthTokens> verifyOtp({required String phone, required String code}) async {
+  Future<AuthTokens> verifyOtp({required String email, required String code}) async {
     final json = await _client.post('/auth/verify-otp', data: {
-      'phone': phone,
+      'email': email,
       'code': code,
-    });
-    return AuthTokens.fromJson(json);
-  }
-
-  /// `POST /auth/firebase-verify` — the real-SMS registration path (see
-  /// docs/FIREBASE_SETUP.md, docs/SECURITY.md). [idToken] comes from
-  /// `FirebaseAuth.signInWithCredential(...).user.getIdToken()` after the
-  /// user enters the code Firebase texted them; the backend verifies it
-  /// with Google and returns the same shape as [verifyOtp].
-  Future<AuthTokens> verifyFirebaseToken({
-    required String idToken,
-    String? fullName,
-  }) async {
-    final json = await _client.post('/auth/firebase-verify', data: {
-      'id_token': idToken,
-      'full_name': ?fullName,
     });
     return AuthTokens.fromJson(json);
   }

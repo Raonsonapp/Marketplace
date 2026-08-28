@@ -6,6 +6,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -34,9 +35,12 @@ func NewAuthService(db *pgxpool.Pool, otpMgr *auth.OTPManager, sessionMgr *auth.
 	return &AuthService{db: db, otpMgr: otpMgr, sessionMgr: sessionMgr, tokenMgr: tokenMgr, users: users, firebase: firebase}
 }
 
-// SendOTP issues a new OTP for phone, returning the resend cooldown in seconds.
-func (s *AuthService) SendOTP(ctx context.Context, phone, clientIP string) (retryAfterSeconds int, err error) {
-	return s.otpMgr.SendOTP(ctx, phone, clientIP)
+// SendOTP issues a new OTP for email, returning the resend cooldown in
+// seconds. The identifier is an email address: codes are delivered by mail
+// (internal/pkg/otp/email.go), so the address both receives the code and
+// keys the account.
+func (s *AuthService) SendOTP(ctx context.Context, email, clientIP string) (retryAfterSeconds int, err error) {
+	return s.otpMgr.SendOTP(ctx, normalizeEmail(email), clientIP)
 }
 
 // VerifyResult is returned by VerifyOTP/Refresh.
@@ -48,21 +52,22 @@ type VerifyResult struct {
 	IsNewUser       bool
 }
 
-// VerifyOTP validates the code, then finds-or-creates the user for phone
-// (a brand-new phone number becomes a new `customer` user on first
-// successful verification) and issues a fresh access+refresh token pair.
-func (s *AuthService) VerifyOTP(ctx context.Context, phone, code string, device auth.DeviceInfo) (*VerifyResult, error) {
-	if err := s.otpMgr.VerifyOTP(ctx, phone, code); err != nil {
+// VerifyOTP validates the code, then finds-or-creates the user for email
+// (a brand-new address becomes a new `customer` user on first successful
+// verification) and issues a fresh access+refresh token pair.
+func (s *AuthService) VerifyOTP(ctx context.Context, email, code string, device auth.DeviceInfo) (*VerifyResult, error) {
+	email = normalizeEmail(email)
+	if err := s.otpMgr.VerifyOTP(ctx, email, code); err != nil {
 		return nil, err
 	}
 
 	isNewUser := false
-	user, err := s.users.GetByPhone(ctx, s.db, phone)
+	user, err := s.users.GetByEmail(ctx, s.db, email)
 	if err != nil {
 		if err != repository.ErrNotFound {
 			return nil, fmt.Errorf("service: lookup user: %w", err)
 		}
-		user, err = s.users.Create(ctx, s.db, phone)
+		user, err = s.users.CreateWithEmail(ctx, s.db, email)
 		if err != nil {
 			return nil, fmt.Errorf("service: create user: %w", err)
 		}
@@ -70,6 +75,13 @@ func (s *AuthService) VerifyOTP(ctx context.Context, phone, code string, device 
 	}
 
 	return s.issueTokens(ctx, user, isNewUser, device)
+}
+
+// normalizeEmail lowercases and trims an address so the same account is
+// found however the user typed it, and so the OTP row key matches between
+// send and verify.
+func normalizeEmail(email string) string {
+	return strings.ToLower(strings.TrimSpace(email))
 }
 
 // FirebaseVerify is the real-SMS registration/login path: it verifies a

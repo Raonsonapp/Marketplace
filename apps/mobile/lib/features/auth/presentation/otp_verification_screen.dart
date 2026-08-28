@@ -7,22 +7,18 @@ import '../../../core/config/app_constants.dart';
 import '../../../core/router/route_paths.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
-import '../../../core/utils/phone_validator.dart';
 import '../../../core/widgets/error_state_view.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/otp_controller.dart';
 
-/// OTP-entry screen for the [phone] number that just received a code
+/// OTP-entry screen for the [email] address that just received a code
 /// (docs/API_SPEC.md `POST /auth/verify-otp`).
 class OtpVerificationScreen extends ConsumerStatefulWidget {
-  const OtpVerificationScreen({super.key, required this.phone, this.firebaseVerificationId});
+  const OtpVerificationScreen({super.key, required this.email});
 
-  final String phone;
-
-  /// Non-null when the phone-entry screen went through Firebase Phone Auth
-  /// (docs/FIREBASE_SETUP.md) rather than the console-OTP fallback.
-  final String? firebaseVerificationId;
+  /// The address the code was mailed to — also the account identifier.
+  final String email;
 
   @override
   ConsumerState<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
@@ -40,15 +36,12 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final provider = otpControllerProvider(
-      (phone: widget.phone, firebaseVerificationId: widget.firebaseVerificationId),
-    );
+    final provider = otpControllerProvider(widget.email);
     final state = ref.watch(provider);
 
     ref.listen(provider, (previous, next) {
-      // Account registration only ever needs the phone number — no forced
-      // follow-up step. Email is collected separately, only from users who
-      // choose to become a seller (see features/seller/presentation).
+      // Signing in is the whole of registration — the email the code was
+      // sent to is already the account. No forced follow-up step.
       if (next.verified) {
         context.go(RoutePaths.home);
       }
@@ -63,7 +56,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                l10n.authOtpSubtitle(PhoneValidator.formatForDisplay(widget.phone)),
+                l10n.authOtpSubtitle(widget.email),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.65),
                     ),

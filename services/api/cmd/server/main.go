@@ -79,34 +79,24 @@ func run() error {
 	reviewRepo := repository.NewReviewRepository()
 	notificationRepo := repository.NewNotificationRepository()
 	supportRepo := repository.NewSupportRepository()
-	telegramLinkRepo := repository.NewTelegramLinkRepository()
 	sellerAppRepo := repository.NewSellerApplicationRepository()
 
 	// ---- auth primitives ----
 	tokenMgr := auth.NewTokenManager(cfg.JWTSecret, cfg.AccessTTL)
 	limiter := auth.NewLimiter(rdb)
-	botReachable := cfg.TelegramBotToken != "" && otp.TelegramBotReachable(cfg.TelegramBotToken, 6*time.Second)
-	if cfg.TelegramBotToken != "" && !botReachable {
-		log.Printf("otp: TELEGRAM_BOT_TOKEN is set but api.telegram.org is unreachable from this host " +
-			"(TLS handshake failure) — falling back instead of permanently locking out login; see docs/SMS_PROVIDERS.md")
-	}
 
+	// Login is email-based: the OTP code is mailed to the address the user
+	// signs in with (docs/SMS_PROVIDERS.md). Delivery goes through the same
+	// Google Apps Script relay as the owner alerts, because this host can
+	// reach Google's network but not Telegram's — and cloud hosts generally
+	// block outbound SMTP, so a direct mail send is not an option either.
+	// With no relay configured, codes are logged to the console (local dev).
 	var otpSender otp.Sender = otp.NewConsoleSender()
-	switch {
-	case botReachable:
-		telegramLinks := repository.NewTelegramLinkLookupAdapter(telegramLinkRepo, pool)
-		otpSender = otp.NewTelegramBotSender(cfg.TelegramBotToken, cfg.TelegramBotUsername, telegramLinks)
-		go telegrambot.NewPoller(cfg.TelegramBotToken, telegramLinks).Run(ctx)
-		log.Printf("otp: delivering codes via Telegram bot @%s", cfg.TelegramBotUsername)
-	case cfg.TelegramGatewayToken != "":
-		otpSender = otp.NewTelegramGatewaySender(cfg.TelegramGatewayToken, cfg.TelegramGatewayProxyURL, cfg.TelegramGatewayProxySecret)
-		if cfg.TelegramGatewayProxyURL != "" {
-			log.Printf("otp: delivering codes via Telegram Gateway (relayed through %s)", cfg.TelegramGatewayProxyURL)
-		} else {
-			log.Printf("otp: delivering codes via Telegram Gateway")
-		}
-	default:
-		log.Printf("otp: no Telegram provider configured, logging OTP codes to console (dev mode)")
+	if cfg.TelegramGatewayProxyURL != "" {
+		otpSender = otp.NewEmailSender(cfg.TelegramGatewayProxyURL, cfg.TelegramGatewayProxySecret, "YouShop")
+		log.Printf("otp: emailing codes via the Apps Script relay (%s)", cfg.TelegramGatewayProxyURL)
+	} else {
+		log.Printf("otp: no email relay configured (TELEGRAM_GATEWAY_PROXY_URL), logging OTP codes to console (dev mode)")
 	}
 	otpMgr := auth.NewOTPManager(
 		repository.NewOTPStoreAdapter(otpRepo, pool), otpSender, limiter,

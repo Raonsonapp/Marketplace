@@ -117,6 +117,13 @@ class AppLocalizationsTg extends AppLocalizations {
       'Барои идома додан рақами телефони худро ворид кунед';
 
   @override
+  String get authWelcomeSubtitleEmail =>
+      'Барои идома почтаи электронии худро ворид кунед';
+
+  @override
+  String get authEmailLabel => 'Почтаи электронӣ';
+
+  @override
   String get authPhoneLabel => 'Рақами телефон';
 
   @override
@@ -136,8 +143,8 @@ class AppLocalizationsTg extends AppLocalizations {
   String get authOtpTitle => 'Рамзи тасдиқро ворид кунед';
 
   @override
-  String authOtpSubtitle(String phone) {
-    return 'Рамзи тасдиқро на бо SMS, балки тавассути бот дар Telegram барои рақами $phone фиристодем. Telegram-ро кушоед — паём аз бот бояд аллакай омада бошад.';
+  String authOtpSubtitle(String email) {
+    return 'Мо рамзи тасдиқро ба почтаи электронии $email фиристодем. Қуттии почтаи худро санҷед — агар паём набошад, ба ҷузвдони «Спам» нигаред.';
   }
 
   @override
@@ -158,13 +165,10 @@ class AppLocalizationsTg extends AppLocalizations {
   String get authVerify => 'Тасдиқ кардан';
 
   @override
-  String get authChangeNumber => 'Тағйир додани рақам';
+  String get authChangeNumber => 'Тағйир додани почта';
 
   @override
   String get authLogout => 'Баромадан';
-
-  @override
-  String get authLogoutConfirm => 'Шумо мутмаин ҳастед, ки мехоҳед бароед?';
 
   @override
   String get authCompleteRegTitle => 'Почтаи электрониро ворид кунед';
@@ -178,6 +182,9 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get authEmailInvalid => 'Почтаи электронӣ нодуруст аст';
+
+  @override
+  String get authLogoutConfirm => 'Шумо мутмаин ҳастед, ки мехоҳед бароед?';
 
   @override
   String get authSignInRequiredTitle => 'Бояд ворид шавед';
@@ -347,7 +354,7 @@ class AppLocalizationsTg extends AppLocalizations {
   String get cartSaveForLater => 'Барои баъд нигоҳ доштан';
 
   @override
-  String get cartMoveToCart => 'Ба сабад гузарондан';
+  String get cartMoveToCart => 'Ба сабад баргардонед';
 
   @override
   String get cartSavedForLaterTitle => 'Барои баъд нигоҳ дошташуда';
@@ -899,7 +906,8 @@ class AppLocalizationsTg extends AppLocalizations {
   String get sellerMenuTitle => 'Шудан ба фурӯшанда';
 
   @override
-  String get sellerIntroBody => 'Дар YouShop фурӯш кунед: ҷойгиршавии GPS-и мағозаатонро ё истиноде, ки харидорон шуморо ёбанд, гузоред, шиносномаатонро тасдиқ кунед ва бо санҷиши зуди чеҳра шахсияти худро исбот кунед — ҳама ройгон, дар дохили барнома.';
+  String get sellerIntroBody =>
+      'Дар YouShop фурӯш кунед: ҷойгиршавии GPS-и мағозаатонро ё истиноде, ки харидорон шуморо ёбанд, гузоред, шиносномаатонро тасдиқ кунед ва бо санҷиши зуди чеҳра шахсияти худро исбот кунед — ҳама ройгон, дар дохили барнома.';
 
   @override
   String get sellerIntroStart => 'Оғоз кардан';
@@ -908,7 +916,8 @@ class AppLocalizationsTg extends AppLocalizations {
   String get sellerStoreInfoTitle => 'Мағозаи шумо';
 
   @override
-  String get sellerStoreInfoSubtitle => 'Ҷойгиршавии GPS-и мағозаатонро гузоред ё — агар мағозаи воқеӣ надошта бошед — истиноди вебсайт, Instagram, Telegram ё WhatsApp-и худро.';
+  String get sellerStoreInfoSubtitle =>
+      'Ҷойгиршавии GPS-и мағозаатонро гузоред ё — агар мағозаи воқеӣ надошта бошед — истиноди вебсайт, Instagram, Telegram ё WhatsApp-и худро.';
 
   @override
   String get sellerUseMyLocation => 'Ҷойгиршавии ҳозираи худро истифода баред';
@@ -917,16 +926,19 @@ class AppLocalizationsTg extends AppLocalizations {
   String get sellerLocationCaptured => 'Ҷойгиршавӣ нигоҳ дошта шуд';
 
   @override
-  String get locationServiceDisabled => 'GPS хомӯш аст. Лутфан ҷойгиршавиро фаъол кунед.';
+  String get locationServiceDisabled =>
+      'GPS хомӯш аст. Лутфан ҷойгиршавиро фаъол кунед.';
 
   @override
   String get locationPermissionDenied => 'Иҷозати ҷойгиршавӣ дода нашуд.';
 
   @override
-  String get locationPermissionDeniedForever => 'Иҷозати ҷойгиршавӣ баста шудааст. Онро дар танзимот фаъол кунед.';
+  String get locationPermissionDeniedForever =>
+      'Иҷозати ҷойгиршавӣ баста шудааст. Онро дар танзимот фаъол кунед.';
 
   @override
-  String get locationLookupFailed => 'Ҷойгиршавиро муайян карда нашуд. Дубора кӯшиш кунед.';
+  String get locationLookupFailed =>
+      'Ҷойгиршавиро муайян карда нашуд. Дубора кӯшиш кунед.';
 
   @override
   String get sellerWebsiteLabel => 'Вебсайт';
@@ -941,7 +953,8 @@ class AppLocalizationsTg extends AppLocalizations {
   String get sellerWhatsappLabel => 'WhatsApp';
 
   @override
-  String get sellerStoreInfoRequiredError => 'Ҷойгиршавии мағоза ё ҳадди ақал як истиноди тамос гузоред';
+  String get sellerStoreInfoRequiredError =>
+      'Ҷойгиршавии мағоза ё ҳадди ақал як истиноди тамос гузоред';
 
   @override
   String get sellerDocumentsTitle => 'Ҳуҷҷатҳо';
@@ -968,16 +981,19 @@ class AppLocalizationsTg extends AppLocalizations {
   String get sellerRetakePhoto => 'Аз нав гирифтан';
 
   @override
-  String get sellerDocumentsIncompleteError => 'Лутфан ҳар се аксро ва санаи таваллудро гузоред';
+  String get sellerDocumentsIncompleteError =>
+      'Лутфан ҳар се аксро ва санаи таваллудро гузоред';
 
   @override
   String get sellerFaceTitle => 'Санҷиши чеҳра';
 
   @override
-  String get sellerFaceInstructionLookNormal => 'Ба камера оромона нигоҳ кунед, баъд тугмаи аксбардориро пахш кунед';
+  String get sellerFaceInstructionLookNormal =>
+      'Ба камера оромона нигоҳ кунед, баъд тугмаи аксбардориро пахш кунед';
 
   @override
-  String get sellerFaceInstructionBlink => 'Акнун чашмакашед ва боз тугмаро пахш кунед';
+  String get sellerFaceInstructionBlink =>
+      'Акнун чашмакашед ва боз тугмаро пахш кунед';
 
   @override
   String get sellerFaceCapture => 'Аксбардорӣ';
@@ -986,25 +1002,30 @@ class AppLocalizationsTg extends AppLocalizations {
   String get sellerFaceProcessing => 'Тафтиш шуда истодааст…';
 
   @override
-  String get sellerFaceFailed => 'Тасдиқ карда натавонистем, ки ин шумоед. Мутмаин шавед, ки чеҳраатон хуб равшан ва пурра дида мешавад, ва аз нав кӯшиш кунед.';
+  String get sellerFaceFailed =>
+      'Тасдиқ карда натавонистем, ки ин шумоед. Мутмаин шавед, ки чеҳраатон хуб равшан ва пурра дида мешавад, ва аз нав кӯшиш кунед.';
 
   @override
   String get sellerSubmitApplication => 'Дархостро фиристодан';
 
   @override
-  String get sellerUnderageError => 'Синну соли фурушанда бояд на камтар аз 18 сол бошад';
+  String get sellerUnderageError =>
+      'Синну соли фурушанда бояд на камтар аз 18 сол бошад';
 
   @override
-  String get sellerApplicationExistsError => 'Шумо аллакай дархости фурушандашавӣ фиристодаед';
+  String get sellerApplicationExistsError =>
+      'Шумо аллакай дархости фурушандашавӣ фиристодаед';
 
   @override
   String get sellerStatusTitle => 'Дархости фурушандашавӣ';
 
   @override
-  String get sellerStatusPending => 'Дархости шумо дар ҳоли баррасӣ аст. Пас аз тасдиқ ба шумо хабар медиҳем.';
+  String get sellerStatusPending =>
+      'Дархости шумо дар ҳоли баррасӣ аст. Пас аз тасдиқ ба шумо хабар медиҳем.';
 
   @override
-  String get sellerStatusApproved => 'Табрик! Шумо ҳоло фурӯшанда дар YouShop ҳастед.';
+  String get sellerStatusApproved =>
+      'Табрик! Шумо ҳоло фурӯшанда дар YouShop ҳастед.';
 
   @override
   String get sellerStatusRejected => 'Дархости шумо тасдиқ карда нашуд.';
