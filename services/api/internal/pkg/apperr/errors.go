@@ -56,6 +56,8 @@ const (
 	CodeSellerUnderage          Code = "SELLER_UNDERAGE"
 	CodeSellerApplicationExists Code = "SELLER_APPLICATION_EXISTS"
 	CodeSellerFaceMismatch      Code = "SELLER_FACE_MISMATCH"
+	CodeCargoUnavailable        Code = "CARGO_UNAVAILABLE"
+	CodeCargoNotCancelable      Code = "CARGO_NOT_CANCELABLE"
 )
 
 // httpStatus maps each code to its HTTP status.
@@ -103,6 +105,8 @@ var httpStatus = map[Code]int{
 	CodeSellerUnderage:          http.StatusForbidden,
 	CodeSellerApplicationExists: http.StatusConflict,
 	CodeSellerFaceMismatch:      http.StatusUnprocessableEntity,
+	CodeCargoUnavailable:        http.StatusServiceUnavailable,
+	CodeCargoNotCancelable:      http.StatusConflict,
 }
 
 // messagesTJ / messagesRU hold the localized default messages per code.
@@ -150,6 +154,8 @@ var messagesTJ = map[Code]string{
 	CodeSellerUnderage:          "Синну соли фурушанда бояд на камтар аз 18 сол бошад",
 	CodeSellerApplicationExists: "Шумо аллакай дархости фурушандашавӣ фиристодаед",
 	CodeSellerFaceMismatch:      "Чеҳраи шумо бо акси шиноснома мувофиқат намекунад",
+	CodeCargoUnavailable:        "Хизмати карго барои ин кишвар ҳоло дастрас нест",
+	CodeCargoNotCancelable:      "Ин посылка аллакай ба роҳ баромадааст, бекор кардан мумкин нест",
 }
 
 var messagesRU = map[Code]string{
@@ -196,6 +202,8 @@ var messagesRU = map[Code]string{
 	CodeSellerUnderage:          "Продавцу должно быть не менее 18 лет",
 	CodeSellerApplicationExists: "Вы уже подали заявку на статус продавца",
 	CodeSellerFaceMismatch:      "Ваше лицо не совпадает с фото в паспорте",
+	CodeCargoUnavailable:        "Услуга карго для этой страны пока недоступна",
+	CodeCargoNotCancelable:      "Посылка уже в пути, отменить её нельзя",
 }
 
 // Error is the application error type carried through the service layer and

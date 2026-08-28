@@ -2025,6 +2025,192 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Дархости шумо тасдиқ карда нашуд.'**
   String get sellerStatusRejected;
+
+  /// No description provided for @cargoTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Карго аз Хитой'**
+  String get cargoTitle;
+
+  /// No description provided for @cargoHowItWorks.
+  ///
+  /// In tg, this message translates to:
+  /// **'Чӣ тавр кор мекунад'**
+  String get cargoHowItWorks;
+
+  /// No description provided for @cargoStepOrder.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар бозори Хитой (Taobao, Pinduoduo ва ғайра) молро фармоиш диҳед'**
+  String get cargoStepOrder;
+
+  /// No description provided for @cargoStepShipToWarehouse.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳангоми фармоиш суроғаи анбори мо дар Хитойро нишон диҳед'**
+  String get cargoStepShipToWarehouse;
+
+  /// No description provided for @cargoStepRegister.
+  ///
+  /// In tg, this message translates to:
+  /// **'Посылкаро дар ин ҷо сабт кунед — рамзи трекро баъдтар ҳам илова кардан мумкин аст'**
+  String get cargoStepRegister;
+
+  /// No description provided for @cargoStepReceive.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мо посылкаро баркашида, нарх мегӯем ва ба кишвар меорем'**
+  String get cargoStepReceive;
+
+  /// No description provided for @cargoMyParcels.
+  ///
+  /// In tg, this message translates to:
+  /// **'Посылкаҳои ман'**
+  String get cargoMyParcels;
+
+  /// No description provided for @cargoRegisterParcel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Сабти посылка'**
+  String get cargoRegisterParcel;
+
+  /// No description provided for @cargoDestination.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ба кадом кишвар'**
+  String get cargoDestination;
+
+  /// No description provided for @cargoDescription.
+  ///
+  /// In tg, this message translates to:
+  /// **'Мол чӣ аст'**
+  String get cargoDescription;
+
+  /// No description provided for @cargoDescriptionHint.
+  ///
+  /// In tg, this message translates to:
+  /// **'Масалан: 2 ҷуфт кроссовка, андозаи 42'**
+  String get cargoDescriptionHint;
+
+  /// No description provided for @cargoTrackCode.
+  ///
+  /// In tg, this message translates to:
+  /// **'Рамзи трек'**
+  String get cargoTrackCode;
+
+  /// No description provided for @cargoProductLink.
+  ///
+  /// In tg, this message translates to:
+  /// **'Пайванди мол'**
+  String get cargoProductLink;
+
+  /// No description provided for @cargoWarehouseAddress.
+  ///
+  /// In tg, this message translates to:
+  /// **'Суроғаи анбори мо дар Хитой'**
+  String get cargoWarehouseAddress;
+
+  /// No description provided for @cargoCopyAddress.
+  ///
+  /// In tg, this message translates to:
+  /// **'Нусхабардории суроға'**
+  String get cargoCopyAddress;
+
+  /// No description provided for @cargoAddressCopied.
+  ///
+  /// In tg, this message translates to:
+  /// **'Суроға нусхабардорӣ шуд'**
+  String get cargoAddressCopied;
+
+  /// No description provided for @cargoAwaitingWeighing.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар интизори баркашӣ'**
+  String get cargoAwaitingWeighing;
+
+  /// No description provided for @cargoCancelParcel.
+  ///
+  /// In tg, this message translates to:
+  /// **'Бекор кардани посылка'**
+  String get cargoCancelParcel;
+
+  /// No description provided for @cargoCancelConfirm.
+  ///
+  /// In tg, this message translates to:
+  /// **'Шумо мутмаин ҳастед, ки мехоҳед ин дархостро бекор кунед?'**
+  String get cargoCancelConfirm;
+
+  /// No description provided for @cargoEmptyTitle.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ҳанӯз посылка нест'**
+  String get cargoEmptyTitle;
+
+  /// No description provided for @cargoEmptyMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Аввалин посылкаи худро аз Хитой сабт кунед'**
+  String get cargoEmptyMessage;
+
+  /// No description provided for @cargoUnavailableMessage.
+  ///
+  /// In tg, this message translates to:
+  /// **'Хизмати карго ҳоло омода мешавад. Ба зудӣ дастрас мешавад.'**
+  String get cargoUnavailableMessage;
+
+  /// No description provided for @cargoStatusRegistered.
+  ///
+  /// In tg, this message translates to:
+  /// **'Сабт шуд'**
+  String get cargoStatusRegistered;
+
+  /// No description provided for @cargoStatusReceived.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар анбори Хитой'**
+  String get cargoStatusReceived;
+
+  /// No description provided for @cargoStatusShipped.
+  ///
+  /// In tg, this message translates to:
+  /// **'Дар роҳ'**
+  String get cargoStatusShipped;
+
+  /// No description provided for @cargoStatusArrived.
+  ///
+  /// In tg, this message translates to:
+  /// **'Ба кишвар расид'**
+  String get cargoStatusArrived;
+
+  /// No description provided for @cargoStatusDelivered.
+  ///
+  /// In tg, this message translates to:
+  /// **'Супорида шуд'**
+  String get cargoStatusDelivered;
+
+  /// No description provided for @cargoStatusCancelled.
+  ///
+  /// In tg, this message translates to:
+  /// **'Бекор шуд'**
+  String get cargoStatusCancelled;
+
+  /// No description provided for @cargoRatePerKg.
+  ///
+  /// In tg, this message translates to:
+  /// **'{price} / кг'**
+  String cargoRatePerKg(String price);
+
+  /// No description provided for @cargoTransitDays.
+  ///
+  /// In tg, this message translates to:
+  /// **'{min}–{max} рӯз дар роҳ'**
+  String cargoTransitDays(int min, int max);
+
+  /// No description provided for @cargoWeightKg.
+  ///
+  /// In tg, this message translates to:
+  /// **'Вазн: {weight} кг'**
+  String cargoWeightKg(String weight);
 }
 
 class _AppLocalizationsDelegate

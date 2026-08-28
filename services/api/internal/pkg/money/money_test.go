@@ -102,3 +102,26 @@ func TestJSON(t *testing.T) {
 		t.Errorf("UnmarshalJSON round trip: got %v want %v", m2, m)
 	}
 }
+
+func TestMulFloat(t *testing.T) {
+	cases := []struct {
+		name string
+		base Money
+		qty  float64
+		want Money
+	}{
+		{"whole kilos", MustFromString("35.00"), 3, MustFromString("105.00")},
+		{"fractional kilos round down", MustFromString("35.00"), 1.234, MustFromString("43.19")},
+		{"fractional kilos round up", MustFromString("35.00"), 1.236, MustFromString("43.26")},
+		{"half rounds away from zero", MustFromString("1.00"), 0.005, MustFromString("0.01")},
+		{"zero weight is free", MustFromString("35.00"), 0, Zero},
+		{"negative base keeps its sign", MustFromString("-35.00"), 1.5, MustFromString("-52.50")},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := tc.base.MulFloat(tc.qty); got != tc.want {
+				t.Fatalf("MulFloat(%v) = %s, want %s", tc.qty, got, tc.want)
+			}
+		})
+	}
+}

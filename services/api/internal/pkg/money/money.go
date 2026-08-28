@@ -127,6 +127,19 @@ func (m Money) Neg() Money { return -m }
 // MulInt multiplies by an integer quantity (e.g. unit price * quantity).
 func (m Money) MulInt(qty int) Money { return Money(int64(m) * int64(qty)) }
 
+// MulFloat multiplies by a fractional quantity — a parcel's weight in
+// kilograms against a per-kilo rate, say — rounding to the nearest minor
+// unit, half away from zero. The float only ever multiplies; the result is
+// immediately back in exact integer minor units, so no rounding error can
+// accumulate across calls.
+func (m Money) MulFloat(qty float64) Money {
+	v := float64(m) * qty
+	if v >= 0 {
+		return Money(int64(v + 0.5))
+	}
+	return Money(int64(v - 0.5))
+}
+
 // PercentOf returns pct% of m, rounded to the nearest diram (half away from
 // zero), e.g. Money(10000).PercentOf(12.5) == 1250 minor units (12.50 TJS on
 // a 100.00 TJS base).

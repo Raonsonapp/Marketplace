@@ -18,6 +18,7 @@ import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/orders/presentation/order_detail_screen.dart';
 import '../../features/orders/presentation/orders_screen.dart';
 import '../../features/product/presentation/product_detail_screen.dart';
+import '../../features/cargo/presentation/cargo_screen.dart';
 import '../../features/profile/presentation/addresses_screen.dart';
 import '../../features/profile/presentation/language_selection_screen.dart';
 import '../../features/profile/presentation/profile_edit_screen.dart';
@@ -190,6 +191,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.addresses,
         builder: (context, state) => const AddressesScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.cargo,
+        builder: (context, state) => const CargoScreen(),
       ),
       GoRoute(
         path: RoutePaths.languageSelection,

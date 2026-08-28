@@ -52,6 +52,10 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 		v1.GET("/home", optionalAuth, h.Catalog.Home)
 		// Reference data for the two markets YouShop serves (TJ and RU):
 		// currency, dial code, map centre and the deliverable city list.
+		// Parcel forwarding from China. Public so the service can be
+		// advertised before sign-in.
+		v1.GET("/cargo/tariffs", h.Cargo.Tariffs)
+
 		v1.GET("/countries", h.Region.Countries)
 		v1.GET("/countries/:code/cities", h.Region.Cities)
 
@@ -119,6 +123,20 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 			authed.POST("/support/conversations", h.Support.CreateConversation)
 			authed.GET("/support/conversations/:id/messages", h.Support.ListMessages)
 			authed.POST("/support/conversations/:id/messages", h.Support.PostMessage)
+
+			authed.GET("/cargo", h.Cargo.List)
+			authed.POST("/cargo", h.Cargo.Create)
+			authed.GET("/cargo/:id", h.Cargo.Get)
+			authed.POST("/cargo/:id/cancel", h.Cargo.Cancel)
+		}
+
+		// Operator surface for parcel forwarding: weighing parcels, moving
+		// them through the pipeline, and setting each destination's tariff.
+		admin := v1.Group("", requireAuth, middleware.RequireRole("admin", "store_manager"))
+		{
+			admin.GET("/admin/cargo", h.Cargo.AdminList)
+			admin.PATCH("/admin/cargo/:id", h.Cargo.AdminUpdate)
+			admin.PUT("/admin/cargo/tariffs/:destination", h.Cargo.AdminUpsertTariff)
 		}
 	}
 

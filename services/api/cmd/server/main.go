@@ -75,6 +75,7 @@ func run() error {
 	promoRepo := repository.NewPromoCodeRepository()
 	loyaltyRepo := repository.NewLoyaltyRepository()
 	regionRepo := repository.NewRegionRepository()
+	cargoRepo := repository.NewCargoRepository()
 	brandRepo := repository.NewBrandRepository()
 	discountRepo := repository.NewDiscountRepository()
 	reviewRepo := repository.NewReviewRepository()
@@ -120,6 +121,7 @@ func run() error {
 	favoritesSvc := service.NewFavoritesService(pool, favoriteRepo, productRepo)
 	addressSvc := service.NewAddressService(pool, addressRepo)
 	regionSvc := service.NewRegionService(pool, regionRepo)
+	cargoSvc := service.NewCargoService(pool, cargoRepo, notificationRepo)
 	profileSvc := service.NewProfileService(pool, userRepo)
 	promotionSvc := service.NewPromotionService(pool, discountRepo, promoRepo)
 	reviewSvc := service.NewReviewService(pool, reviewRepo)
@@ -175,6 +177,7 @@ func run() error {
 		Loyalty:      httpapi.NewLoyaltyHandler(loyaltySvc),
 		Address:      httpapi.NewAddressHandler(addressSvc),
 		Region:       httpapi.NewRegionHandler(regionSvc),
+		Cargo:        httpapi.NewCargoHandler(cargoSvc),
 		Profile:      httpapi.NewProfileHandler(profileSvc),
 		Health:       httpapi.NewHealthHandler(pool, rdb),
 		OrderWS:      httpapi.NewOrderWSHandler(hub, orderSvc, tokenMgr),

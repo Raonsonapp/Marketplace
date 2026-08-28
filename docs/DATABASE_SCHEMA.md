@@ -38,6 +38,15 @@ written before it is Tajik by definition. A row's country decides which
 currency its money columns are denominated in — the `numeric(12,2)` amounts
 themselves carry no currency tag.
 
+**Cargo (parcel forwarding, China -> TJ/RU)**
+`cargo_tariffs` (one row per destination country: the China warehouse address,
+the per-kilo rate, transit estimate, and an `is_active` switch — a destination
+stays hidden until an operator has filled in an address and a rate),
+`cargo_shipments` (one parcel: description, optional tracking code and product
+link, destination, and — once an operator weighs it at the warehouse — weight
+and price; `status` walks new -> received -> shipped -> arrived -> delivered,
+with `cancelled` reachable only while the parcel is still `new`).
+
 **Catalog**
 `brands`, `categories` (self-referencing `parent_id` for subcategories),
 `products` (bilingual name/description, barcode, tags), `product_images`,

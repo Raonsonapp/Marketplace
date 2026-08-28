@@ -1025,4 +1025,103 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sellerStatusRejected => 'Your application was not approved.';
+
+  @override
+  String get cargoTitle => 'Cargo from China';
+
+  @override
+  String get cargoHowItWorks => 'How it works';
+
+  @override
+  String get cargoStepOrder => 'Order the item on a Chinese marketplace (Taobao, Pinduoduo, …)';
+
+  @override
+  String get cargoStepShipToWarehouse => 'Give our China warehouse address as the delivery address';
+
+  @override
+  String get cargoStepRegister => 'Register the parcel here — you can add the tracking code later';
+
+  @override
+  String get cargoStepReceive => 'We weigh it, quote the price, and bring it to your country';
+
+  @override
+  String get cargoMyParcels => 'My parcels';
+
+  @override
+  String get cargoRegisterParcel => 'Register a parcel';
+
+  @override
+  String get cargoDestination => 'Destination country';
+
+  @override
+  String get cargoDescription => 'What is in the parcel';
+
+  @override
+  String get cargoDescriptionHint => 'For example: 2 pairs of trainers, size 42';
+
+  @override
+  String get cargoTrackCode => 'Tracking code';
+
+  @override
+  String get cargoProductLink => 'Product link';
+
+  @override
+  String get cargoWarehouseAddress => 'Our warehouse address in China';
+
+  @override
+  String get cargoCopyAddress => 'Copy address';
+
+  @override
+  String get cargoAddressCopied => 'Address copied';
+
+  @override
+  String get cargoAwaitingWeighing => 'Awaiting weighing';
+
+  @override
+  String get cargoCancelParcel => 'Cancel parcel';
+
+  @override
+  String get cargoCancelConfirm => 'Are you sure you want to cancel this parcel?';
+
+  @override
+  String get cargoEmptyTitle => 'No parcels yet';
+
+  @override
+  String get cargoEmptyMessage => 'Register your first parcel from China';
+
+  @override
+  String get cargoUnavailableMessage => 'Cargo is being set up right now. It will be available soon.';
+
+  @override
+  String get cargoStatusRegistered => 'Registered';
+
+  @override
+  String get cargoStatusReceived => 'At the China warehouse';
+
+  @override
+  String get cargoStatusShipped => 'In transit';
+
+  @override
+  String get cargoStatusArrived => 'Arrived in country';
+
+  @override
+  String get cargoStatusDelivered => 'Delivered';
+
+  @override
+  String get cargoStatusCancelled => 'Cancelled';
+
+  @override
+  String cargoRatePerKg(String price) {
+    return '$price / kg';
+  }
+
+  @override
+  String cargoTransitDays(int min, int max) {
+    return '$min–$max days in transit';
+  }
+
+  @override
+  String cargoWeightKg(String weight) {
+    return 'Weight: $weight kg';
+  }
 }

@@ -1035,4 +1035,103 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get sellerStatusRejected => 'Дархости шумо тасдиқ карда нашуд.';
+
+  @override
+  String get cargoTitle => 'Карго аз Хитой';
+
+  @override
+  String get cargoHowItWorks => 'Чӣ тавр кор мекунад';
+
+  @override
+  String get cargoStepOrder => 'Дар бозори Хитой (Taobao, Pinduoduo ва ғайра) молро фармоиш диҳед';
+
+  @override
+  String get cargoStepShipToWarehouse => 'Ҳангоми фармоиш суроғаи анбори мо дар Хитойро нишон диҳед';
+
+  @override
+  String get cargoStepRegister => 'Посылкаро дар ин ҷо сабт кунед — рамзи трекро баъдтар ҳам илова кардан мумкин аст';
+
+  @override
+  String get cargoStepReceive => 'Мо посылкаро баркашида, нарх мегӯем ва ба кишвар меорем';
+
+  @override
+  String get cargoMyParcels => 'Посылкаҳои ман';
+
+  @override
+  String get cargoRegisterParcel => 'Сабти посылка';
+
+  @override
+  String get cargoDestination => 'Ба кадом кишвар';
+
+  @override
+  String get cargoDescription => 'Мол чӣ аст';
+
+  @override
+  String get cargoDescriptionHint => 'Масалан: 2 ҷуфт кроссовка, андозаи 42';
+
+  @override
+  String get cargoTrackCode => 'Рамзи трек';
+
+  @override
+  String get cargoProductLink => 'Пайванди мол';
+
+  @override
+  String get cargoWarehouseAddress => 'Суроғаи анбори мо дар Хитой';
+
+  @override
+  String get cargoCopyAddress => 'Нусхабардории суроға';
+
+  @override
+  String get cargoAddressCopied => 'Суроға нусхабардорӣ шуд';
+
+  @override
+  String get cargoAwaitingWeighing => 'Дар интизори баркашӣ';
+
+  @override
+  String get cargoCancelParcel => 'Бекор кардани посылка';
+
+  @override
+  String get cargoCancelConfirm => 'Шумо мутмаин ҳастед, ки мехоҳед ин дархостро бекор кунед?';
+
+  @override
+  String get cargoEmptyTitle => 'Ҳанӯз посылка нест';
+
+  @override
+  String get cargoEmptyMessage => 'Аввалин посылкаи худро аз Хитой сабт кунед';
+
+  @override
+  String get cargoUnavailableMessage => 'Хизмати карго ҳоло омода мешавад. Ба зудӣ дастрас мешавад.';
+
+  @override
+  String get cargoStatusRegistered => 'Сабт шуд';
+
+  @override
+  String get cargoStatusReceived => 'Дар анбори Хитой';
+
+  @override
+  String get cargoStatusShipped => 'Дар роҳ';
+
+  @override
+  String get cargoStatusArrived => 'Ба кишвар расид';
+
+  @override
+  String get cargoStatusDelivered => 'Супорида шуд';
+
+  @override
+  String get cargoStatusCancelled => 'Бекор шуд';
+
+  @override
+  String cargoRatePerKg(String price) {
+    return '$price / кг';
+  }
+
+  @override
+  String cargoTransitDays(int min, int max) {
+    return '$min–$max рӯз дар роҳ';
+  }
+
+  @override
+  String cargoWeightKg(String weight) {
+    return 'Вазн: $weight кг';
+  }
 }

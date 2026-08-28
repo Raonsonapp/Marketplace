@@ -387,5 +387,45 @@
   "sellerStatusTitle": "Дархости фурушандашавӣ",
   "sellerStatusPending": "Дархости шумо дар ҳоли баррасӣ аст. Пас аз тасдиқ ба шумо хабар медиҳем.",
   "sellerStatusApproved": "Табрик! Шумо ҳоло фурӯшанда дар YouShop ҳастед.",
-  "sellerStatusRejected": "Дархости шумо тасдиқ карда нашуд."
+  "sellerStatusRejected": "Дархости шумо тасдиқ карда нашуд.",
+  "cargoTitle": "Карго аз Хитой",
+  "cargoHowItWorks": "Чӣ тавр кор мекунад",
+  "cargoStepOrder": "Дар бозори Хитой (Taobao, Pinduoduo ва ғайра) молро фармоиш диҳед",
+  "cargoStepShipToWarehouse": "Ҳангоми фармоиш суроғаи анбори мо дар Хитойро нишон диҳед",
+  "cargoStepRegister": "Посылкаро дар ин ҷо сабт кунед — рамзи трекро баъдтар ҳам илова кардан мумкин аст",
+  "cargoStepReceive": "Мо посылкаро баркашида, нарх мегӯем ва ба кишвар меорем",
+  "cargoMyParcels": "Посылкаҳои ман",
+  "cargoRegisterParcel": "Сабти посылка",
+  "cargoDestination": "Ба кадом кишвар",
+  "cargoDescription": "Мол чӣ аст",
+  "cargoDescriptionHint": "Масалан: 2 ҷуфт кроссовка, андозаи 42",
+  "cargoTrackCode": "Рамзи трек",
+  "cargoProductLink": "Пайванди мол",
+  "cargoWarehouseAddress": "Суроғаи анбори мо дар Хитой",
+  "cargoCopyAddress": "Нусхабардории суроға",
+  "cargoAddressCopied": "Суроға нусхабардорӣ шуд",
+  "cargoAwaitingWeighing": "Дар интизори баркашӣ",
+  "cargoCancelParcel": "Бекор кардани посылка",
+  "cargoCancelConfirm": "Шумо мутмаин ҳастед, ки мехоҳед ин дархостро бекор кунед?",
+  "cargoEmptyTitle": "Ҳанӯз посылка нест",
+  "cargoEmptyMessage": "Аввалин посылкаи худро аз Хитой сабт кунед",
+  "cargoUnavailableMessage": "Хизмати карго ҳоло омода мешавад. Ба зудӣ дастрас мешавад.",
+  "cargoStatusRegistered": "Сабт шуд",
+  "cargoStatusReceived": "Дар анбори Хитой",
+  "cargoStatusShipped": "Дар роҳ",
+  "cargoStatusArrived": "Ба кишвар расид",
+  "cargoStatusDelivered": "Супорида шуд",
+  "cargoStatusCancelled": "Бекор шуд",
+  "cargoRatePerKg": "{price} / кг",
+  "@cargoRatePerKg": {
+    "placeholders": {"price": {"type": "String"}}
+  },
+  "cargoTransitDays": "{min}–{max} рӯз дар роҳ",
+  "@cargoTransitDays": {
+    "placeholders": {"min": {"type": "int"}, "max": {"type": "int"}}
+  },
+  "cargoWeightKg": "Вазн: {weight} кг",
+  "@cargoWeightKg": {
+    "placeholders": {"weight": {"type": "String"}}
+  }
 }

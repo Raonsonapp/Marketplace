@@ -1024,4 +1024,103 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get sellerStatusRejected => 'Ваша заявка не была одобрена.';
+
+  @override
+  String get cargoTitle => 'Карго из Китая';
+
+  @override
+  String get cargoHowItWorks => 'Как это работает';
+
+  @override
+  String get cargoStepOrder => 'Закажите товар на китайской площадке (Taobao, Pinduoduo и др.)';
+
+  @override
+  String get cargoStepShipToWarehouse => 'При заказе укажите адрес нашего склада в Китае';
+
+  @override
+  String get cargoStepRegister => 'Зарегистрируйте посылку здесь — трек-код можно добавить позже';
+
+  @override
+  String get cargoStepReceive => 'Мы взвесим посылку, назовём цену и доставим её в вашу страну';
+
+  @override
+  String get cargoMyParcels => 'Мои посылки';
+
+  @override
+  String get cargoRegisterParcel => 'Зарегистрировать посылку';
+
+  @override
+  String get cargoDestination => 'Страна доставки';
+
+  @override
+  String get cargoDescription => 'Что за товар';
+
+  @override
+  String get cargoDescriptionHint => 'Например: 2 пары кроссовок, размер 42';
+
+  @override
+  String get cargoTrackCode => 'Трек-код';
+
+  @override
+  String get cargoProductLink => 'Ссылка на товар';
+
+  @override
+  String get cargoWarehouseAddress => 'Адрес нашего склада в Китае';
+
+  @override
+  String get cargoCopyAddress => 'Скопировать адрес';
+
+  @override
+  String get cargoAddressCopied => 'Адрес скопирован';
+
+  @override
+  String get cargoAwaitingWeighing => 'Ожидает взвешивания';
+
+  @override
+  String get cargoCancelParcel => 'Отменить посылку';
+
+  @override
+  String get cargoCancelConfirm => 'Вы уверены, что хотите отменить эту заявку?';
+
+  @override
+  String get cargoEmptyTitle => 'Посылок пока нет';
+
+  @override
+  String get cargoEmptyMessage => 'Зарегистрируйте свою первую посылку из Китая';
+
+  @override
+  String get cargoUnavailableMessage => 'Услуга карго сейчас настраивается. Скоро будет доступна.';
+
+  @override
+  String get cargoStatusRegistered => 'Зарегистрирована';
+
+  @override
+  String get cargoStatusReceived => 'На складе в Китае';
+
+  @override
+  String get cargoStatusShipped => 'В пути';
+
+  @override
+  String get cargoStatusArrived => 'Прибыла в страну';
+
+  @override
+  String get cargoStatusDelivered => 'Выдана';
+
+  @override
+  String get cargoStatusCancelled => 'Отменена';
+
+  @override
+  String cargoRatePerKg(String price) {
+    return '$price / кг';
+  }
+
+  @override
+  String cargoTransitDays(int min, int max) {
+    return '$min–$max дней в пути';
+  }
+
+  @override
+  String cargoWeightKg(String weight) {
+    return 'Вес: $weight кг';
+  }
 }

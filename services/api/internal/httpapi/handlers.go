@@ -11,6 +11,7 @@ type Handlers struct {
 	Loyalty      *LoyaltyHandler
 	Address      *AddressHandler
 	Region       *RegionHandler
+	Cargo        *CargoHandler
 	Profile      *ProfileHandler
 	Health       *HealthHandler
 	OrderWS      *OrderWSHandler

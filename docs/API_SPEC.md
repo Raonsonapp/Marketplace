@@ -120,6 +120,29 @@ GET    /profile
 PATCH  /profile               { full_name, email, language, country }
 ```
 
+### Cargo (parcel forwarding, China -> TJ/RU)
+```
+GET    /cargo/tariffs                          -> public: the destinations forwarding is offered for,
+                                                  each with its China warehouse address, per-kg rate
+                                                  and transit time. An empty list means no operator has
+                                                  switched the service on yet — not an error.
+GET    /cargo                                  -> the caller's own parcels
+POST   /cargo                 { destination, description, track_code?, product_link? }
+GET    /cargo/:id
+POST   /cargo/:id/cancel                       -> withdraw a parcel the warehouse hasn't received yet
+                                                  (409 CARGO_NOT_CANCELABLE once it is in motion)
+```
+Operator surface (role: admin/store_manager):
+```
+GET    /admin/cargo                            -> queue, unfinished first; ?status= to filter
+PATCH  /admin/cargo/:id       { track_code?, weight_kg?, status?, note? }
+                                               -> the price is always recomputed server-side as
+                                                  weight x the destination's rate; there is no cost field
+PUT    /admin/cargo/tariffs/:destination
+                              { rate_per_kg, warehouse_address, contact_phone,
+                                estimated_days_min?, estimated_days_max?, is_active }
+```
+
 ### Notifications / Support
 ```
 GET    /notifications

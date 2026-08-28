@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
+	"tajikshop/api/internal/pkg/money"
 )
 
 // Address mirrors the addresses table.
@@ -117,4 +119,58 @@ type City struct {
 	Lat         float64
 	Lng         float64
 	SortOrder   int
+}
+
+// CargoTariff is the parcel-forwarding offer for one destination country:
+// where in China to ship, what a kilo costs, and how long it takes.
+// Inactive until an operator has filled it in, so the app never quotes a
+// price of zero.
+type CargoTariff struct {
+	Destination      string
+	RatePerKg        money.Money
+	WarehouseAddress string
+	ContactPhone     string
+	EstimatedDaysMin *int
+	EstimatedDaysMax *int
+	IsActive         bool
+	UpdatedAt        time.Time
+}
+
+// CargoShipment is one parcel a user registered for forwarding.
+type CargoShipment struct {
+	ID          uuid.UUID
+	UserID      uuid.UUID
+	TrackCode   *string
+	ProductLink *string
+	Description string
+	Destination string
+	// WeightKg and Cost stay zero until the operator weighs the parcel at
+	// the China warehouse.
+	WeightKg  float64
+	Cost      money.Money
+	Status    string
+	Note      *string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+// Cargo statuses, in the order a parcel moves through them.
+const (
+	CargoStatusNew       = "new"
+	CargoStatusReceived  = "received"
+	CargoStatusShipped   = "shipped"
+	CargoStatusArrived   = "arrived"
+	CargoStatusDelivered = "delivered"
+	CargoStatusCancelled = "cancelled"
+)
+
+// ValidCargoStatus reports whether s is one of the statuses the database
+// CHECK constraint accepts.
+func ValidCargoStatus(s string) bool {
+	switch s {
+	case CargoStatusNew, CargoStatusReceived, CargoStatusShipped,
+		CargoStatusArrived, CargoStatusDelivered, CargoStatusCancelled:
+		return true
+	}
+	return false
 }
