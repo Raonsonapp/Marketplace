@@ -69,19 +69,32 @@ LAN IP for a physical device, configured via `--dart-define=API_BASE_URL=...`
 - **Real signing, not the debug keystore**: `android/app/build.gradle.kts`
   reads `android/key.properties` (never committed — see `android/.gitignore`)
   for the release `signingConfig`. Two ways to provide it:
-  - **Locally**: generate an upload keystore
-    (`keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload`),
-    then create `apps/mobile/android/key.properties`:
+  - **Generate the key** (once, ever) with the helper script, which creates
+    the keystore and prints the four secret values ready to paste:
+    ```
+    ./scripts/make-upload-keystore.sh                                     # macOS/Linux
+    powershell -ExecutionPolicy Bypass -File scripts\make-upload-keystore.ps1   # Windows
+    ```
+    It refuses to overwrite an existing keystore, reads the password without
+    echoing it, and writes a PKCS12 store with a ~27-year validity (a key
+    that expires makes the Play listing un-updatable). **Back the `.jks` up
+    somewhere you will still have in five years**: Google Play binds the app
+    to this key permanently, so losing it means never shipping an update to
+    that listing again — only a brand-new listing with no installs.
+  - **CI**: set the repository secrets the script prints —
+    `ANDROID_KEYSTORE_BASE64` (the keystore file, base64-encoded on a single
+    line), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`,
+    `ANDROID_KEY_PASSWORD` — under **Settings → Secrets and variables →
+    Actions → New repository secret**. The workflow decodes the keystore and
+    writes `key.properties` itself before building.
+  - **Locally** (optional, for a signed build on your own machine): create
+    `apps/mobile/android/key.properties` pointing at the same keystore:
     ```
     storeFile=/absolute/path/to/upload-keystore.jks
     storePassword=...
     keyAlias=upload
     keyPassword=...
     ```
-  - **CI**: set the repository secrets `ANDROID_KEYSTORE_BASE64` (the
-    keystore file, base64-encoded), `ANDROID_KEYSTORE_PASSWORD`,
-    `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD` — the workflow decodes the
-    keystore and writes `key.properties` itself before building.
   - If neither is present, the release build type **falls back to the debug
     keystore and logs a loud warning** (both in Gradle's own output and as a
     GitHub Actions `::warning::`) so an unsigned-for-Play build is never
