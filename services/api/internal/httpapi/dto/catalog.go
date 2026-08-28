@@ -96,6 +96,7 @@ type StoreResponse struct {
 	Slug                string   `json:"slug"`
 	LogoURL             *string  `json:"logo_url,omitempty"`
 	Address             *string  `json:"address,omitempty"`
+	Country             string   `json:"country"`
 	City                string   `json:"city"`
 	Lat                 *float64 `json:"lat,omitempty"`
 	Lng                 *float64 `json:"lng,omitempty"`
@@ -109,7 +110,8 @@ type StoreResponse struct {
 func NewStoreResponse(sd service.StoreWithDistance) StoreResponse {
 	s := sd.Store
 	return StoreResponse{
-		ID: s.ID.String(), Name: s.Name, Slug: s.Slug, LogoURL: s.LogoURL, Address: s.Address, City: s.City,
+		ID: s.ID.String(), Name: s.Name, Slug: s.Slug, LogoURL: s.LogoURL, Address: s.Address,
+		Country: s.Country, City: s.City,
 		Lat: s.Lat, Lng: s.Lng, Phone: s.Phone, IsDeliveryAvailable: s.IsDeliveryAvailable,
 		IsPickupAvailable: s.IsPickupAvailable, DistanceKM: sd.DistanceKM,
 	}

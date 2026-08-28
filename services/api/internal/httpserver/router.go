@@ -50,6 +50,11 @@ func NewRouter(h httpapi.Handlers, tokenMgr *auth.TokenManager, limiter *auth.Li
 		}
 
 		v1.GET("/home", optionalAuth, h.Catalog.Home)
+		// Reference data for the two markets YouShop serves (TJ and RU):
+		// currency, dial code, map centre and the deliverable city list.
+		v1.GET("/countries", h.Region.Countries)
+		v1.GET("/countries/:code/cities", h.Region.Cities)
+
 		v1.GET("/categories", h.Catalog.Categories)
 		v1.GET("/categories/:id/products", optionalAuth, h.Catalog.CategoryProducts)
 		v1.GET("/stores", h.Catalog.Stores)

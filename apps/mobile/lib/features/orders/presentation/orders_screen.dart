@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/router/route_paths.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/region/currency_scope.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/error_state_view.dart';
@@ -101,7 +102,7 @@ class _OrdersList extends ConsumerWidget {
                       ),
                       const SizedBox(height: AppSpacing.xs),
                       Text(
-                        CurrencyFormatter.format(order.total, languageCode: languageCode),
+                        CurrencyFormatter.format(order.total, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ],

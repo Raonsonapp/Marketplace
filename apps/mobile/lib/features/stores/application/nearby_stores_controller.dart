@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../../core/models/store.dart';
 import '../../../core/network/app_exception.dart';
 import '../../../core/network/error_mapper.dart';
+import '../../../core/region/country_controller.dart';
 import '../data/stores_repository.dart';
 
 part 'nearby_stores_controller.freezed.dart';
@@ -78,7 +79,11 @@ class NearbyStoresController extends Notifier<NearbyStoresState> {
   Future<void> _loadStores(double lat, double lng) async {
     state = state.copyWith(status: LocationUiStatus.loadingStores, lat: lat, lng: lng);
     try {
-      final stores = await ref.read(storesRepositoryProvider).getNearbyStores(lat: lat, lng: lng);
+      final stores = await ref.read(storesRepositoryProvider).getNearbyStores(
+        lat: lat,
+        lng: lng,
+        country: ref.read(selectedCountryProvider),
+      );
       state = state.copyWith(status: LocationUiStatus.loaded, stores: stores);
     } catch (e) {
       state = state.copyWith(status: LocationUiStatus.error, error: ErrorMapper.map(e));

@@ -31,8 +31,11 @@ as endpoints are implemented — Phase 2+).
 
 ### Auth
 ```
-POST   /auth/send-otp          { phone }                        -> { retry_after_seconds }
-POST   /auth/verify-otp        { phone, code }                   -> { access_token, refresh_token, user, is_new_user }
+POST   /auth/send-otp          { email }                         -> { retry_after_seconds } — the code is
+                                                                     emailed via the Apps Script relay
+                                                                     (docs/TELEGRAM_RELAY_SETUP.md); there
+                                                                     is no SMS path.
+POST   /auth/verify-otp        { email, code }                   -> { access_token, refresh_token, user, is_new_user }
 POST   /auth/refresh           { refresh_token }                 -> { access_token, refresh_token }
 POST   /auth/logout            { refresh_token }                 -> 204
 POST   /auth/firebase-verify   { id_token, full_name? }          -> same shape as verify-otp — real-SMS
@@ -45,10 +48,14 @@ POST   /auth/google             { id_token }                      -> same as ver
 
 ### Home / Catalog / Search
 ```
+GET    /countries                              -> the markets YouShop serves (TJ, RU): name per language,
+                                                  currency code + label per language, dial code, map centre,
+                                                  and the deliverable cities of each
+GET    /countries/:code/cities                 -> just one market's cities
 GET    /home                                   -> dynamic home sections (banners, categories, popular, discounted, recommended, recently_viewed, personal_offers, nearby_stores, featured_brands, buy_again) — each section is data-driven and independently paginated/omitted if empty
 GET    /categories                             -> tree of categories
 GET    /categories/:id/products                -> paginated products in category
-GET    /stores                                 -> nearby/available stores (lat/lng query params)
+GET    /stores                                 -> nearby/available stores (lat/lng/country/city query params)
 GET    /stores/:id                             -> store detail (hours, zones, pickup/delivery flags)
 GET    /products                               -> filter/sort query params (see below)
 GET    /products/:id                           -> full product detail incl. related/similar
@@ -105,12 +112,12 @@ POST   /promo-codes/validate  { code }
 ### Addresses / Profile
 ```
 GET    /addresses
-POST   /addresses
+POST   /addresses             { country, city, street, ... }
 PATCH  /addresses/:id
 DELETE /addresses/:id
 POST   /addresses/:id/default
 GET    /profile
-PATCH  /profile               { full_name, email, language }
+PATCH  /profile               { full_name, email, language, country }
 ```
 
 ### Notifications / Support

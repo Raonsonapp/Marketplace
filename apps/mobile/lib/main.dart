@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/localization/fallback_localizations_delegate.dart';
 import 'core/localization/locale_controller.dart';
+import 'core/region/country_controller.dart';
+import 'core/region/currency_scope.dart';
 import 'core/router/app_router.dart';
 import 'core/storage/preferences_storage.dart';
 import 'core/theme/app_theme.dart';
@@ -72,6 +74,10 @@ class YouShopApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
     final locale = ref.watch(localeControllerProvider);
     final themeMode = ref.watch(themeModeControllerProvider);
+    // Prices arrive from the API without a currency; the active market
+    // decides whether they read as somoni or rubles. Published once here so
+    // every price widget can read it from its BuildContext.
+    final currencyLabel = ref.watch(activeCountryProvider)?.currencyLabel(locale.languageCode);
 
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
@@ -94,6 +100,8 @@ class YouShopApp extends ConsumerWidget {
         FallbackWidgetsLocalizationsDelegate(),
       ],
       routerConfig: router,
+      builder: (context, child) =>
+          CurrencyScope(label: currencyLabel, child: child ?? const SizedBox.shrink()),
     );
   }
 }

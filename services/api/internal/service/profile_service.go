@@ -36,8 +36,8 @@ func (s *ProfileService) Get(ctx context.Context, userID uuid.UUID) (*models.Use
 }
 
 // Update applies a partial profile update.
-func (s *ProfileService) Update(ctx context.Context, userID uuid.UUID, fullName, email, language *string) (*models.User, error) {
-	u, err := s.users.UpdateProfile(ctx, s.db, userID, fullName, email, language)
+func (s *ProfileService) Update(ctx context.Context, userID uuid.UUID, fullName, email, language, country *string) (*models.User, error) {
+	u, err := s.users.UpdateProfile(ctx, s.db, userID, fullName, email, language, country)
 	if err != nil {
 		if err == repository.ErrNotFound {
 			return nil, apperr.New(apperr.CodeNotFound, nil)

@@ -16,7 +16,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Address {
 
- String get id; String get city; String get street; String? get house; String? get apartment; String? get entrance; String? get floor; String? get comment; double? get lat; double? get lng; bool get isDefault;
+ String get id;/// ISO country code of the market this address is in ('TJ' or 'RU').
+/// Defaults to Tajikistan, which is what every address saved before the
+/// app served two countries actually is.
+ String get country; String get city; String get street; String? get house; String? get apartment; String? get entrance; String? get floor; String? get comment; double? get lat; double? get lng; bool get isDefault;
 /// Create a copy of Address
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +32,16 @@ $AddressCopyWith<Address> get copyWith => _$AddressCopyWithImpl<Address>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Address&&(identical(other.id, id) || other.id == id)&&(identical(other.city, city) || other.city == city)&&(identical(other.street, street) || other.street == street)&&(identical(other.house, house) || other.house == house)&&(identical(other.apartment, apartment) || other.apartment == apartment)&&(identical(other.entrance, entrance) || other.entrance == entrance)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.comment, comment) || other.comment == comment)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isDefault, isDefault) || other.isDefault == isDefault));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Address&&(identical(other.id, id) || other.id == id)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.street, street) || other.street == street)&&(identical(other.house, house) || other.house == house)&&(identical(other.apartment, apartment) || other.apartment == apartment)&&(identical(other.entrance, entrance) || other.entrance == entrance)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.comment, comment) || other.comment == comment)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isDefault, isDefault) || other.isDefault == isDefault));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,city,street,house,apartment,entrance,floor,comment,lat,lng,isDefault);
+int get hashCode => Object.hash(runtimeType,id,country,city,street,house,apartment,entrance,floor,comment,lat,lng,isDefault);
 
 @override
 String toString() {
-  return 'Address(id: $id, city: $city, street: $street, house: $house, apartment: $apartment, entrance: $entrance, floor: $floor, comment: $comment, lat: $lat, lng: $lng, isDefault: $isDefault)';
+  return 'Address(id: $id, country: $country, city: $city, street: $street, house: $house, apartment: $apartment, entrance: $entrance, floor: $floor, comment: $comment, lat: $lat, lng: $lng, isDefault: $isDefault)';
 }
 
 
@@ -49,7 +52,7 @@ abstract mixin class $AddressCopyWith<$Res>  {
   factory $AddressCopyWith(Address value, $Res Function(Address) _then) = _$AddressCopyWithImpl;
 @useResult
 $Res call({
- String id, String city, String street, String? house, String? apartment, String? entrance, String? floor, String? comment, double? lat, double? lng, bool isDefault
+ String id, String country, String city, String street, String? house, String? apartment, String? entrance, String? floor, String? comment, double? lat, double? lng, bool isDefault
 });
 
 
@@ -66,9 +69,10 @@ class _$AddressCopyWithImpl<$Res>
 
 /// Create a copy of Address
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? city = null,Object? street = null,Object? house = freezed,Object? apartment = freezed,Object? entrance = freezed,Object? floor = freezed,Object? comment = freezed,Object? lat = freezed,Object? lng = freezed,Object? isDefault = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? country = null,Object? city = null,Object? street = null,Object? house = freezed,Object? apartment = freezed,Object? entrance = freezed,Object? floor = freezed,Object? comment = freezed,Object? lat = freezed,Object? lng = freezed,Object? isDefault = null,}) {
   return _then(Address(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as String,street: null == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
 as String,house: freezed == house ? _self.house : house // ignore: cast_nullable_to_non_nullable
@@ -164,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String city,  String street,  String? house,  String? apartment,  String? entrance,  String? floor,  String? comment,  double? lat,  double? lng,  bool isDefault)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String country,  String city,  String street,  String? house,  String? apartment,  String? entrance,  String? floor,  String? comment,  double? lat,  double? lng,  bool isDefault)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Address() when $default != null:
-return $default(_that.id,_that.city,_that.street,_that.house,_that.apartment,_that.entrance,_that.floor,_that.comment,_that.lat,_that.lng,_that.isDefault);case _:
+return $default(_that.id,_that.country,_that.city,_that.street,_that.house,_that.apartment,_that.entrance,_that.floor,_that.comment,_that.lat,_that.lng,_that.isDefault);case _:
   return orElse();
 
 }
@@ -185,10 +189,10 @@ return $default(_that.id,_that.city,_that.street,_that.house,_that.apartment,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String city,  String street,  String? house,  String? apartment,  String? entrance,  String? floor,  String? comment,  double? lat,  double? lng,  bool isDefault)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String country,  String city,  String street,  String? house,  String? apartment,  String? entrance,  String? floor,  String? comment,  double? lat,  double? lng,  bool isDefault)  $default,) {final _that = this;
 switch (_that) {
 case _Address():
-return $default(_that.id,_that.city,_that.street,_that.house,_that.apartment,_that.entrance,_that.floor,_that.comment,_that.lat,_that.lng,_that.isDefault);case _:
+return $default(_that.id,_that.country,_that.city,_that.street,_that.house,_that.apartment,_that.entrance,_that.floor,_that.comment,_that.lat,_that.lng,_that.isDefault);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +209,10 @@ return $default(_that.id,_that.city,_that.street,_that.house,_that.apartment,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String city,  String street,  String? house,  String? apartment,  String? entrance,  String? floor,  String? comment,  double? lat,  double? lng,  bool isDefault)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String country,  String city,  String street,  String? house,  String? apartment,  String? entrance,  String? floor,  String? comment,  double? lat,  double? lng,  bool isDefault)?  $default,) {final _that = this;
 switch (_that) {
 case _Address() when $default != null:
-return $default(_that.id,_that.city,_that.street,_that.house,_that.apartment,_that.entrance,_that.floor,_that.comment,_that.lat,_that.lng,_that.isDefault);case _:
+return $default(_that.id,_that.country,_that.city,_that.street,_that.house,_that.apartment,_that.entrance,_that.floor,_that.comment,_that.lat,_that.lng,_that.isDefault);case _:
   return null;
 
 }
@@ -220,10 +224,14 @@ return $default(_that.id,_that.city,_that.street,_that.house,_that.apartment,_th
 @JsonSerializable()
 
 class _Address extends Address {
-  const _Address({required this.id, required this.city, required this.street, this.house, this.apartment, this.entrance, this.floor, this.comment, this.lat, this.lng, this.isDefault = false}): super._();
+  const _Address({required this.id, this.country = 'TJ', required this.city, required this.street, this.house, this.apartment, this.entrance, this.floor, this.comment, this.lat, this.lng, this.isDefault = false}): super._();
   factory _Address.fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);
 
 @override final  String id;
+/// ISO country code of the market this address is in ('TJ' or 'RU').
+/// Defaults to Tajikistan, which is what every address saved before the
+/// app served two countries actually is.
+@override@JsonKey() final  String country;
 @override final  String city;
 @override final  String street;
 @override final  String? house;
@@ -248,16 +256,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Address&&(identical(other.id, id) || other.id == id)&&(identical(other.city, city) || other.city == city)&&(identical(other.street, street) || other.street == street)&&(identical(other.house, house) || other.house == house)&&(identical(other.apartment, apartment) || other.apartment == apartment)&&(identical(other.entrance, entrance) || other.entrance == entrance)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.comment, comment) || other.comment == comment)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isDefault, isDefault) || other.isDefault == isDefault));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Address&&(identical(other.id, id) || other.id == id)&&(identical(other.country, country) || other.country == country)&&(identical(other.city, city) || other.city == city)&&(identical(other.street, street) || other.street == street)&&(identical(other.house, house) || other.house == house)&&(identical(other.apartment, apartment) || other.apartment == apartment)&&(identical(other.entrance, entrance) || other.entrance == entrance)&&(identical(other.floor, floor) || other.floor == floor)&&(identical(other.comment, comment) || other.comment == comment)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.isDefault, isDefault) || other.isDefault == isDefault));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,city,street,house,apartment,entrance,floor,comment,lat,lng,isDefault);
+int get hashCode => Object.hash(runtimeType,id,country,city,street,house,apartment,entrance,floor,comment,lat,lng,isDefault);
 
 @override
 String toString() {
-  return 'Address(id: $id, city: $city, street: $street, house: $house, apartment: $apartment, entrance: $entrance, floor: $floor, comment: $comment, lat: $lat, lng: $lng, isDefault: $isDefault)';
+  return 'Address(id: $id, country: $country, city: $city, street: $street, house: $house, apartment: $apartment, entrance: $entrance, floor: $floor, comment: $comment, lat: $lat, lng: $lng, isDefault: $isDefault)';
 }
 
 
@@ -268,7 +276,7 @@ abstract mixin class _$AddressCopyWith<$Res> implements $AddressCopyWith<$Res> {
   factory _$AddressCopyWith(_Address value, $Res Function(_Address) _then) = __$AddressCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String city, String street, String? house, String? apartment, String? entrance, String? floor, String? comment, double? lat, double? lng, bool isDefault
+ String id, String country, String city, String street, String? house, String? apartment, String? entrance, String? floor, String? comment, double? lat, double? lng, bool isDefault
 });
 
 
@@ -285,9 +293,10 @@ class __$AddressCopyWithImpl<$Res>
 
 /// Create a copy of Address
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? city = null,Object? street = null,Object? house = freezed,Object? apartment = freezed,Object? entrance = freezed,Object? floor = freezed,Object? comment = freezed,Object? lat = freezed,Object? lng = freezed,Object? isDefault = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? country = null,Object? city = null,Object? street = null,Object? house = freezed,Object? apartment = freezed,Object? entrance = freezed,Object? floor = freezed,Object? comment = freezed,Object? lat = freezed,Object? lng = freezed,Object? isDefault = null,}) {
   return _then(_Address(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as String,city: null == city ? _self.city : city // ignore: cast_nullable_to_non_nullable
 as String,street: null == street ? _self.street : street // ignore: cast_nullable_to_non_nullable
 as String,house: freezed == house ? _self.house : house // ignore: cast_nullable_to_non_nullable

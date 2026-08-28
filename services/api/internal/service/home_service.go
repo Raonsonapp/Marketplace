@@ -43,7 +43,7 @@ type HomeFeed struct {
 }
 
 // Build assembles the home feed. userID is nil for anonymous requests.
-func (s *HomeService) Build(ctx context.Context, userID *uuid.UUID, lat, lng *float64) (*HomeFeed, error) {
+func (s *HomeService) Build(ctx context.Context, userID *uuid.UUID, country string, lat, lng *float64) (*HomeFeed, error) {
 	feed := &HomeFeed{}
 
 	cats, err := s.categories.ListActive(ctx, s.db)
@@ -69,7 +69,9 @@ func (s *HomeService) Build(ctx context.Context, userID *uuid.UUID, lat, lng *fl
 	}
 	feed.Discounted = discounted
 
-	stores, err := s.catalog.Stores(ctx, "", lat, lng)
+	// Only stores in the shopper's own market: a Moscow shopper has no use
+	// for a Dushanbe store in "nearby".
+	stores, err := s.catalog.Stores(ctx, country, "", lat, lng)
 	if err != nil {
 		return nil, fmt.Errorf("service: home stores: %w", err)
 	}

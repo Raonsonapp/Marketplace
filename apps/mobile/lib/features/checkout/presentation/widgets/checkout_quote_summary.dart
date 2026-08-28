@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/region/currency_scope.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/checkout_models.dart';
@@ -27,7 +28,7 @@ class CheckoutQuoteSummary extends StatelessWidget {
           children: [
             Text(label, style: isTotal ? theme.textTheme.titleMedium : theme.textTheme.bodyMedium),
             Text(
-              CurrencyFormatter.format(amount, languageCode: languageCode),
+              CurrencyFormatter.format(amount, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
               style: isTotal
                   ? theme.textTheme.titleMedium?.copyWith(color: AppColors.emeraldGreen)
                   : theme.textTheme.bodyMedium,

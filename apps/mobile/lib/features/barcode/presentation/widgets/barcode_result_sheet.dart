@@ -6,6 +6,7 @@ import '../../../../core/models/product.dart';
 import '../../../../core/router/route_paths.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/region/currency_scope.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -64,13 +65,13 @@ class BarcodeResultSheet extends StatelessWidget {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Text(
-                            CurrencyFormatter.format(product.price, languageCode: languageCode),
+                            CurrencyFormatter.format(product.price, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                             style: theme.textTheme.titleMedium
                                 ?.copyWith(color: AppColors.emeraldGreen),
                           ),
                           if (hasDiscount)
                             Text(
-                              CurrencyFormatter.format(product.oldPrice!, languageCode: languageCode),
+                              CurrencyFormatter.format(product.oldPrice!, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: AppColors.priceOld,
                                 decoration: TextDecoration.lineThrough,

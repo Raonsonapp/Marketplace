@@ -4,6 +4,8 @@ import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../core/location/location_service.dart';
 import '../../../core/models/address.dart';
+import '../../../core/models/country.dart';
+import '../../../core/region/country_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/empty_state_view.dart';
@@ -108,6 +110,12 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
   double? _lat;
   double? _lng;
 
+  /// Null until the sheet is first built, at which point it seeds from the
+  /// market the shopper is browsing in. "Use my location" overrides it when
+  /// the geocoder reports a different country — someone in Moscow adding an
+  /// address should not have to notice the country field at all.
+  String? _country;
+
   @override
   void dispose() {
     _cityController.dispose();
@@ -121,6 +129,13 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final countries = ref.watch(countriesProvider).valueOrNull ?? const <Country>[];
+    final country = _country ??= ref.read(selectedCountryProvider);
+    final cities = countries
+        .where((c) => c.code == country)
+        .expand((c) => c.cities)
+        .toList(growable: false);
     return Padding(
       padding: EdgeInsets.only(
         left: AppSpacing.md,
@@ -144,10 +159,52 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
               label: Text(_lat != null ? l10n.sellerLocationCaptured : l10n.sellerUseMyLocation),
             ),
             const SizedBox(height: AppSpacing.md),
-            TextField(
-              controller: _cityController,
-              decoration: InputDecoration(labelText: l10n.addressCity),
-            ),
+            // Only shown once `/countries` has answered with more than one
+            // market — with a single market there is nothing to choose, and
+            // an unanswered call must not block adding an address.
+            if (countries.length > 1) ...[
+              DropdownButtonFormField<String>(
+                initialValue: countries.any((c) => c.code == country) ? country : null,
+                decoration: InputDecoration(labelText: l10n.addressCountry),
+                items: [
+                  for (final c in countries)
+                    DropdownMenuItem(
+                      value: c.code,
+                      child: Text('${c.flagEmoji}  ${c.name(languageCode)}'),
+                    ),
+                ],
+                onChanged: (value) {
+                  if (value == null) return;
+                  setState(() {
+                    _country = value;
+                    // The old city belongs to the old country; keeping it
+                    // would silently save a Dushanbe street under Russia.
+                    _cityController.clear();
+                  });
+                },
+              ),
+              const SizedBox(height: AppSpacing.sm),
+            ],
+            if (cities.isEmpty)
+              TextField(
+                controller: _cityController,
+                decoration: InputDecoration(labelText: l10n.addressCity),
+              )
+            else
+              // A dropdown of the market's delivery cities, but the field
+              // still accepts a city the server doesn't list yet (the GPS
+              // fill can produce one), so it is a text field with a picker
+              // attached rather than a closed dropdown.
+              TextField(
+                controller: _cityController,
+                decoration: InputDecoration(
+                  labelText: l10n.addressCity,
+                  suffixIcon: IconButton(
+                    icon: const Icon(LucideIcons.chevronDown),
+                    onPressed: () => _pickCity(cities, languageCode),
+                  ),
+                ),
+              ),
             const SizedBox(height: AppSpacing.sm),
             TextField(
               controller: _streetController,
@@ -201,6 +258,9 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
       setState(() {
         _lat = loc.latitude;
         _lng = loc.longitude;
+        if (loc.countryCode != null && loc.countryCode!.length == 2) {
+          _country = loc.countryCode;
+        }
         if (loc.city != null) _cityController.text = loc.city!;
         if (loc.street != null) _streetController.text = loc.street!;
         if (loc.house != null && _houseController.text.trim().isEmpty) {
@@ -221,11 +281,33 @@ class _AddAddressSheetState extends ConsumerState<_AddAddressSheet> {
     }
   }
 
+  /// Bottom-sheet list of the market's delivery cities. Picking one fills
+  /// the field; dismissing leaves whatever the shopper already typed.
+  Future<void> _pickCity(List<City> cities, String languageCode) async {
+    final picked = await showModalBottomSheet<City>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) => SafeArea(
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: cities.length,
+          itemBuilder: (_, index) => ListTile(
+            title: Text(cities[index].name(languageCode)),
+            onTap: () => Navigator.of(sheetContext).pop(cities[index]),
+          ),
+        ),
+      ),
+    );
+    if (picked == null || !mounted) return;
+    setState(() => _cityController.text = picked.name(languageCode));
+  }
+
   Future<void> _submit() async {
     if (_cityController.text.trim().isEmpty || _streetController.text.trim().isEmpty) return;
     setState(() => _isSaving = true);
     await ref.read(addressesControllerProvider.notifier).addAddress(Address(
           id: '',
+          country: _country ?? ref.read(selectedCountryProvider),
           city: _cityController.text.trim(),
           street: _streetController.text.trim(),
           house: _houseController.text.trim().isEmpty ? null : _houseController.text.trim(),

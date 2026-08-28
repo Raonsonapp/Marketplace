@@ -14,11 +14,18 @@ class PreferencesStorage {
   static const int _maxRecentSearches = 10;
   static const String _onboardingSeenKey = 'onboarding_seen';
   static const String _themeModeKey = 'theme_mode';
+  static const String _countryKey = 'market_country';
 
   String? readLanguage() => _prefs.getString(AppConstants.storageKeyLanguage);
 
   Future<void> saveLanguage(String languageCode) =>
       _prefs.setString(AppConstants.storageKeyLanguage, languageCode);
+
+  /// The market the shopper picked ('TJ' or 'RU') — null until they choose
+  /// or the profile call tells us.
+  String? readCountry() => _prefs.getString(_countryKey);
+
+  Future<void> saveCountry(String code) => _prefs.setString(_countryKey, code);
 
   /// 'light', 'dark', or 'system' — null if never explicitly chosen.
   String? readThemeMode() => _prefs.getString(_themeModeKey);

@@ -24,6 +24,10 @@ type User struct {
 	Role      string
 	AvatarURL *string
 	Language  string
+	// Country is the market the account shops in ("TJ" or "RU"): it decides
+	// the currency shown, the dial code prefilled and where the address map
+	// opens. See migration 0007.
+	Country   string
 	GoogleID  *string
 	IsActive  bool
 	CreatedAt time.Time

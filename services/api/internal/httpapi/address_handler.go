@@ -40,8 +40,17 @@ func (h *AddressHandler) Create(c *gin.Context) {
 		handleErr(c, apperr.New(apperr.CodeValidation, map[string]any{"fields": []string{"city", "street"}}))
 		return
 	}
+	// A client that predates two-country support sends no country at all;
+	// treating that as Tajikistan matches how every existing row was written
+	// (migration 0007).
+	country := service.DefaultCountry
+	if req.Country != nil {
+		if normalized := service.NormalizeCountry(*req.Country); normalized != "" {
+			country = normalized
+		}
+	}
 	a := &models.Address{
-		UserID: httpctx.MustUserID(c), City: *req.City, Street: *req.Street,
+		UserID: httpctx.MustUserID(c), Country: country, City: *req.City, Street: *req.Street,
 		House: req.House, Apartment: req.Apartment, Entrance: req.Entrance, Floor: req.Floor,
 		Intercom: req.Intercom, Comment: req.Comment, Lat: req.Lat, Lng: req.Lng,
 	}
@@ -68,7 +77,7 @@ func (h *AddressHandler) Update(c *gin.Context) {
 		return
 	}
 	patch := repository.AddressPatch{
-		City: req.City, Street: req.Street, House: req.House, Apartment: req.Apartment,
+		Country: normalizeCountryPatch(req.Country), City: req.City, Street: req.Street, House: req.House, Apartment: req.Apartment,
 		Entrance: req.Entrance, Floor: req.Floor, Intercom: req.Intercom, Comment: req.Comment,
 		Lat: req.Lat, Lng: req.Lng, IsDefault: req.IsDefault,
 	}
@@ -92,4 +101,18 @@ func (h *AddressHandler) Delete(c *gin.Context) {
 		return
 	}
 	noContent(c)
+}
+
+// normalizeCountryPatch upper-cases a PATCH's country field, and treats a
+// malformed value as "not supplied" so the stored country survives rather
+// than being replaced by garbage.
+func normalizeCountryPatch(raw *string) *string {
+	if raw == nil {
+		return nil
+	}
+	normalized := service.NormalizeCountry(*raw)
+	if normalized == "" {
+		return nil
+	}
+	return &normalized
 }

@@ -4,6 +4,7 @@ import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/region/currency_scope.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/error_state_view.dart';
@@ -153,7 +154,7 @@ class _AccountHeader extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
-            CurrencyFormatter.format(account.balance, languageCode: languageCode),
+            CurrencyFormatter.format(account.balance, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 32,
@@ -163,7 +164,7 @@ class _AccountHeader extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Text(
             l10n.loyaltyLifetimeEarned(
-              CurrencyFormatter.format(account.lifetimeEarned, languageCode: languageCode),
+              CurrencyFormatter.format(account.lifetimeEarned, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
             ),
             style: const TextStyle(color: Colors.white70, fontSize: 13),
           ),

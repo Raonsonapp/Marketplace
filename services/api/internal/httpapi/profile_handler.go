@@ -40,7 +40,7 @@ func (h *ProfileHandler) Update(c *gin.Context) {
 		handleErr(c, apperr.New(apperr.CodeValidation, map[string]any{"field": "language"}))
 		return
 	}
-	u, err := h.svc.Update(c.Request.Context(), httpctx.MustUserID(c), req.FullName, req.Email, req.Language)
+	u, err := h.svc.Update(c.Request.Context(), httpctx.MustUserID(c), req.FullName, req.Email, req.Language, normalizeCountryPatch(req.Country))
 	if err != nil {
 		handleErr(c, err)
 		return

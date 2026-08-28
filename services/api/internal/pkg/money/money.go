@@ -1,7 +1,10 @@
-// Package money provides safe handling of TJS currency values that map to
+// Package money provides safe handling of the currency values that map to
 // the database's numeric(12,2) columns. Money is represented internally as
-// an int64 count of minor units (dirams; 1 TJS = 100 dirams) so arithmetic
-// never suffers floating point rounding error. All API JSON fields are
+// an int64 count of minor units (dirams for TJS, kopecks for RUB — both
+// currencies YouShop trades in have exactly two decimal places) so
+// arithmetic never suffers floating point rounding error. The amount itself
+// carries no currency tag: which currency it is in follows from the country
+// of the store or account it belongs to (migration 0007). All API JSON fields are
 // strings with exactly two decimals (e.g. "125.50"), matching docs/API_SPEC.md.
 package money
 
@@ -14,7 +17,7 @@ import (
 	"strings"
 )
 
-// Money is an amount of TJS stored as minor units (1/100 somoni).
+// Money is an amount stored as minor units (1/100 of the major unit).
 type Money int64
 
 // Zero is the additive identity.

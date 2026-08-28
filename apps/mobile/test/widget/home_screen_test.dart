@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tajikshop/core/localization/fallback_localizations_delegate.dart';
 import 'package:tajikshop/core/network/api_client.dart';
 import 'package:tajikshop/core/network/app_exception.dart';
+import 'package:tajikshop/core/storage/preferences_storage.dart';
 import 'package:tajikshop/core/storage/secure_token_storage.dart';
 import 'package:tajikshop/core/widgets/error_state_view.dart';
 import 'package:tajikshop/core/widgets/skeleton_loader.dart';
@@ -43,7 +45,7 @@ class _FailingHomeRepository extends HomeRepository {
   final Duration delay;
 
   @override
-  Future<HomeFeed> getHomeFeed() async {
+  Future<HomeFeed> getHomeFeed({String? country}) async {
     await Future<void>.delayed(delay);
     throw const NetworkException(NetworkErrorKind.noConnection);
   }
@@ -51,8 +53,15 @@ class _FailingHomeRepository extends HomeRepository {
 
 void main() {
   testWidgets('home screen shows a loading skeleton, then an error state on failure', (tester) async {
+    // The home feed is country-scoped, so its controller reads the stored
+    // market; `main()` supplies the real instance, a test supplies an empty
+    // one so the controller falls back to the default market.
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final prefs = await SharedPreferences.getInstance();
+
     final app = ProviderScope(
       overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
         secureTokenStorageProvider.overrideWithValue(_FakeSecureTokenStorage()),
         homeRepositoryProvider.overrideWithValue(
           _FailingHomeRepository(const Duration(milliseconds: 50)),

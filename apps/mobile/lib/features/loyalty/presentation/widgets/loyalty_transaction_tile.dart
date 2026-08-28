@@ -4,6 +4,7 @@ import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/region/currency_scope.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/loyalty_models.dart';
@@ -90,7 +91,7 @@ class LoyaltyTransactionTile extends StatelessWidget {
             ),
           ),
           Text(
-            '$sign ${CurrencyFormatter.format(transaction.amount, languageCode: languageCode)}',
+            '$sign ${CurrencyFormatter.format(transaction.amount, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context))}',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
           ),
         ],

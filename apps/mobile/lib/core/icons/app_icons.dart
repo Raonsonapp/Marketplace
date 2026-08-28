@@ -33,6 +33,7 @@ class LucideIcons {
   static const IconData checkCircle = IconData(0xf1f0, fontFamily: _family);
   static const IconData chevronRight = IconData(0xf1fb, fontFamily: _family);
   static const IconData chevronLeft = IconData(0xf1f9, fontFamily: _family);
+  static const IconData chevronDown = IconData(0xf1f5, fontFamily: _family);
   static const IconData circle = IconData(0xf20b, fontFamily: _family);
   static const IconData trash2 = IconData(0xf546, fontFamily: _family);
   static const IconData bike = IconData(0xf1a2, fontFamily: _family);

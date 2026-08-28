@@ -19,7 +19,7 @@ func NewUserRepository() *UserRepository { return &UserRepository{} }
 // user adds one (migration 0006 relaxed users.phone NOT NULL). Reading it as
 // "" keeps models.User.Phone a plain string for every existing caller
 // instead of turning it into a pointer across the whole codebase.
-const userColumns = `id, COALESCE(phone, '') AS phone, full_name, email, role, avatar_url, language, google_id, is_active, created_at, updated_at`
+const userColumns = `id, COALESCE(phone, '') AS phone, full_name, email, role, avatar_url, language, country, google_id, is_active, created_at, updated_at`
 
 func scanUser(row interface {
 	Scan(dest ...any) error
@@ -119,15 +119,16 @@ func (r *UserRepository) UpdateRole(ctx context.Context, q Querier, id uuid.UUID
 
 // UpdateProfile applies a partial update (nil fields are left unchanged) to
 // full_name/email/language and returns the updated row.
-func (r *UserRepository) UpdateProfile(ctx context.Context, q Querier, id uuid.UUID, fullName, email, language *string) (*models.User, error) {
+func (r *UserRepository) UpdateProfile(ctx context.Context, q Querier, id uuid.UUID, fullName, email, language, country *string) (*models.User, error) {
 	row := q.QueryRow(ctx, `
 		UPDATE users SET
 			full_name = COALESCE($2, full_name),
 			email = COALESCE($3, email),
 			language = COALESCE($4, language),
+			country = COALESCE($5, country),
 			updated_at = now()
 		WHERE id = $1::uuid AND deleted_at IS NULL
-		RETURNING `+userColumns, id, fullName, email, language)
+		RETURNING `+userColumns, id, fullName, email, language, country)
 	u, err := scanUser(row)
 	if isNoRows(err) {
 		return nil, ErrNotFound

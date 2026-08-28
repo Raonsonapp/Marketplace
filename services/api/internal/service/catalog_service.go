@@ -155,8 +155,8 @@ type StoreWithDistance struct {
 }
 
 // Stores lists active stores, sorted by distance when lat/lng is given.
-func (s *CatalogService) Stores(ctx context.Context, city string, lat, lng *float64) ([]StoreWithDistance, error) {
-	list, err := s.stores.ListActive(ctx, s.db, city)
+func (s *CatalogService) Stores(ctx context.Context, country, city string, lat, lng *float64) ([]StoreWithDistance, error) {
+	list, err := s.stores.ListActive(ctx, s.db, NormalizeCountry(country), city)
 	if err != nil {
 		return nil, fmt.Errorf("service: list stores: %w", err)
 	}

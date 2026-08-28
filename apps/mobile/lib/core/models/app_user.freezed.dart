@@ -16,7 +16,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppUser {
 
- String get id; String get phone; String? get fullName; String? get email; String? get avatarUrl; String get language;
+ String get id; String get phone; String? get fullName; String? get email; String? get avatarUrl; String get language;/// The market the account shops in ('TJ' or 'RU'), so the choice
+/// follows the user to a new device rather than living only in local
+/// preferences.
+ String get country;
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +32,16 @@ $AppUserCopyWith<AppUser> get copyWith => _$AppUserCopyWithImpl<AppUser>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.id, id) || other.id == id)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.language, language) || other.language == language));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.id, id) || other.id == id)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.language, language) || other.language == language)&&(identical(other.country, country) || other.country == country));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,phone,fullName,email,avatarUrl,language);
+int get hashCode => Object.hash(runtimeType,id,phone,fullName,email,avatarUrl,language,country);
 
 @override
 String toString() {
-  return 'AppUser(id: $id, phone: $phone, fullName: $fullName, email: $email, avatarUrl: $avatarUrl, language: $language)';
+  return 'AppUser(id: $id, phone: $phone, fullName: $fullName, email: $email, avatarUrl: $avatarUrl, language: $language, country: $country)';
 }
 
 
@@ -49,7 +52,7 @@ abstract mixin class $AppUserCopyWith<$Res>  {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) _then) = _$AppUserCopyWithImpl;
 @useResult
 $Res call({
- String id, String phone, String? fullName, String? email, String? avatarUrl, String language
+ String id, String phone, String? fullName, String? email, String? avatarUrl, String language, String country
 });
 
 
@@ -66,7 +69,7 @@ class _$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phone = null,Object? fullName = freezed,Object? email = freezed,Object? avatarUrl = freezed,Object? language = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phone = null,Object? fullName = freezed,Object? email = freezed,Object? avatarUrl = freezed,Object? language = null,Object? country = null,}) {
   return _then(AppUser(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
@@ -74,6 +77,7 @@ as String,fullName: freezed == fullName ? _self.fullName : fullName // ignore: c
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,language: null == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
+as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -159,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String phone,  String? fullName,  String? email,  String? avatarUrl,  String language)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String phone,  String? fullName,  String? email,  String? avatarUrl,  String language,  String country)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,_that.language);case _:
+return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,_that.language,_that.country);case _:
   return orElse();
 
 }
@@ -180,10 +184,10 @@ return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String phone,  String? fullName,  String? email,  String? avatarUrl,  String language)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String phone,  String? fullName,  String? email,  String? avatarUrl,  String language,  String country)  $default,) {final _that = this;
 switch (_that) {
 case _AppUser():
-return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,_that.language);case _:
+return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,_that.language,_that.country);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +204,10 @@ return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String phone,  String? fullName,  String? email,  String? avatarUrl,  String language)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String phone,  String? fullName,  String? email,  String? avatarUrl,  String language,  String country)?  $default,) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,_that.language);case _:
+return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,_that.language,_that.country);case _:
   return null;
 
 }
@@ -215,7 +219,7 @@ return $default(_that.id,_that.phone,_that.fullName,_that.email,_that.avatarUrl,
 @JsonSerializable()
 
 class _AppUser implements AppUser {
-  const _AppUser({required this.id, required this.phone, this.fullName, this.email, this.avatarUrl, this.language = 'tg'});
+  const _AppUser({required this.id, required this.phone, this.fullName, this.email, this.avatarUrl, this.language = 'tg', this.country = 'TJ'});
   factory _AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);
 
 @override final  String id;
@@ -224,6 +228,10 @@ class _AppUser implements AppUser {
 @override final  String? email;
 @override final  String? avatarUrl;
 @override@JsonKey() final  String language;
+/// The market the account shops in ('TJ' or 'RU'), so the choice
+/// follows the user to a new device rather than living only in local
+/// preferences.
+@override@JsonKey() final  String country;
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
@@ -238,16 +246,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.id, id) || other.id == id)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.language, language) || other.language == language));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.id, id) || other.id == id)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.language, language) || other.language == language)&&(identical(other.country, country) || other.country == country));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,phone,fullName,email,avatarUrl,language);
+int get hashCode => Object.hash(runtimeType,id,phone,fullName,email,avatarUrl,language,country);
 
 @override
 String toString() {
-  return 'AppUser(id: $id, phone: $phone, fullName: $fullName, email: $email, avatarUrl: $avatarUrl, language: $language)';
+  return 'AppUser(id: $id, phone: $phone, fullName: $fullName, email: $email, avatarUrl: $avatarUrl, language: $language, country: $country)';
 }
 
 
@@ -258,7 +266,7 @@ abstract mixin class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$AppUserCopyWith(_AppUser value, $Res Function(_AppUser) _then) = __$AppUserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String phone, String? fullName, String? email, String? avatarUrl, String language
+ String id, String phone, String? fullName, String? email, String? avatarUrl, String language, String country
 });
 
 
@@ -275,7 +283,7 @@ class __$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phone = null,Object? fullName = freezed,Object? email = freezed,Object? avatarUrl = freezed,Object? language = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phone = null,Object? fullName = freezed,Object? email = freezed,Object? avatarUrl = freezed,Object? language = null,Object? country = null,}) {
   return _then(_AppUser(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
@@ -283,6 +291,7 @@ as String,fullName: freezed == fullName ? _self.fullName : fullName // ignore: c
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,language: null == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
+as String,country: null == country ? _self.country : country // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

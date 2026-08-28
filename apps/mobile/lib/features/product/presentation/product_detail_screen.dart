@@ -8,6 +8,7 @@ import '../../../core/router/route_paths.dart';
 import '../../../core/session/session_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/region/currency_scope.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/error_state_view.dart';
@@ -97,7 +98,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         spacing: AppSpacing.sm,
                         children: [
                           Text(
-                            CurrencyFormatter.format(product.price, languageCode: languageCode),
+                            CurrencyFormatter.format(product.price, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall
@@ -105,7 +106,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           ),
                           if (hasDiscount)
                             Text(
-                              CurrencyFormatter.format(product.oldPrice!, languageCode: languageCode),
+                              CurrencyFormatter.format(product.oldPrice!, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                     color: AppColors.priceOld,
                                     decoration: TextDecoration.lineThrough,

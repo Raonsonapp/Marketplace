@@ -10,6 +10,7 @@ type Handlers struct {
 	Favorites    *FavoritesHandler
 	Loyalty      *LoyaltyHandler
 	Address      *AddressHandler
+	Region       *RegionHandler
 	Profile      *ProfileHandler
 	Health       *HealthHandler
 	OrderWS      *OrderWSHandler

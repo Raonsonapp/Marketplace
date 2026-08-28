@@ -18,11 +18,13 @@ class ProfileRepository {
     String? fullName,
     String? email,
     String? language,
+    String? country,
   }) async {
     final json = await _client.patch('/profile', data: {
       'full_name': ?fullName,
       'email': ?email,
       'language': ?language,
+      'country': ?country,
     });
     return AppUser.fromJson(json);
   }

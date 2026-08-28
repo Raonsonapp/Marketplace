@@ -54,6 +54,7 @@ type UserResponse struct {
 	Role      string    `json:"role"`
 	AvatarURL *string   `json:"avatar_url,omitempty"`
 	Language  string    `json:"language"`
+	Country   string    `json:"country"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -61,7 +62,8 @@ type UserResponse struct {
 func NewUserResponse(u models.User) UserResponse {
 	return UserResponse{
 		ID: u.ID.String(), Phone: u.Phone, FullName: u.FullName, Email: u.Email,
-		Role: u.Role, AvatarURL: u.AvatarURL, Language: u.Language, CreatedAt: u.CreatedAt,
+		Role: u.Role, AvatarURL: u.AvatarURL, Language: u.Language, Country: u.Country,
+		CreatedAt: u.CreatedAt,
 	}
 }
 
@@ -84,4 +86,5 @@ type ProfileUpdateRequest struct {
 	FullName *string `json:"full_name"`
 	Email    *string `json:"email"`
 	Language *string `json:"language"`
+	Country  *string `json:"country"`
 }

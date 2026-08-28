@@ -14,6 +14,10 @@ abstract class AppUser with _$AppUser {
     String? email,
     String? avatarUrl,
     @Default('tg') String language,
+    /// The market the account shops in ('TJ' or 'RU'), so the choice
+    /// follows the user to a new device rather than living only in local
+    /// preferences.
+    @Default('TJ') String country,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);

@@ -119,7 +119,7 @@ func (s *AuthService) FirebaseVerify(ctx context.Context, idToken string, fullNa
 	}
 
 	if isNewUser && fullName != nil && *fullName != "" {
-		if updated, err := s.users.UpdateProfile(ctx, s.db, user.ID, fullName, nil, nil); err == nil {
+		if updated, err := s.users.UpdateProfile(ctx, s.db, user.ID, fullName, nil, nil, nil); err == nil {
 			user = updated
 		}
 	}

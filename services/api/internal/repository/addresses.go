@@ -16,11 +16,11 @@ type AddressRepository struct{}
 // NewAddressRepository builds an AddressRepository.
 func NewAddressRepository() *AddressRepository { return &AddressRepository{} }
 
-const addressColumns = `id, user_id, city, street, house, apartment, entrance, floor, intercom, comment, lat, lng, is_default, created_at, updated_at`
+const addressColumns = `id, user_id, country, city, street, house, apartment, entrance, floor, intercom, comment, lat, lng, is_default, created_at, updated_at`
 
 func scanAddress(row interface{ Scan(dest ...any) error }) (*models.Address, error) {
 	var a models.Address
-	if err := row.Scan(&a.ID, &a.UserID, &a.City, &a.Street, &a.House, &a.Apartment, &a.Entrance, &a.Floor, &a.Intercom, &a.Comment, &a.Lat, &a.Lng, &a.IsDefault, &a.CreatedAt, &a.UpdatedAt); err != nil {
+	if err := row.Scan(&a.ID, &a.UserID, &a.Country, &a.City, &a.Street, &a.House, &a.Apartment, &a.Entrance, &a.Floor, &a.Intercom, &a.Comment, &a.Lat, &a.Lng, &a.IsDefault, &a.CreatedAt, &a.UpdatedAt); err != nil {
 		return nil, err
 	}
 	return &a, nil
@@ -71,10 +71,10 @@ func (r *AddressRepository) Create(ctx context.Context, q Querier, a *models.Add
 		}
 	}
 	row := q.QueryRow(ctx, `
-		INSERT INTO addresses (user_id, city, street, house, apartment, entrance, floor, intercom, comment, lat, lng, is_default)
-		VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+		INSERT INTO addresses (user_id, country, city, street, house, apartment, entrance, floor, intercom, comment, lat, lng, is_default)
+		VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
 		RETURNING id, created_at, updated_at`,
-		a.UserID, a.City, a.Street, a.House, a.Apartment, a.Entrance, a.Floor, a.Intercom, a.Comment, a.Lat, a.Lng, a.IsDefault)
+		a.UserID, a.Country, a.City, a.Street, a.House, a.Apartment, a.Entrance, a.Floor, a.Intercom, a.Comment, a.Lat, a.Lng, a.IsDefault)
 	if err := row.Scan(&a.ID, &a.CreatedAt, &a.UpdatedAt); err != nil {
 		return fmt.Errorf("repository: create address: %w", err)
 	}
@@ -83,6 +83,7 @@ func (r *AddressRepository) Create(ctx context.Context, q Querier, a *models.Add
 
 // AddressPatch carries partial-update fields; nil means "leave unchanged".
 type AddressPatch struct {
+	Country   *string
 	City      *string
 	Street    *string
 	House     *string
@@ -105,21 +106,22 @@ func (r *AddressRepository) Update(ctx context.Context, q Querier, id, userID uu
 	}
 	row := q.QueryRow(ctx, `
 		UPDATE addresses SET
-			city = COALESCE($3, city),
-			street = COALESCE($4, street),
-			house = COALESCE($5, house),
-			apartment = COALESCE($6, apartment),
-			entrance = COALESCE($7, entrance),
-			floor = COALESCE($8, floor),
-			intercom = COALESCE($9, intercom),
-			comment = COALESCE($10, comment),
-			lat = COALESCE($11, lat),
-			lng = COALESCE($12, lng),
-			is_default = COALESCE($13, is_default),
+			country = COALESCE($3, country),
+			city = COALESCE($4, city),
+			street = COALESCE($5, street),
+			house = COALESCE($6, house),
+			apartment = COALESCE($7, apartment),
+			entrance = COALESCE($8, entrance),
+			floor = COALESCE($9, floor),
+			intercom = COALESCE($10, intercom),
+			comment = COALESCE($11, comment),
+			lat = COALESCE($12, lat),
+			lng = COALESCE($13, lng),
+			is_default = COALESCE($14, is_default),
 			updated_at = now()
 		WHERE id = $1::uuid AND user_id = $2::uuid AND deleted_at IS NULL
 		RETURNING `+addressColumns,
-		id, userID, p.City, p.Street, p.House, p.Apartment, p.Entrance, p.Floor, p.Intercom, p.Comment, p.Lat, p.Lng, p.IsDefault)
+		id, userID, p.Country, p.City, p.Street, p.House, p.Apartment, p.Entrance, p.Floor, p.Intercom, p.Comment, p.Lat, p.Lng, p.IsDefault)
 	a, err := scanAddress(row)
 	if isNoRows(err) {
 		return nil, ErrNotFound

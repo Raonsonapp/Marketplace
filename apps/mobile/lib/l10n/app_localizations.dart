@@ -970,6 +970,12 @@ abstract class AppLocalizations {
   /// **'Шаҳр'**
   String get addressCity;
 
+  /// No description provided for @addressCountry.
+  ///
+  /// In tg, this message translates to:
+  /// **'Кишвар'**
+  String get addressCountry;
+
   /// No description provided for @addressStreet.
   ///
   /// In tg, this message translates to:
@@ -1203,6 +1209,12 @@ abstract class AppLocalizations {
   /// In tg, this message translates to:
   /// **'Забон'**
   String get profileLanguage;
+
+  /// No description provided for @profileCountry.
+  ///
+  /// In tg, this message translates to:
+  /// **'Кишвар ва асъор'**
+  String get profileCountry;
 
   /// No description provided for @profileAddresses.
   ///

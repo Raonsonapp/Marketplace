@@ -19,6 +19,7 @@ class ResolvedLocation {
   const ResolvedLocation({
     required this.latitude,
     required this.longitude,
+    this.countryCode,
     this.city,
     this.street,
     this.house,
@@ -26,6 +27,12 @@ class ResolvedLocation {
 
   final double latitude;
   final double longitude;
+
+  /// The ISO 3166-1 alpha-2 code the platform geocoder reported ("TJ",
+  /// "RU"). YouShop serves two countries, so this is what lets the address
+  /// form pick the right market — and with it the right currency and city
+  /// list — without asking the shopper.
+  final String? countryCode;
   final String? city;
   final String? street;
   final String? house;
@@ -88,6 +95,7 @@ class LocationService {
       return ResolvedLocation(
         latitude: position.latitude,
         longitude: position.longitude,
+        countryCode: _nonEmpty(p?.isoCountryCode)?.toUpperCase(),
         city: _nonEmpty(p?.locality) ?? _nonEmpty(p?.subAdministrativeArea),
         street: _nonEmpty(p?.thoroughfare) ?? _nonEmpty(p?.street),
         house: _nonEmpty(p?.subThoroughfare),

@@ -7,6 +7,7 @@ import '../../../core/router/route_paths.dart';
 import '../../../core/session/session_controller.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/region/currency_scope.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/error_state_view.dart';
@@ -150,7 +151,7 @@ class _LoyaltyMenuTile extends ConsumerWidget {
         title: Text(l10n.loyaltyTitle),
         subtitle: accountAsync.maybeWhen(
           data: (account) =>
-              Text(CurrencyFormatter.format(account.balance, languageCode: languageCode)),
+              Text(CurrencyFormatter.format(account.balance, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context))),
           orElse: () => null,
         ),
         trailing: const Icon(LucideIcons.chevronRight),

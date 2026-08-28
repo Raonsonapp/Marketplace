@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../../../core/router/route_paths.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/region/currency_scope.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/error_state_view.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -165,7 +166,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
                                 child: Text('${item.nameSnapshot} ×${item.quantity}'),
                               ),
                               Text(CurrencyFormatter.format(item.totalPrice,
-                                  languageCode: languageCode)),
+                                  languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context))),
                             ],
                           ),
                           // Only a delivered order's items were actually
@@ -265,7 +266,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
         children: [
           Text(label, style: isTotal ? Theme.of(context).textTheme.titleMedium : null),
           Text(
-            CurrencyFormatter.format(amount, languageCode: languageCode),
+            CurrencyFormatter.format(amount, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
             style: isTotal
                 ? Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.emeraldGreen)
                 : null,

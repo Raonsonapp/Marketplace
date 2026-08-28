@@ -466,6 +466,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get addressCity => 'Город';
 
   @override
+  String get addressCountry => 'Страна';
+
+  @override
   String get addressStreet => 'Улица';
 
   @override
@@ -583,6 +586,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get profileLanguage => 'Язык';
+
+  @override
+  String get profileCountry => 'Страна и валюта';
 
   @override
   String get profileAddresses => 'Мои адреса';

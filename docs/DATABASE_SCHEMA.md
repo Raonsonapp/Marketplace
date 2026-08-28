@@ -24,10 +24,19 @@ description; the SQL file is the source of truth.
 (hashed, expiring, attempt-limited), `device_tokens` (FCM).
 
 **Location**
+`countries` (the markets served — TJ and RU — each with its currency code and
+per-language label, dial code and default map centre), `cities` (the
+deliverable cities of each country, with centre coordinates),
 `addresses` (per user, multiple, one default), `stores`, `store_hours`,
 `delivery_zones` (GeoJSON polygon + fee rules — provider-agnostic, no PostGIS
 dependency required for Phase 1; can be upgraded to PostGIS geometry later
 without changing the API contract).
+
+`addresses`, `stores` and `users` each carry a `country` code defaulting to
+`'TJ'`: the app served Tajikistan only until migration 0007, so every row
+written before it is Tajik by definition. A row's country decides which
+currency its money columns are denominated in — the `numeric(12,2)` amounts
+themselves carry no currency tag.
 
 **Catalog**
 `brands`, `categories` (self-referencing `parent_id` for subcategories),

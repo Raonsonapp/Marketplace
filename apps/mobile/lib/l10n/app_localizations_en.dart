@@ -465,6 +465,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addressCity => 'City';
 
   @override
+  String get addressCountry => 'Country';
+
+  @override
   String get addressStreet => 'Street';
 
   @override
@@ -582,6 +585,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileLanguage => 'Language';
+
+  @override
+  String get profileCountry => 'Country and currency';
 
   @override
   String get profileAddresses => 'My addresses';

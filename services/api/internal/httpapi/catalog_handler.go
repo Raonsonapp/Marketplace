@@ -82,7 +82,7 @@ func (h *CatalogHandler) Home(c *gin.Context) {
 	}
 	lat := optionalFloat(c, "lat")
 	lng := optionalFloat(c, "lng")
-	feed, err := h.home.Build(c.Request.Context(), userIDPtr, lat, lng)
+	feed, err := h.home.Build(c.Request.Context(), userIDPtr, c.Query("country"), lat, lng)
 	if err != nil {
 		handleErr(c, err)
 		return
@@ -138,7 +138,7 @@ func (h *CatalogHandler) CategoryProducts(c *gin.Context) {
 func (h *CatalogHandler) Stores(c *gin.Context) {
 	lat := optionalFloat(c, "lat")
 	lng := optionalFloat(c, "lng")
-	stores, err := h.catalog.Stores(c.Request.Context(), c.Query("city"), lat, lng)
+	stores, err := h.catalog.Stores(c.Request.Context(), c.Query("country"), c.Query("city"), lat, lng)
 	if err != nil {
 		handleErr(c, err)
 		return

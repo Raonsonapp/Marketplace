@@ -3,6 +3,7 @@ import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/region/currency_scope.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/cart_models.dart';
@@ -85,7 +86,7 @@ class CartItemTile extends StatelessWidget {
                         onChanged: item.isAvailable ? onQuantityChanged : null,
                       ),
                       Text(
-                        CurrencyFormatter.format(item.lineTotal, languageCode: languageCode),
+                        CurrencyFormatter.format(item.lineTotal, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                         style: theme.textTheme.titleSmall,
                       ),
                     ],

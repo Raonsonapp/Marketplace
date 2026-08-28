@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../models/product.dart';
+import '../region/currency_scope.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../utils/currency_formatter.dart';
@@ -119,12 +120,12 @@ class ProductCard extends StatelessWidget {
             spacing: AppSpacing.xs,
             children: [
               Text(
-                CurrencyFormatter.format(product.price, languageCode: languageCode),
+                CurrencyFormatter.format(product.price, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                 style: theme.textTheme.titleSmall?.copyWith(color: AppColors.emeraldGreen),
               ),
               if (hasDiscount)
                 Text(
-                  CurrencyFormatter.format(product.oldPrice!, languageCode: languageCode),
+                  CurrencyFormatter.format(product.oldPrice!, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context)),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: AppColors.priceOld,
                     decoration: TextDecoration.lineThrough,

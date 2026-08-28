@@ -3,6 +3,7 @@ import 'package:tajikshop/core/icons/app_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/region/currency_scope.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../data/cart_models.dart';
@@ -24,7 +25,7 @@ class CartTotalsSummary extends StatelessWidget {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
 
-    final formattedSubtotal = CurrencyFormatter.format(cart.subtotal, languageCode: languageCode);
+    final formattedSubtotal = CurrencyFormatter.format(cart.subtotal, languageCode: languageCode, currencyLabel: CurrencyScope.labelOf(context));
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),

@@ -473,6 +473,9 @@ class AppLocalizationsTg extends AppLocalizations {
   String get addressCity => 'Шаҳр';
 
   @override
+  String get addressCountry => 'Кишвар';
+
+  @override
   String get addressStreet => 'Кӯча';
 
   @override
@@ -590,6 +593,9 @@ class AppLocalizationsTg extends AppLocalizations {
 
   @override
   String get profileLanguage => 'Забон';
+
+  @override
+  String get profileCountry => 'Кишвар ва асъор';
 
   @override
   String get profileAddresses => 'Суроғаҳои ман';

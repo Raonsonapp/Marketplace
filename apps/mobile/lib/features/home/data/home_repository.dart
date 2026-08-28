@@ -11,8 +11,12 @@ class HomeRepository {
 
   final ApiClient _client;
 
-  Future<HomeFeed> getHomeFeed() async {
-    final json = await _client.get('/home');
+  /// [country] narrows the feed's "nearby stores" to the shopper's own
+  /// market — a Moscow shopper has no use for a Dushanbe store.
+  Future<HomeFeed> getHomeFeed({String? country}) async {
+    final json = await _client.get('/home', queryParameters: {
+      'country': ?country,
+    });
     return HomeFeed.fromJson(json);
   }
 }

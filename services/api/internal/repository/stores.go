@@ -15,28 +15,31 @@ type StoreRepository struct{}
 // NewStoreRepository builds a StoreRepository.
 func NewStoreRepository() *StoreRepository { return &StoreRepository{} }
 
-const storeColumns = `id, name, slug, logo_url, address, city, lat, lng, phone, is_delivery_available, is_pickup_available, is_active, created_at, updated_at`
+const storeColumns = `id, name, slug, logo_url, address, country, city, lat, lng, phone, is_delivery_available, is_pickup_available, is_active, created_at, updated_at`
 
 func scanStore(row interface{ Scan(dest ...any) error }) (*models.Store, error) {
 	var s models.Store
-	if err := row.Scan(&s.ID, &s.Name, &s.Slug, &s.LogoURL, &s.Address, &s.City, &s.Lat, &s.Lng, &s.Phone, &s.IsDeliveryAvailable, &s.IsPickupAvailable, &s.IsActive, &s.CreatedAt, &s.UpdatedAt); err != nil {
+	if err := row.Scan(&s.ID, &s.Name, &s.Slug, &s.LogoURL, &s.Address, &s.Country, &s.City, &s.Lat, &s.Lng, &s.Phone, &s.IsDeliveryAvailable, &s.IsPickupAvailable, &s.IsActive, &s.CreatedAt, &s.UpdatedAt); err != nil {
 		return nil, err
 	}
 	return &s, nil
 }
 
-// ListActive returns every active store, optionally filtered by city.
-func (r *StoreRepository) ListActive(ctx context.Context, q Querier, city string) ([]models.Store, error) {
-	var (
-		res []models.Store
-		err error
-	)
-	if city != "" {
-		res, err = queryStores(ctx, q, `SELECT `+storeColumns+` FROM stores WHERE is_active = true AND deleted_at IS NULL AND city = $1 ORDER BY name`, city)
-	} else {
-		res, err = queryStores(ctx, q, `SELECT `+storeColumns+` FROM stores WHERE is_active = true AND deleted_at IS NULL ORDER BY name`)
+// ListActive returns every active store, optionally narrowed by country
+// and/or city. An empty string means "don't filter on this".
+func (r *StoreRepository) ListActive(ctx context.Context, q Querier, country, city string) ([]models.Store, error) {
+	sql := `SELECT ` + storeColumns + ` FROM stores WHERE is_active = true AND deleted_at IS NULL`
+	args := []any{}
+	if country != "" {
+		args = append(args, country)
+		sql += fmt.Sprintf(` AND country = $%d`, len(args))
 	}
-	return res, err
+	if city != "" {
+		args = append(args, city)
+		sql += fmt.Sprintf(` AND city = $%d`, len(args))
+	}
+	sql += ` ORDER BY name`
+	return queryStores(ctx, q, sql, args...)
 }
 
 func queryStores(ctx context.Context, q Querier, sql string, args ...any) ([]models.Store, error) {

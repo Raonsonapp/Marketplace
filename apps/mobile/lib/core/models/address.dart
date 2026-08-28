@@ -9,6 +9,10 @@ part 'address.g.dart';
 abstract class Address with _$Address {
   const factory Address({
     required String id,
+    /// ISO country code of the market this address is in ('TJ' or 'RU').
+    /// Defaults to Tajikistan, which is what every address saved before the
+    /// app served two countries actually is.
+    @Default('TJ') String country,
     required String city,
     required String street,
     String? house,

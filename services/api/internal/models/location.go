@@ -11,6 +11,7 @@ import (
 type Address struct {
 	ID        uuid.UUID
 	UserID    uuid.UUID
+	Country   string
 	City      string
 	Street    string
 	House     *string
@@ -33,6 +34,7 @@ type Store struct {
 	Slug                string
 	LogoURL             *string
 	Address             *string
+	Country             string
 	City                string
 	Lat                 *float64
 	Lng                 *float64
@@ -83,4 +85,36 @@ func (z DeliveryZone) Coordinates() any {
 		return nil
 	}
 	return doc.Coordinates
+}
+
+// Country is one of the markets YouShop operates in (currently Tajikistan
+// and Russia). It carries everything the client needs to localise money,
+// phone input and the address map without shipping a new build when a
+// market is added.
+type Country struct {
+	Code         string
+	NameTG       string
+	NameRU       string
+	NameEN       string
+	CurrencyCode string
+	CurrencyTG   string
+	CurrencyRU   string
+	CurrencyEN   string
+	DialCode     string
+	CenterLat    float64
+	CenterLng    float64
+	SortOrder    int
+}
+
+// City is a delivery city inside a Country. Lat/Lng is the city centre, used
+// to position the address map before the user drags the pin.
+type City struct {
+	ID          uuid.UUID
+	CountryCode string
+	NameTG      string
+	NameRU      string
+	NameEN      string
+	Lat         float64
+	Lng         float64
+	SortOrder   int
 }

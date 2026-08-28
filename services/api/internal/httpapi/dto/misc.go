@@ -49,6 +49,7 @@ func NewLoyaltyTransactionListResponse(txs []models.LoyaltyTransaction) []Loyalt
 
 // AddressRequest is the body for POST /addresses and PATCH /addresses/:id.
 type AddressRequest struct {
+	Country   *string  `json:"country"`
 	City      *string  `json:"city"`
 	Street    *string  `json:"street"`
 	House     *string  `json:"house"`
@@ -65,6 +66,7 @@ type AddressRequest struct {
 // AddressResponse mirrors an address.
 type AddressResponse struct {
 	ID        string   `json:"id"`
+	Country   string   `json:"country"`
 	City      string   `json:"city"`
 	Street    string   `json:"street"`
 	House     *string  `json:"house,omitempty"`
@@ -81,7 +83,7 @@ type AddressResponse struct {
 // NewAddressResponse converts a models.Address.
 func NewAddressResponse(a models.Address) AddressResponse {
 	return AddressResponse{
-		ID: a.ID.String(), City: a.City, Street: a.Street, House: a.House, Apartment: a.Apartment,
+		ID: a.ID.String(), Country: a.Country, City: a.City, Street: a.Street, House: a.House, Apartment: a.Apartment,
 		Entrance: a.Entrance, Floor: a.Floor, Intercom: a.Intercom, Comment: a.Comment,
 		Lat: a.Lat, Lng: a.Lng, IsDefault: a.IsDefault,
 	}
