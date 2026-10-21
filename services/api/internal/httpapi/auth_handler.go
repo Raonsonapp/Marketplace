@@ -12,7 +12,7 @@ import (
 )
 
 type AuthHandler struct {
-	svc *service.AuthService
+	svc              *service.AuthService
 	phoneAuthEnabled bool
 }
 
@@ -27,10 +27,10 @@ func NewAuthHandler(svc *service.AuthService, phoneAuthEnabled ...bool) *AuthHan
 
 func deviceInfo(c *gin.Context) auth.DeviceInfo {
 	return auth.DeviceInfo{
-		DeviceID: c.GetHeader("X-Device-Id"),
+		DeviceID:   c.GetHeader("X-Device-Id"),
 		DeviceName: c.GetHeader("X-Device-Name"),
-		IP: c.ClientIP(),
-		UserAgent: c.GetHeader("User-Agent"),
+		IP:         c.ClientIP(),
+		UserAgent:  c.GetHeader("User-Agent"),
 	}
 }
 
@@ -71,7 +71,12 @@ func (h *AuthHandler) VerifyOTP(c *gin.Context) {
 		handleErr(c, err)
 		return
 	}
-	ok(c, dto.AuthResponse{AccessToken: res.AccessToken, RefreshToken: res.RefreshToken, User: dto.NewUserResponse(*res.User), IsNewUser: res.IsNewUser})
+	ok(c, dto.AuthResponse{
+		AccessToken: res.AccessToken,
+		RefreshToken: res.RefreshToken,
+		User: dto.NewUserResponse(*res.User),
+		IsNewUser: res.IsNewUser,
+	})
 }
 
 func (h *AuthHandler) GoogleVerify(c *gin.Context) {
@@ -88,8 +93,8 @@ func (h *AuthHandler) GoogleVerify(c *gin.Context) {
 	ok(c, dto.AuthResponse{AccessToken: res.AccessToken, RefreshToken: res.RefreshToken, User: dto.NewUserResponse(*res.User), IsNewUser: res.IsNewUser})
 }
 
-// FirebaseVerify remains implemented for backwards compatibility, but the mobile
-// registration UI no longer calls it when Google Sign-In is the selected flow.
+// FirebaseVerify retains the old SMS/phone implementation for possible future
+// re-enabling. It is disabled by default via PHONE_AUTH_ENABLED=false.
 func (h *AuthHandler) FirebaseVerify(c *gin.Context) {
 	if !h.phoneAuthEnabled {
 		handleErr(c, apperr.New(apperr.CodeFirebaseNotConfigured, nil))
