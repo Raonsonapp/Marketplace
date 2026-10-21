@@ -50,6 +50,8 @@ type Config struct {
 	// and the console-OTP flow (send-otp/verify-otp) keeps working as-is.
 	FirebaseWebAPIKey string
 	GoogleOAuthClientID string
+	// PhoneAuthEnabled controls whether the legacy Firebase SMS/phone login endpoint is exposed. Defaults to false.
+	PhoneAuthEnabled bool
 
 	// TelegramGatewayToken enables sending console-OTP codes for
 	// send-otp/verify-otp through Telegram Gateway instead of logging them —
@@ -177,6 +179,7 @@ func Load() (*Config, error) {
 	cfg.MigrationsDir = getOr("MIGRATIONS_DIR", "migrations")
 	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
 	cfg.GoogleOAuthClientID = os.Getenv("GOOGLE_OAUTH_CLIENT_ID")
+	cfg.PhoneAuthEnabled = strings.EqualFold(os.Getenv("PHONE_AUTH_ENABLED"), "true")
 	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
 	cfg.TelegramGatewayProxyURL = strings.TrimSuffix(os.Getenv("TELEGRAM_GATEWAY_PROXY_URL"), "/")
 	cfg.TelegramGatewayProxySecret = os.Getenv("TELEGRAM_GATEWAY_PROXY_SECRET")
