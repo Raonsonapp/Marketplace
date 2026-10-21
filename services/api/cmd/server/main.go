@@ -169,7 +169,7 @@ func run() error {
 	// ---- handlers ----
 	hub := ws.NewHub()
 	handlers := httpapi.Handlers{
-		Auth:         httpapi.NewAuthHandler(authSvc),
+		Auth:         httpapi.NewAuthHandler(authSvc, cfg.PhoneAuthEnabled),
 		Catalog:      httpapi.NewCatalogHandler(catalogSvc, homeSvc),
 		Cart:         httpapi.NewCartHandler(cartSvc),
 		Checkout:     httpapi.NewCheckoutHandler(checkoutSvc),
