@@ -57,6 +57,19 @@ func (r *UserRepository) GetByGoogleID(ctx context.Context, q Querier, googleID 
 	return u, nil
 }
 
+// GetByGoogleID returns the active account linked to a verified Google subject.
+func (r *UserRepository) GetByGoogleID(ctx context.Context, q Querier, googleID string) (*models.User, error) {
+	row := q.QueryRow(ctx, `SELECT `+userColumns+` FROM users WHERE google_id = $1 AND deleted_at IS NULL`, googleID)
+	u, err := scanUser(row)
+	if isNoRows(err) {
+		return nil, ErrNotFound
+	}
+	if err != nil {
+		return nil, fmt.Errorf("repository: get user by Google ID: %w", err)
+	}
+	return u, nil
+}
+
 // GetByEmail returns the active user with the given email, or ErrNotFound.
 // Email is the login identifier since OTP codes are delivered by mail
 // (internal/pkg/otp/email.go); it is matched case-insensitively because
