@@ -104,6 +104,45 @@ func (r *UserRepository) CreateWithEmail(ctx context.Context, q Querier, email s
 	return u, nil
 }
 
+// CreateWithGoogle creates a new customer for a verified Google identity.
+func (r *UserRepository) CreateWithGoogle(ctx context.Context, q Querier, email, googleID, fullName, avatarURL string) (*models.User, error) {
+	row := q.QueryRow(ctx, `
+		INSERT INTO users (email, google_id, full_name, avatar_url, role, language)
+		VALUES (lower($1), $2, NULLIF($3, ''), NULLIF($4, ''), 'customer', 'tj')
+		RETURNING `+userColumns, email, googleID, fullName, avatarURL)
+	u, err := scanUser(row)
+	if err != nil {
+		if isUniqueViolation(err) {
+			return nil, ErrConflict
+		}
+		return nil, fmt.Errorf("repository: create Google user: %w", err)
+	}
+	return u, nil
+}
+
+// UpdateGoogleIdentity links a verified Google identity to an existing email account.
+// It refuses to replace a different Google subject.
+func (r *UserRepository) UpdateGoogleIdentity(ctx context.Context, q Querier, id uuid.UUID, googleID, fullName, avatarURL string) error {
+	tag, err := q.Exec(ctx, `
+		UPDATE users
+		SET google_id = COALESCE(google_id, $2),
+		    full_name = COALESCE(full_name, NULLIF($3, '')),
+		    avatar_url = COALESCE(avatar_url, NULLIF($4, '')),
+		    updated_at = now()
+		WHERE id = $1::uuid AND deleted_at IS NULL
+		  AND (google_id IS NULL OR google_id = $2)`, id, googleID, fullName, avatarURL)
+	if err != nil {
+		if isUniqueViolation(err) {
+			return ErrConflict
+		}
+		return fmt.Errorf("repository: update Google identity: %w", err)
+	}
+	if tag.RowsAffected() == 0 {
+		return ErrConflict
+	}
+	return nil
+}
+
 // UpdateRole sets a user's role (e.g. promoting to 'store_manager' on
 // seller-application approval).
 func (r *UserRepository) UpdateRole(ctx context.Context, q Querier, id uuid.UUID, role string) error {
