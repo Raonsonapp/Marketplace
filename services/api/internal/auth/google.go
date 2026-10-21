@@ -65,11 +65,14 @@ func (v *GoogleVerifier) VerifyIDToken(ctx context.Context, idToken string) (*Go
 		Picture       string `json:"picture"`
 		Exp           int64  `json:"exp"`
 	}
+	if resp.StatusCode != http.StatusOK {
+		return nil, ErrGoogleTokenInvalid
+	}
 	if err := json.NewDecoder(io.LimitReader(resp.Body, 64<<10)).Decode(&claims); err != nil {
 		return nil, fmt.Errorf("decode Google token verification response: %w", err)
 	}
-	if resp.StatusCode != http.StatusOK || claims.Aud != v.clientID || claims.Sub == "" ||
-		claims.Email == "" || claims.EmailVerified != "true" || claims.Exp <= time.Now().Unix() {
+	if claims.Aud != v.clientID || claims.Sub == "" || claims.Email == "" ||
+		claims.EmailVerified != "true" || claims.Exp <= time.Now().Unix() {
 		return nil, ErrGoogleTokenInvalid
 	}
 	return &GoogleIdentity{
