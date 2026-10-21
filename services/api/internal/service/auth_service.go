@@ -83,23 +83,27 @@ func (s *AuthService) GoogleVerify(ctx context.Context, idToken string, device a
 	}
 
 	isNewUser := false
-	user, err := s.users.GetByEmail(ctx, s.db, identity.Email)
-	if err != nil {
-		if err != repository.ErrNotFound {
-			return nil, fmt.Errorf("service: lookup Google user: %w", err)
+	user, err := s.users.GetByGoogleID(ctx, s.db, identity.Subject)
+	if err != nil && err != repository.ErrNotFound {
+		return nil, fmt.Errorf("service: lookup Google user: %w", err)
+	}
+	if err == repository.ErrNotFound {
+		// If the verified email already belongs to an account, require an explicit
+		// account-link flow rather than silently attaching a Google identity.
+		existing, emailErr := s.users.GetByEmail(ctx, s.db, identity.Email)
+		if emailErr == nil {
+			return nil, apperr.New(apperr.CodeConflict, map[string]any{"field": "email", "reason": "account_link_required"})
 		}
-		// Create the customer with the verified email first. Then persist Google
-		// subject/profile through UpdateGoogleIdentity; an email collision does
-		// not overwrite or silently link another login method.
+		if emailErr != repository.ErrNotFound {
+			return nil, fmt.Errorf("service: lookup email for Google account: %w", emailErr)
+		}
+		_ = existing
 		user, err = s.users.CreateWithGoogle(ctx, s.db, identity.Email, identity.Subject, identity.Name, identity.Picture)
 		if err != nil {
 			return nil, fmt.Errorf("service: create Google user: %w", err)
 		}
 		isNewUser = true
 	} else {
-		if user.GoogleID != nil && *user.GoogleID != identity.Subject {
-			return nil, apperr.New(apperr.CodeConflict, map[string]any{"field": "google_id"})
-		}
 		if err := s.users.UpdateGoogleIdentity(ctx, s.db, user.ID, identity.Subject, identity.Name, identity.Picture); err != nil {
 			return nil, fmt.Errorf("service: update Google identity: %w", err)
 		}
