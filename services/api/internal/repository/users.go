@@ -25,7 +25,7 @@ func scanUser(row interface {
 	Scan(dest ...any) error
 }) (*models.User, error) {
 	var u models.User
-	if err := row.Scan(&u.ID, &u.Phone, &u.FullName, &u.Email, &u.Role, &u.AvatarURL, &u.Language, &u.GoogleID, &u.IsActive, &u.CreatedAt, &u.UpdatedAt); err != nil {
+	if err := row.Scan(&u.ID, &u.Phone, &u.FullName, &u.Email, &u.Role, &u.AvatarURL, &u.Language, &u.Country, &u.GoogleID, &u.IsActive, &u.CreatedAt, &u.UpdatedAt); err != nil {
 		return nil, err
 	}
 	return &u, nil
