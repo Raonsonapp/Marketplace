@@ -90,14 +90,13 @@ func (s *AuthService) GoogleVerify(ctx context.Context, idToken string, device a
 	if err == repository.ErrNotFound {
 		// If the verified email already belongs to an account, require an explicit
 		// account-link flow rather than silently attaching a Google identity.
-		existing, emailErr := s.users.GetByEmail(ctx, s.db, identity.Email)
+		_, emailErr := s.users.GetByEmail(ctx, s.db, identity.Email)
 		if emailErr == nil {
 			return nil, apperr.New(apperr.CodeConflict, map[string]any{"field": "email", "reason": "account_link_required"})
 		}
 		if emailErr != repository.ErrNotFound {
 			return nil, fmt.Errorf("service: lookup email for Google account: %w", emailErr)
 		}
-		_ = existing
 		user, err = s.users.CreateWithGoogle(ctx, s.db, identity.Email, identity.Subject, identity.Name, identity.Picture)
 		if err != nil {
 			return nil, fmt.Errorf("service: create Google user: %w", err)
