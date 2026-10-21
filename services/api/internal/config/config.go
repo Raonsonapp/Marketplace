@@ -49,6 +49,7 @@ type Config struct {
 	// Optional: when empty, that endpoint returns FIREBASE_NOT_CONFIGURED
 	// and the console-OTP flow (send-otp/verify-otp) keeps working as-is.
 	FirebaseWebAPIKey string
+	GoogleOAuthClientID string
 
 	// TelegramGatewayToken enables sending console-OTP codes for
 	// send-otp/verify-otp through Telegram Gateway instead of logging them —
@@ -175,6 +176,7 @@ func Load() (*Config, error) {
 
 	cfg.MigrationsDir = getOr("MIGRATIONS_DIR", "migrations")
 	cfg.FirebaseWebAPIKey = os.Getenv("FIREBASE_WEB_API_KEY")
+	cfg.GoogleOAuthClientID = os.Getenv("GOOGLE_OAUTH_CLIENT_ID")
 	cfg.TelegramGatewayToken = os.Getenv("TELEGRAM_GATEWAY_TOKEN")
 	cfg.TelegramGatewayProxyURL = strings.TrimSuffix(os.Getenv("TELEGRAM_GATEWAY_PROXY_URL"), "/")
 	cfg.TelegramGatewayProxySecret = os.Getenv("TELEGRAM_GATEWAY_PROXY_SECRET")
