@@ -11,9 +11,19 @@ import (
 	"tajikshop/api/internal/service"
 )
 
-type AuthHandler struct { svc *service.AuthService }
+type AuthHandler struct {
+	svc *service.AuthService
+	phoneAuthEnabled bool
+}
 
-func NewAuthHandler(svc *service.AuthService) *AuthHandler { return &AuthHandler{svc: svc} }
+// NewAuthHandler keeps legacy SMS code available but disables the route unless explicitly enabled.
+func NewAuthHandler(svc *service.AuthService, phoneAuthEnabled ...bool) *AuthHandler {
+	enabled := false
+	if len(phoneAuthEnabled) > 0 {
+		enabled = phoneAuthEnabled[0]
+	}
+	return &AuthHandler{svc: svc, phoneAuthEnabled: enabled}
+}
 
 func deviceInfo(c *gin.Context) auth.DeviceInfo {
 	return auth.DeviceInfo{
@@ -57,6 +67,10 @@ func (h *AuthHandler) GoogleVerify(c *gin.Context) {
 // FirebaseVerify remains implemented for backwards compatibility, but the mobile
 // registration UI no longer calls it when Google Sign-In is the selected flow.
 func (h *AuthHandler) FirebaseVerify(c *gin.Context) {
+	if !h.phoneAuthEnabled {
+		handleErr(c, apperr.New(apperr.CodeFirebaseNotConfigured, nil))
+		return
+	}
 	var req dto.FirebaseVerifyRequest
 	if err := c.ShouldBindJSON(&req); err != nil { handleErr(c, apperr.New(apperr.CodeValidation, nil)); return }
 	res, err := h.svc.FirebaseVerify(c.Request.Context(), req.IDToken, req.FullName, deviceInfo(c))
