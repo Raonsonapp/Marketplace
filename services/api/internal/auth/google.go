@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"io"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
@@ -20,7 +20,10 @@ type GoogleVerifier struct {
 }
 
 func NewGoogleVerifier(clientID string) *GoogleVerifier {
-	return &GoogleVerifier{clientID: strings.TrimSpace(clientID), client: &http.Client{Timeout: 8 * time.Second}}
+	return &GoogleVerifier{
+		clientID: strings.TrimSpace(clientID),
+		client:   &http.Client{Timeout: 8 * time.Second},
+	}
 }
 
 var (
@@ -62,7 +65,7 @@ func (v *GoogleVerifier) VerifyIDToken(ctx context.Context, idToken string) (*Go
 		Picture       string `json:"picture"`
 		Exp           int64  `json:"exp"`
 	}
-	if err := json.NewDecoder(http.MaxBytesReader(nil, resp.Body, 64<<10)).Decode(&claims); err != nil {
+	if err := json.NewDecoder(io.LimitReader(resp.Body, 64<<10)).Decode(&claims); err != nil {
 		return nil, fmt.Errorf("decode Google token verification response: %w", err)
 	}
 	if resp.StatusCode != http.StatusOK || claims.Aud != v.clientID || claims.Sub == "" ||
@@ -71,8 +74,8 @@ func (v *GoogleVerifier) VerifyIDToken(ctx context.Context, idToken string) (*Go
 	}
 	return &GoogleIdentity{
 		Subject: claims.Sub,
-		Email: strings.ToLower(strings.TrimSpace(claims.Email)),
-		Name: claims.Name,
+		Email:   strings.ToLower(strings.TrimSpace(claims.Email)),
+		Name:    claims.Name,
 		Picture: claims.Picture,
 	}, nil
 }
