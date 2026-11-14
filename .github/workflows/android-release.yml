@@ -31,6 +31,7 @@ jobs:
       ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
       ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      GOOGLE_SERVER_CLIENT_ID: ${{ secrets.GOOGLE_SERVER_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -78,10 +79,10 @@ jobs:
       # release build correct even if that default ever changes without a
       # matching workflow update.
       - name: Build AAB (release)
-        run: flutter build appbundle --release --dart-define=API_BASE_URL=https://mahmadmurodov-youshop.hf.space/api/v1
+        run: flutter build appbundle --release --dart-define=API_BASE_URL=https://mahmadmurodov-youshop.hf.space/api/v1 --dart-define=GOOGLE_SERVER_CLIENT_ID=$GOOGLE_SERVER_CLIENT_ID
 
       - name: Build APK (release)
-        run: flutter build apk --release --dart-define=API_BASE_URL=https://mahmadmurodov-youshop.hf.space/api/v1
+        run: flutter build apk --release --dart-define=API_BASE_URL=https://mahmadmurodov-youshop.hf.space/api/v1 --dart-define=GOOGLE_SERVER_CLIENT_ID=$GOOGLE_SERVER_CLIENT_ID
 
       # Two separate artifacts on purpose: youshop-apk is the one to
       # download and install on a phone for testing — just the one .apk
