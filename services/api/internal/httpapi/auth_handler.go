@@ -11,13 +11,19 @@ import (
 	"tajikshop/api/internal/service"
 )
 
-// AuthHandler implements POST /auth/*.
 type AuthHandler struct {
-	svc *service.AuthService
+	svc              *service.AuthService
+	phoneAuthEnabled bool
 }
 
-// NewAuthHandler builds an AuthHandler.
-func NewAuthHandler(svc *service.AuthService) *AuthHandler { return &AuthHandler{svc: svc} }
+// NewAuthHandler keeps legacy SMS code available but disables the route unless explicitly enabled.
+func NewAuthHandler(svc *service.AuthService, phoneAuthEnabled ...bool) *AuthHandler {
+	enabled := false
+	if len(phoneAuthEnabled) > 0 {
+		enabled = phoneAuthEnabled[0]
+	}
+	return &AuthHandler{svc: svc, phoneAuthEnabled: enabled}
+}
 
 func deviceInfo(c *gin.Context) auth.DeviceInfo {
 	return auth.DeviceInfo{
@@ -28,7 +34,6 @@ func deviceInfo(c *gin.Context) auth.DeviceInfo {
 	}
 }
 
-// SendOTP handles POST /auth/send-otp.
 func (h *AuthHandler) SendOTP(c *gin.Context) {
 	var req dto.SendOTPRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -47,7 +52,6 @@ func (h *AuthHandler) SendOTP(c *gin.Context) {
 	ok(c, dto.SendOTPResponse{RetryAfterSeconds: retryAfter})
 }
 
-// VerifyOTP handles POST /auth/verify-otp.
 func (h *AuthHandler) VerifyOTP(c *gin.Context) {
 	var req dto.VerifyOTPRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -68,14 +72,34 @@ func (h *AuthHandler) VerifyOTP(c *gin.Context) {
 		return
 	}
 	ok(c, dto.AuthResponse{
-		AccessToken: res.AccessToken, RefreshToken: res.RefreshToken,
-		User: dto.NewUserResponse(*res.User), IsNewUser: res.IsNewUser,
+		AccessToken: res.AccessToken,
+		RefreshToken: res.RefreshToken,
+		User: dto.NewUserResponse(*res.User),
+		IsNewUser: res.IsNewUser,
 	})
 }
 
-// FirebaseVerify handles POST /auth/firebase-verify — the real-SMS
-// registration/login path (Firebase Phone Auth). See docs/FIREBASE_SETUP.md.
+func (h *AuthHandler) GoogleVerify(c *gin.Context) {
+	var req dto.GoogleAuthRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		handleErr(c, apperr.New(apperr.CodeValidation, nil))
+		return
+	}
+	res, err := h.svc.GoogleVerify(c.Request.Context(), req.IDToken, deviceInfo(c))
+	if err != nil {
+		handleErr(c, apperr.New(apperr.CodeUnauthorized, map[string]any{"reason": "google_sign_in_failed"}))
+		return
+	}
+	ok(c, dto.AuthResponse{AccessToken: res.AccessToken, RefreshToken: res.RefreshToken, User: dto.NewUserResponse(*res.User), IsNewUser: res.IsNewUser})
+}
+
+// FirebaseVerify retains the old SMS/phone implementation for possible future
+// re-enabling. It is disabled by default via PHONE_AUTH_ENABLED=false.
 func (h *AuthHandler) FirebaseVerify(c *gin.Context) {
+	if !h.phoneAuthEnabled {
+		handleErr(c, apperr.New(apperr.CodeFirebaseNotConfigured, nil))
+		return
+	}
 	var req dto.FirebaseVerifyRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		handleErr(c, apperr.New(apperr.CodeValidation, nil))
@@ -86,13 +110,9 @@ func (h *AuthHandler) FirebaseVerify(c *gin.Context) {
 		handleErr(c, err)
 		return
 	}
-	ok(c, dto.AuthResponse{
-		AccessToken: res.AccessToken, RefreshToken: res.RefreshToken,
-		User: dto.NewUserResponse(*res.User), IsNewUser: res.IsNewUser,
-	})
+	ok(c, dto.AuthResponse{AccessToken: res.AccessToken, RefreshToken: res.RefreshToken, User: dto.NewUserResponse(*res.User), IsNewUser: res.IsNewUser})
 }
 
-// Refresh handles POST /auth/refresh.
 func (h *AuthHandler) Refresh(c *gin.Context) {
 	var req dto.RefreshRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -107,7 +127,6 @@ func (h *AuthHandler) Refresh(c *gin.Context) {
 	ok(c, dto.RefreshResponse{AccessToken: res.AccessToken, RefreshToken: res.RefreshToken})
 }
 
-// Logout handles POST /auth/logout.
 func (h *AuthHandler) Logout(c *gin.Context) {
 	var req dto.LogoutRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

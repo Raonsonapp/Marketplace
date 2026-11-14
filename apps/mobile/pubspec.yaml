@@ -15,6 +15,9 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  # Google account sign-in (SMS/phone sign-in stays disabled by default)
+  google_sign_in: ^6.2.1
+
   # State management
   flutter_riverpod: ^2.6.1
 

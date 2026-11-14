@@ -25,6 +25,11 @@ class AuthRepository {
     return AuthTokens.fromJson(json);
   }
 
+  Future<AuthTokens> signInWithGoogle({required String idToken}) async {
+    final json = await _client.post('/auth/google', data: {'id_token': idToken});
+    return AuthTokens.fromJson(json);
+  }
+
   Future<AuthTokens> refresh({required String refreshToken}) async {
     final json = await _client.post('/auth/refresh', data: {'refresh_token': refreshToken});
     return AuthTokens.fromJson(json);

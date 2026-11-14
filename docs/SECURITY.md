@@ -20,8 +20,8 @@
 - `user_sessions` doubles as device/session management: device id/name, IP,
   user agent, last-used timestamp; users can view/revoke sessions from
   Profile → Security (Phase 5+).
-- Google Sign-In (optional): server verifies the Google ID token signature
-  and audience server-side before ever trusting `sub`/phone/email claims.
+- Google Sign-In is the primary mobile sign-in path. The backend verifies the Google ID token and checks its configured OAuth audience before trusting the verified email/subject. Configure `GOOGLE_OAUTH_CLIENT_ID` in the API environment and pass the same Web OAuth client ID to Flutter as `--dart-define=GOOGLE_SERVER_CLIENT_ID=...`.
+- Legacy Firebase phone/SMS verification code is retained but disabled by default. The `/auth/firebase-verify` handler returns `FIREBASE_NOT_CONFIGURED` unless `PHONE_AUTH_ENABLED=true` is deliberately set in the server environment. The app's sign-in screen does not offer SMS/phone login.
 - **Firebase Phone Auth (`POST /auth/firebase-verify`)**: the real-SMS
   registration path — see `docs/FIREBASE_SETUP.md`. Firebase's own
   infrastructure sends and verifies the SMS code on the device; the backend

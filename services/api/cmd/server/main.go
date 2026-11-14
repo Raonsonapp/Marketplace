@@ -106,9 +106,10 @@ func run() error {
 	)
 	sessionMgr := auth.NewSessionManager(repository.NewSessionStoreAdapter(sessionRepo, pool), cfg.RefreshTTL)
 	firebaseVerifier := auth.NewFirebaseVerifier(cfg.FirebaseWebAPIKey)
+	googleVerifier := auth.NewGoogleVerifier(cfg.GoogleOAuthClientID)
 
 	// ---- services ----
-	authSvc := service.NewAuthService(pool, otpMgr, sessionMgr, tokenMgr, userRepo, firebaseVerifier)
+	authSvc := service.NewAuthService(pool, otpMgr, sessionMgr, tokenMgr, userRepo, firebaseVerifier, googleVerifier)
 	catalogSvc := service.NewCatalogService(pool, categoryRepo, productRepo, storeRepo, inventoryRepo)
 	homeSvc := service.NewHomeService(pool, categoryRepo, productRepo, storeRepo, brandRepo, orderRepo, catalogSvc)
 	cartSvc := service.NewCartService(pool, cartRepo, productRepo, inventoryRepo, storeRepo)
@@ -168,7 +169,7 @@ func run() error {
 	// ---- handlers ----
 	hub := ws.NewHub()
 	handlers := httpapi.Handlers{
-		Auth:         httpapi.NewAuthHandler(authSvc),
+		Auth:         httpapi.NewAuthHandler(authSvc, cfg.PhoneAuthEnabled),
 		Catalog:      httpapi.NewCatalogHandler(catalogSvc, homeSvc),
 		Cart:         httpapi.NewCartHandler(cartSvc),
 		Checkout:     httpapi.NewCheckoutHandler(checkoutSvc),

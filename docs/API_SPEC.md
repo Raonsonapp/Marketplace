@@ -47,6 +47,7 @@ POST   /auth/send-otp          { email }                         -> { retry_afte
                                                                      (docs/TELEGRAM_RELAY_SETUP.md); there
                                                                      is no SMS path.
 POST   /auth/verify-otp        { email, code }                   -> { access_token, refresh_token, user, is_new_user }
+POST   /auth/google            { id_token }                      -> { access_token, refresh_token, user, is_new_user }
 POST   /auth/refresh           { refresh_token }                 -> { access_token, refresh_token }
 POST   /auth/logout            { refresh_token }                 -> 204
 POST   /auth/firebase-verify   { id_token, full_name? }          -> same shape as verify-otp — real-SMS
