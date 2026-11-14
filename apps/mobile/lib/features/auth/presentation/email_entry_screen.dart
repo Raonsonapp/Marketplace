@@ -89,9 +89,7 @@ class _EmailEntryScreenState extends ConsumerState<EmailEntryScreen> {
       if (mounted) context.go(RoutePaths.home);
     } catch (error) {
       if (mounted) {
-        final detail = error is GoogleSignInException
-            ? error.code.name
-            : error.runtimeType.toString();
+        final detail = error.runtimeType.toString();
         setState(() {
           _googleError = _textForLocale(
             'Google sign-in failed ($detail). Check OAuth client ID and Android SHA-1.',
